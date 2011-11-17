@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'megabuffer' target in the 'megabuffer' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
