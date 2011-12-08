@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
+		CD4BA16E1491000E00A58899 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA16B1491000E00A58899 /* VVBasics.framework */; };
+		CD4BA16F1491000E00A58899 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA16C1491000E00A58899 /* VVMIDI.framework */; };
+		CD4BA1701491000E00A58899 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA16D1491000E00A58899 /* VVOSC.framework */; };
+		CD4BA1721491002400A58899 /* VVBasics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16B1491000E00A58899 /* VVBasics.framework */; };
+		CD4BA1731491002400A58899 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16C1491000E00A58899 /* VVMIDI.framework */; };
+		CD4BA1741491002400A58899 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16D1491000E00A58899 /* VVOSC.framework */; };
+		CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
 		CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA583801475BEFB00993A14 /* Cocoa.framework */; };
 		CDA5838B1475BEFB00993A14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA583891475BEFB00993A14 /* InfoPlist.strings */; };
 		CDA5838D1475BEFB00993A14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA5838C1475BEFB00993A14 /* main.m */; };
@@ -16,18 +24,38 @@
 		CDA5839A1475BEFC00993A14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA583981475BEFC00993A14 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		CD4BA1711491001800A58899 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD4BA1721491002400A58899 /* VVBasics.framework in CopyFiles */,
+				CD4BA1731491002400A58899 /* VVMIDI.framework in CopyFiles */,
+				CD4BA1741491002400A58899 /* VVOSC.framework in CopyFiles */,
+				CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		CD4BA15F1490FA2100A58899 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../../Frameworks/Syphon.framework; sourceTree = "<group>"; };
+		CD4BA16B1491000E00A58899 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVBasics.framework; path = ../../Frameworks/VVBasics.framework; sourceTree = "<group>"; };
+		CD4BA16C1491000E00A58899 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVMIDI.framework; path = ../../Frameworks/VVMIDI.framework; sourceTree = "<group>"; };
+		CD4BA16D1491000E00A58899 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVOSC.framework; path = ../../Frameworks/VVOSC.framework; sourceTree = "<group>"; };
 		CDA5837C1475BEFB00993A14 /* megabuffer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = megabuffer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA583801475BEFB00993A14 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CDA583831475BEFB00993A14 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		CDA583841475BEFB00993A14 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CDA583851475BEFB00993A14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		CDA583881475BEFB00993A14 /* megabuffer-Info.plist */ = {isa = PBXFileReference; path = "megabuffer-Info.plist"; sourceTree = "<group>"; };
+		CDA583881475BEFB00993A14 /* megabuffer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "megabuffer-Info.plist"; sourceTree = "<group>"; };
 		CDA5838A1475BEFB00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CDA5838C1475BEFB00993A14 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		CDA5838E1475BEFB00993A14 /* megabuffer-Prefix.pch */ = {isa = PBXFileReference; path = "megabuffer-Prefix.pch"; sourceTree = "<group>"; };
+		CDA5838E1475BEFB00993A14 /* megabuffer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "megabuffer-Prefix.pch"; sourceTree = "<group>"; };
 		CDA583901475BEFB00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		CDA583921475BEFB00993A14 /* BDocument.h */ = {isa = PBXFileReference; path = BDocument.h; sourceTree = "<group>"; };
+		CDA583921475BEFB00993A14 /* BDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDocument.h; sourceTree = "<group>"; };
 		CDA583931475BEFB00993A14 /* BDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDocument.m; sourceTree = "<group>"; };
 		CDA583961475BEFB00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BDocument.xib; sourceTree = "<group>"; };
 		CDA583991475BEFC00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -39,6 +67,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */,
+				CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */,
+				CD4BA16E1491000E00A58899 /* VVBasics.framework in Frameworks */,
+				CD4BA16F1491000E00A58899 /* VVMIDI.framework in Frameworks */,
+				CD4BA1701491000E00A58899 /* VVOSC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +97,10 @@
 		CDA5837F1475BEFB00993A14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD4BA16B1491000E00A58899 /* VVBasics.framework */,
+				CD4BA16C1491000E00A58899 /* VVMIDI.framework */,
+				CD4BA16D1491000E00A58899 /* VVOSC.framework */,
+				CD4BA15F1490FA2100A58899 /* Syphon.framework */,
 				CDA583801475BEFB00993A14 /* Cocoa.framework */,
 				CDA583821475BEFB00993A14 /* Other Frameworks */,
 			);
@@ -113,6 +149,7 @@
 			buildConfigurationList = CDA5839D1475BEFC00993A14 /* Build configuration list for PBXNativeTarget "megabuffer" */;
 			buildPhases = (
 				CDA583781475BEFB00993A14 /* Sources */,
+				CD4BA1711491001800A58899 /* CopyFiles */,
 				CDA583791475BEFB00993A14 /* Frameworks */,
 				CDA5837A1475BEFB00993A14 /* Resources */,
 			);
@@ -260,9 +297,14 @@
 		CDA5839E1475BEFC00993A14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "megabuffer/megabuffer-Prefix.pch";
 				INFOPLIST_FILE = "megabuffer/megabuffer-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -271,9 +313,14 @@
 		CDA5839F1475BEFC00993A14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "megabuffer/megabuffer-Prefix.pch";
 				INFOPLIST_FILE = "megabuffer/megabuffer-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -298,6 +345,7 @@
 				CDA5839F1475BEFC00993A14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
