@@ -7,24 +7,31 @@
 //
 
 #import "BDocument.h"
+#import "MBWindowController.h"
+
+#import "MBBufferObject.h"
 
 @implementation BDocument
+@synthesize buffer;
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        // Add your subclass-specific initialization here.
-        // If an error occurs here, return nil.
+        buffer = [[MBBufferObject alloc] init];
     }
     return self;
 }
 
-- (NSString *)windowNibName
+-(void)dealloc
 {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
-    return @"BDocument";
+    buffer = nil;
+}
+
+- (void)makeWindowControllers
+{
+    MBWindowController *windowController = [[MBWindowController alloc] init];
+    [self addWindowController: windowController];
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *)aController

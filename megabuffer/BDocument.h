@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BDocument : NSDocument
+@class MBBufferObject;
 
+@interface BDocument : NSDocument
+@property (strong, nonatomic) MBBufferObject *buffer;
 @end

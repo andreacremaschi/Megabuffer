@@ -15,6 +15,14 @@
 		CD4BA1731491002400A58899 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16C1491000E00A58899 /* VVMIDI.framework */; };
 		CD4BA1741491002400A58899 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16D1491000E00A58899 /* VVOSC.framework */; };
 		CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
+		CD4BA177149105F000A58899 /* Syphon Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD4BA176149105F000A58899 /* Syphon Icon.icns */; };
+		CD4BA18F1491186F00A58899 /* MBWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA18E1491186F00A58899 /* MBWindowController.m */; };
+		CD4BA19214911A7100A58899 /* MBBufferObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA19114911A7100A58899 /* MBBufferObject.m */; };
+		CD4BA1951491206D00A58899 /* ServerDescriptionValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA1941491206D00A58899 /* ServerDescriptionValueTransformer.m */; };
+		CD4BA198149122ED00A58899 /* SourceSyphon.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA197149122EC00A58899 /* SourceSyphon.m */; };
+		CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA1EC1491297C00A58899 /* CoreVideo.framework */; };
+		CD4BA1F114912F0000A58899 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA1F014912F0000A58899 /* QuartzCore.framework */; };
+		CD4BA1F4149131F000A58899 /* NSMutableStack.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA1F3149131F000A58899 /* NSMutableStack.m */; };
 		CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA583801475BEFB00993A14 /* Cocoa.framework */; };
 		CDA5838B1475BEFB00993A14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA583891475BEFB00993A14 /* InfoPlist.strings */; };
 		CDA5838D1475BEFB00993A14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA5838C1475BEFB00993A14 /* main.m */; };
@@ -45,10 +53,23 @@
 		CD4BA16B1491000E00A58899 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVBasics.framework; path = ../../Frameworks/VVBasics.framework; sourceTree = "<group>"; };
 		CD4BA16C1491000E00A58899 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVMIDI.framework; path = ../../Frameworks/VVMIDI.framework; sourceTree = "<group>"; };
 		CD4BA16D1491000E00A58899 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVOSC.framework; path = ../../Frameworks/VVOSC.framework; sourceTree = "<group>"; };
+		CD4BA176149105F000A58899 /* Syphon Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Syphon Icon.icns"; path = "Resources/Syphon Icon.icns"; sourceTree = "<group>"; };
+		CD4BA18D1491186F00A58899 /* MBWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBWindowController.h; path = Source/MBWindowController.h; sourceTree = "<group>"; };
+		CD4BA18E1491186F00A58899 /* MBWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBWindowController.m; path = Source/MBWindowController.m; sourceTree = "<group>"; };
+		CD4BA19014911A7100A58899 /* MBBufferObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBBufferObject.h; path = Source/MBBufferObject.h; sourceTree = "<group>"; };
+		CD4BA19114911A7100A58899 /* MBBufferObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBBufferObject.m; path = Source/MBBufferObject.m; sourceTree = "<group>"; };
+		CD4BA1931491206D00A58899 /* ServerDescriptionValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerDescriptionValueTransformer.h; sourceTree = "<group>"; };
+		CD4BA1941491206D00A58899 /* ServerDescriptionValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerDescriptionValueTransformer.m; sourceTree = "<group>"; };
+		CD4BA196149122EC00A58899 /* SourceSyphon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceSyphon.h; sourceTree = "<group>"; };
+		CD4BA197149122EC00A58899 /* SourceSyphon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceSyphon.m; sourceTree = "<group>"; };
+		CD4BA1991491234900A58899 /* KeystoneTextureSourceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeystoneTextureSourceProtocol.h; sourceTree = "<group>"; };
+		CD4BA1EC1491297C00A58899 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		CD4BA1F014912F0000A58899 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CD4BA1F2149131F000A58899 /* NSMutableStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSMutableStack.h; path = Source/NSMutableStack.h; sourceTree = "<group>"; };
+		CD4BA1F3149131F000A58899 /* NSMutableStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSMutableStack.m; path = Source/NSMutableStack.m; sourceTree = "<group>"; };
 		CDA5837C1475BEFB00993A14 /* megabuffer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = megabuffer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA583801475BEFB00993A14 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CDA583831475BEFB00993A14 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		CDA583841475BEFB00993A14 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CDA583851475BEFB00993A14 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CDA583881475BEFB00993A14 /* megabuffer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "megabuffer-Info.plist"; sourceTree = "<group>"; };
 		CDA5838A1475BEFB00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -66,6 +87,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD4BA1F114912F0000A58899 /* QuartzCore.framework in Frameworks */,
+				CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */,
 				CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */,
 				CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */,
 				CD4BA16E1491000E00A58899 /* VVBasics.framework in Frameworks */,
@@ -77,6 +100,77 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD4BA178149112F500A58899 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BA17A1491130E00A58899 /* Graphics */,
+				CD4BA1791491130200A58899 /* Interaces */,
+				CDA583871475BEFB00993A14 /* Supporting Files */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		CD4BA1791491130200A58899 /* Interaces */ = {
+			isa = PBXGroup;
+			children = (
+				CDA583951475BEFB00993A14 /* BDocument.xib */,
+				CDA583981475BEFC00993A14 /* MainMenu.xib */,
+			);
+			name = Interaces;
+			sourceTree = "<group>";
+		};
+		CD4BA17A1491130E00A58899 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BA176149105F000A58899 /* Syphon Icon.icns */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		CD4BA17B1491132700A58899 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BA17E1491133E00A58899 /* Controller */,
+				CD4BA17D1491133800A58899 /* View */,
+				CD4BA17C1491132C00A58899 /* Model */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		CD4BA17C1491132C00A58899 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BA1991491234900A58899 /* KeystoneTextureSourceProtocol.h */,
+				CD4BA196149122EC00A58899 /* SourceSyphon.h */,
+				CD4BA197149122EC00A58899 /* SourceSyphon.m */,
+				CDA583921475BEFB00993A14 /* BDocument.h */,
+				CDA583931475BEFB00993A14 /* BDocument.m */,
+				CD4BA19014911A7100A58899 /* MBBufferObject.h */,
+				CD4BA19114911A7100A58899 /* MBBufferObject.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CD4BA17D1491133800A58899 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		CD4BA17E1491133E00A58899 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CD4BA1931491206D00A58899 /* ServerDescriptionValueTransformer.h */,
+				CD4BA1941491206D00A58899 /* ServerDescriptionValueTransformer.m */,
+				CD4BA18D1491186F00A58899 /* MBWindowController.h */,
+				CD4BA18E1491186F00A58899 /* MBWindowController.m */,
+				CD4BA1F2149131F000A58899 /* NSMutableStack.h */,
+				CD4BA1F3149131F000A58899 /* NSMutableStack.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		CDA583711475BEFB00993A14 = {
 			isa = PBXGroup;
 			children = (
@@ -97,34 +191,32 @@
 		CDA5837F1475BEFB00993A14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD4BA1F014912F0000A58899 /* QuartzCore.framework */,
 				CD4BA16B1491000E00A58899 /* VVBasics.framework */,
 				CD4BA16C1491000E00A58899 /* VVMIDI.framework */,
 				CD4BA16D1491000E00A58899 /* VVOSC.framework */,
 				CD4BA15F1490FA2100A58899 /* Syphon.framework */,
-				CDA583801475BEFB00993A14 /* Cocoa.framework */,
-				CDA583821475BEFB00993A14 /* Other Frameworks */,
+				CDA583821475BEFB00993A14 /* Apple frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CDA583821475BEFB00993A14 /* Other Frameworks */ = {
+		CDA583821475BEFB00993A14 /* Apple frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD4BA1EC1491297C00A58899 /* CoreVideo.framework */,
+				CDA583801475BEFB00993A14 /* Cocoa.framework */,
 				CDA583831475BEFB00993A14 /* AppKit.framework */,
-				CDA583841475BEFB00993A14 /* CoreData.framework */,
 				CDA583851475BEFB00993A14 /* Foundation.framework */,
 			);
-			name = "Other Frameworks";
+			name = "Apple frameworks";
 			sourceTree = "<group>";
 		};
 		CDA583861475BEFB00993A14 /* megabuffer */ = {
 			isa = PBXGroup;
 			children = (
-				CDA583921475BEFB00993A14 /* BDocument.h */,
-				CDA583931475BEFB00993A14 /* BDocument.m */,
-				CDA583951475BEFB00993A14 /* BDocument.xib */,
-				CDA583981475BEFC00993A14 /* MainMenu.xib */,
-				CDA583871475BEFB00993A14 /* Supporting Files */,
+				CD4BA17B1491132700A58899 /* Source */,
+				CD4BA178149112F500A58899 /* Resources */,
 			);
 			path = megabuffer;
 			sourceTree = "<group>";
@@ -196,6 +288,7 @@
 				CDA583911475BEFB00993A14 /* Credits.rtf in Resources */,
 				CDA583971475BEFB00993A14 /* BDocument.xib in Resources */,
 				CDA5839A1475BEFC00993A14 /* MainMenu.xib in Resources */,
+				CD4BA177149105F000A58899 /* Syphon Icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +301,11 @@
 			files = (
 				CDA5838D1475BEFB00993A14 /* main.m in Sources */,
 				CDA583941475BEFB00993A14 /* BDocument.m in Sources */,
+				CD4BA18F1491186F00A58899 /* MBWindowController.m in Sources */,
+				CD4BA19214911A7100A58899 /* MBBufferObject.m in Sources */,
+				CD4BA1951491206D00A58899 /* ServerDescriptionValueTransformer.m in Sources */,
+				CD4BA198149122ED00A58899 /* SourceSyphon.m in Sources */,
+				CD4BA1F4149131F000A58899 /* NSMutableStack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +395,7 @@
 		CDA5839E1475BEFC00993A14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Frameworks\"",
@@ -313,6 +412,7 @@
 		CDA5839F1475BEFC00993A14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Frameworks\"",
