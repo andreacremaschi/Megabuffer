@@ -10,15 +10,19 @@
 #import "MBWindowController.h"
 
 #import "MBBufferObject.h"
+#import "MBScrubberObject.h"
 
 @implementation BDocument
 @synthesize buffer;
+@synthesize scrubber;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         buffer = [[MBBufferObject alloc] init];
+        scrubber = [[MBScrubberObject alloc] init];
+        scrubber.buffer = buffer;
     }
     return self;
 }
@@ -26,6 +30,7 @@
 -(void)dealloc
 {
     buffer = nil;
+    scrubber=nil;
 }
 
 - (void)makeWindowControllers

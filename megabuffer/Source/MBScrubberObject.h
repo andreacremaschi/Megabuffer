@@ -14,11 +14,16 @@ typedef enum {
     MBScrubMode_speed
 } scrubModes;
 
+@class MBBufferObject;
+
 @interface MBScrubberObject : NSObject
 @property double rate;
 @property double delay;
 @property scrubModes scrubMode;
 
 @property (strong) id syphonOut;
+@property (unsafe_unretained) MBBufferObject * buffer;
 
+
+- (CIImage *)currentFrame;
 @end

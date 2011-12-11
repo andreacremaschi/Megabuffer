@@ -9,6 +9,7 @@
 #import "MBWindowController.h"
 #import "BDocument.h"
 #import "MBBufferObject.h"
+#import "MBScrubberObject.h"
 #import "MBGLView.h"
 
 #import <Syphon/Syphon.h>
@@ -80,9 +81,10 @@
 - (CIImage *)GLView:(NSOpenGLView *)view wantsFrameWithOptions:(NSDictionary *)dict 
 {
     BDocument *bDocument = (BDocument*)self.document;
-    MBBufferObject *buffer = bDocument.buffer;
-    if (buffer)
-        return buffer.currentFrame;
+//    MBBufferObject *buffer = bDocument.buffer;
+    MBScrubberObject *scrubber = bDocument.scrubber;
+    if (scrubber)
+        return [scrubber currentFrame] ;
     else
         return [CIImage emptyImage];
     

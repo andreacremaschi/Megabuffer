@@ -29,7 +29,5 @@
 
 -(void)setServerDescription:(NSDictionary *)serverDescription;
 
-- (CIImage *)currentFrame;
-
-
+- (CIImage *)imageAtTime: (NSTimeInterval) time;
 @end

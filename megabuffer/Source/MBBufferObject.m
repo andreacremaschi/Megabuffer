@@ -100,11 +100,10 @@
     }
 }
 
-
-- (CIImage *)currentFrame
+- (CIImage *)imageAtTime: (NSTimeInterval) time
 {
     if (frameStack.count>0)
-    return [frameStack objectAtIndex:0];
+        return [frameStack objectAtIndex: 0];
     else return [CIImage emptyImage];
 }
 
