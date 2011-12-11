@@ -9,11 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SourceSyphon.h"
 
-typedef enum {
-    MBScrubMode_off,
-    MBScrubMode_rate,
-    MBScrubMode_speed
-} scrubModes;
+
 
 @class SourceSyphon,NSMutableStack;
 @interface MBBufferObject : NSObject <TextureSourceDelegate>
@@ -22,21 +18,18 @@ typedef enum {
 @property (strong) NSString *syInServerName;
 @property (strong) NSString *syInApplicationName;
 
-@property (strong) id syphonOut;
-
 @property uint bufferSize;
-
-@property (strong, nonatomic) NSOpenGLContext *openGLContext;
 
 @property (strong) NSMutableArray * markers;
 @property bool recording;
-@property double rate;
-@property double delay;
-@property scrubModes scrubMode;
 
 @property (strong, nonatomic) NSMutableStack * frameStack;
 
+-(id)initWithOpenGLContext: (NSOpenGLContext *)context;
+
 -(void)setServerDescription:(NSDictionary *)serverDescription;
+
+- (CIImage *)currentFrame;
 
 
 @end

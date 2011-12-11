@@ -42,5 +42,6 @@
 
 
 @protocol TextureSourceDelegate
+-(NSOpenGLContext*) openGLContext;
 - (void) syphonSource: (SourceSyphon*)textureSource didReceiveNewFrameOnTime: (NSTimeInterval) time;
 @end

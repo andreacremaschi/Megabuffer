@@ -9,12 +9,14 @@
 #import "MBWindowController.h"
 #import "BDocument.h"
 #import "MBBufferObject.h"
+#import "MBGLView.h"
 
 #import <Syphon/Syphon.h>
 
 @implementation MBWindowController
 @synthesize availableServersController;
 @synthesize liveInputGLView;
+@synthesize bufferOutputGLView;
 @synthesize selectedServerDescriptions;
 
 - (id)initWithWindow:(NSWindow *)window
@@ -54,7 +56,12 @@
    withKeyPath:@"selectedObjects" 
        options:nil];
 
-    [(BDocument *) self.document buffer].openGLContext = liveInputGLView.openGLContext;
+    BDocument *bDoc=(BDocument *) self.document;
+    
+    liveInputGLView.frameSource=self;
+    bufferOutputGLView.frameSource=self;
+    
+    
 }
 
 #pragma mark - Accessors
@@ -66,6 +73,20 @@
         // it will, since our only video input is Syphon server
             [[(BDocument *) self.document buffer] setServerDescription: serverDescription];
     }
+}
+
+#pragma mark - MBGLView protocol implementation
+
+- (CIImage *)GLView:(NSOpenGLView *)view wantsFrameWithOptions:(NSDictionary *)dict 
+{
+    BDocument *bDocument = (BDocument*)self.document;
+    MBBufferObject *buffer = bDocument.buffer;
+    if (buffer)
+        return buffer.currentFrame;
+    else
+        return [CIImage emptyImage];
+    
+    
 }
 
 @end

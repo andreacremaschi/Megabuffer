@@ -8,6 +8,15 @@
 
 #import "NSMutableStack.h"
 
+#pragma mark - Class Extension
+@interface NSMutableStack () {
+@private 
+    NSMutableArray *_mutableArray;
+}
+
+@end 
+
+#pragma mark - @implementation
 @implementation NSMutableStack
 @synthesize maxObjects;
 
@@ -16,20 +25,47 @@
     self = [super init];
     if (self)
     {
+        _mutableArray = [NSMutableArray array];
         maxObjects = 250;
     }
     return self;
 }
 
+-(id)initWithCapacity:(NSUInteger)numItems
+{
+    self = [super init];
+    if (self)
+    {
+        maxObjects = numItems;
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    _mutableArray = nil;
+}
+#pragma mark - Methods
+
+-(NSString *)description
+{
+    return _mutableArray.description;
+}
+
+- (NSUInteger)count
+{
+    return _mutableArray.count;
+}
+
 - (id)push:(id)object {
     id returnObject;
-    @synchronized(self)
+    @synchronized(_mutableArray)
     {
-        [self insertObject:object atIndex:0];
+        [_mutableArray insertObject:object atIndex:0];
         if (self.count > maxObjects) 
         {
-            returnObject = self.lastObject;
-            [self removeLastObject];
+            returnObject = _mutableArray.lastObject;
+            [_mutableArray removeLastObject];
         }
     }
     return returnObject;
@@ -42,8 +78,8 @@
 
 - (id)pop {
     if (self.count > 0) {
-        id returnObject = self.lastObject;
-        [self removeLastObject];
+        id returnObject = _mutableArray.lastObject;
+        [_mutableArray removeLastObject];
         return returnObject;
     }
     else 
@@ -53,9 +89,9 @@
 - (id)objectAtIndex:(NSUInteger)index 
 {
     id object ;
-    @synchronized(self)
+    @synchronized(_mutableArray)
     {
-        object = [super objectAtIndex:index];
+        object = [_mutableArray objectAtIndex:index];
     }
     return object;
 }

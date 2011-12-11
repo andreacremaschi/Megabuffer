@@ -7,11 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MBGLView.h"
 
-@interface MBWindowController : NSWindowController
+@class MBGLView;
+@interface MBWindowController : NSWindowController <MBGLViewFrameSource>
 @property (strong, nonatomic) NSArray *selectedServerDescriptions;
 
 @property (assign) IBOutlet NSArrayController *availableServersController;
-@property (unsafe_unretained) IBOutlet NSOpenGLView *liveInputGLView;
+@property (unsafe_unretained) IBOutlet MBGLView *liveInputGLView;
+@property (unsafe_unretained) IBOutlet MBGLView *bufferOutputGLView;
+
 
 @end

@@ -15,6 +15,13 @@
 @synthesize pixelFormat;
 @synthesize delegate;
 
+-(void)dealloc
+{
+    delegate=nil;
+    srcDescription=nil;
+    openGLContext=nil;
+    pixelFormat=nil;
+}
 
 #pragma mark KeystoneTextureSource protocol implementation
 - (SourceSyphon *) initWithDescription:(NSDictionary *)descr {
@@ -41,6 +48,7 @@
             
             // attenzione: questo block non viene mai rilasciato. perché diavolo?????
             // TODO: fix
+            if (self.delegate)
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 
                 // First we track our framerate...
@@ -54,7 +62,7 @@
                 }
                 
                 // ...then we check to see if our dimensions display or window shape needs to be updated
-                SyphonImage *frame = [client newFrameImageForContext: [self.openGLContext CGLContextObj]];
+             /*   SyphonImage *frame = [client newFrameImageForContext: self.delegate.openGLContext.CGLContextObj];
                 
                 NSSize imageSize = frame.textureSize;
                 
@@ -72,10 +80,11 @@
 
              if (changed)
              {
-
-             /*[[glView window] setContentAspectRatio:imageSize];
-             [self resizeWindowForCurrentVideo];*/
-             }
+             }*/
+                
+                
+                // attenzione!!!!! si sta chiamando newFrameImageForContext 2 volte!!!!!!! 
+                // TODO: FIX!!
                 NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
                 if ((self.delegate) && ([self.delegate respondsToSelector: @selector(syphonSource:didReceiveNewFrameOnTime:)]))
                     [self.delegate syphonSource: self 

@@ -23,6 +23,9 @@
 		CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA1EC1491297C00A58899 /* CoreVideo.framework */; };
 		CD4BA1F114912F0000A58899 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA1F014912F0000A58899 /* QuartzCore.framework */; };
 		CD4BA1F4149131F000A58899 /* NSMutableStack.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA1F3149131F000A58899 /* NSMutableStack.m */; };
+		CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B335B1494C64800E93C34 /* MBGLView.m */; };
+		CD6B33631494CF8F00E93C34 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B33621494CF8E00E93C34 /* OpenGL.framework */; };
+		CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */; };
 		CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA583801475BEFB00993A14 /* Cocoa.framework */; };
 		CDA5838B1475BEFB00993A14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA583891475BEFB00993A14 /* InfoPlist.strings */; };
 		CDA5838D1475BEFB00993A14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA5838C1475BEFB00993A14 /* main.m */; };
@@ -67,6 +70,11 @@
 		CD4BA1F014912F0000A58899 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CD4BA1F2149131F000A58899 /* NSMutableStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSMutableStack.h; path = Source/NSMutableStack.h; sourceTree = "<group>"; };
 		CD4BA1F3149131F000A58899 /* NSMutableStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSMutableStack.m; path = Source/NSMutableStack.m; sourceTree = "<group>"; };
+		CD6B335A1494C64800E93C34 /* MBGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBGLView.h; path = Source/MBGLView.h; sourceTree = "<group>"; };
+		CD6B335B1494C64800E93C34 /* MBGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBGLView.m; path = Source/MBGLView.m; sourceTree = "<group>"; };
+		CD6B33621494CF8E00E93C34 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBScrubberObject.h; path = Source/MBScrubberObject.h; sourceTree = "<group>"; };
+		CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBScrubberObject.m; path = Source/MBScrubberObject.m; sourceTree = "<group>"; };
 		CDA5837C1475BEFB00993A14 /* megabuffer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = megabuffer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA583801475BEFB00993A14 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CDA583831475BEFB00993A14 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -87,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD6B33631494CF8F00E93C34 /* OpenGL.framework in Frameworks */,
 				CD4BA1F114912F0000A58899 /* QuartzCore.framework in Frameworks */,
 				CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */,
 				CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */,
@@ -147,6 +156,8 @@
 				CDA583931475BEFB00993A14 /* BDocument.m */,
 				CD4BA19014911A7100A58899 /* MBBufferObject.h */,
 				CD4BA19114911A7100A58899 /* MBBufferObject.m */,
+				CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */,
+				CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -154,6 +165,8 @@
 		CD4BA17D1491133800A58899 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CD6B335A1494C64800E93C34 /* MBGLView.h */,
+				CD6B335B1494C64800E93C34 /* MBGLView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -191,7 +204,6 @@
 		CDA5837F1475BEFB00993A14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD4BA1F014912F0000A58899 /* QuartzCore.framework */,
 				CD4BA16B1491000E00A58899 /* VVBasics.framework */,
 				CD4BA16C1491000E00A58899 /* VVMIDI.framework */,
 				CD4BA16D1491000E00A58899 /* VVOSC.framework */,
@@ -204,6 +216,8 @@
 		CDA583821475BEFB00993A14 /* Apple frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD6B33621494CF8E00E93C34 /* OpenGL.framework */,
+				CD4BA1F014912F0000A58899 /* QuartzCore.framework */,
 				CD4BA1EC1491297C00A58899 /* CoreVideo.framework */,
 				CDA583801475BEFB00993A14 /* Cocoa.framework */,
 				CDA583831475BEFB00993A14 /* AppKit.framework */,
@@ -306,6 +320,8 @@
 				CD4BA1951491206D00A58899 /* ServerDescriptionValueTransformer.m in Sources */,
 				CD4BA198149122ED00A58899 /* SourceSyphon.m in Sources */,
 				CD4BA1F4149131F000A58899 /* NSMutableStack.m in Sources */,
+				CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */,
+				CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

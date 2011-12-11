@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSMutableStack : NSMutableArray
+@interface NSMutableStack : NSObject
 
 @property NSUInteger maxObjects;
+
+- (NSUInteger) count;
+- (id)objectAtIndex:(NSUInteger)index;
 
 - (id)push:(id)object;
 
