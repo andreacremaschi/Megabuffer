@@ -159,6 +159,9 @@
 #pragma mark - Timer
 - (void)timerFire:(NSTimer*)theTimer
 {
+    @autoreleasepool {
+        
+    
     @synchronized(timer)
     {
         if ((!timer.isValid) || (self.buffer.frameStack.count ==0))
@@ -224,6 +227,10 @@
         // let the renderer resume drawing
         //    [theRenderer unlockTexture];
         
+        CVOpenGLTextureRelease(textureOut);
+        
+        CVOpenGLTextureCacheFlush(_textureCache, 0);
+
         // Restore OpenGL states
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
@@ -238,6 +245,7 @@
         CVPixelBufferRelease(pixelBuffer);
         
     }
+        }
 }
 
 

@@ -125,7 +125,9 @@ CVReturn MyDisplayLinkCallback (
 
 -(void)drawRect:(NSRect)dirtyRect
 {
-    if (!frameSource) return;
+    
+
+    
     CIImage *imageToDraw = [frameSource GLView: self wantsFrameWithOptions: nil];
     
     NSRect frame = self.frame;
@@ -155,9 +157,10 @@ CVReturn MyDisplayLinkCallback (
 		_needsRebuild = NO;
 	}
 
+    float aspectRatio = imageToDraw.extent.size.width / imageToDraw.extent.size.height;
+    CGRect scaledRect = CGRectMake(-frame.size.width*0.5, -frame.size.width / aspectRatio *0.5, frame.size.width,  frame.size.width / aspectRatio);
     
-    [_ciContext drawImage:imageToDraw atPoint: CGPointMake(-imageToDraw.extent.size.width * 0.5, -imageToDraw.extent.size.height * 0.5) 
-                 fromRect: [imageToDraw extent]];
+    [_ciContext drawImage:imageToDraw inRect:scaledRect fromRect:[imageToDraw extent]];
 
     
             glFlush();
