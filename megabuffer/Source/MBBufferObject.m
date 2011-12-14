@@ -100,10 +100,14 @@
     }
 }
 
-- (CIImage *)imageAtTime: (NSTimeInterval) time
+- (CIImage *)ciImageAtTime: (NSTimeInterval) time
 {
     if (frameStack.count>0)
-        return [frameStack objectAtIndex: 0];
+    {
+        CVPixelBufferRef oldBuffer = [[[frameStack objectAtIndex: 0] valueForKey: @"image"] pointerValue];
+
+        return [CIImage imageWithCVImageBuffer:oldBuffer];
+    }
     else return [CIImage emptyImage];
 }
 
@@ -260,10 +264,24 @@
 
         
         // è arrivato un nuovo frame? siamo in record mode? bisogna farne una copia e conservarla!         
-        CIImage *ciImage = [CIImage imageWithCVImageBuffer: pixelBuffer];
-        [frameStack push: ciImage];
+//        CIImage *ciImage = [CIImage imageWithCVImageBuffer: pixelBuffer];
+            NSDictionary *newDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSValue valueWithPointer: pixelBuffer], @"image",
+                                     [NSNumber numberWithDouble:time], @"time",
+                                     nil];
         
-		CVOpenGLBufferRelease(pixelBuffer);		
+        NSDictionary *oldDict = [frameStack push: newDict];
+        if (oldDict)
+        {
+            CVPixelBufferRef oldBuffer = [[oldDict valueForKey: @"image"] pointerValue];
+            CVOpenGLBufferRelease(oldBuffer);
+        }
+        
+      /*  theError = CVOpenGLBufferAttach(0, 
+                                        [openGLContext CGLContextObj], 
+                                        0, 0, 
+                                        [openGLContext currentVirtualScreen]);*/
+		//CVOpenGLBufferRelease(pixelBuffer);		
 	}
 	
     

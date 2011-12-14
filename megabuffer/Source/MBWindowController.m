@@ -59,8 +59,14 @@
 
     BDocument *bDoc=(BDocument *) self.document;
     
+    //TEMP
+    bDoc.scrubber._openGLContext = self.bufferOutputGLView.openGLContext;
+    bDoc.scrubber._pixelFormat = self.bufferOutputGLView.pixelFormat;
+    //TEMP
+    
     liveInputGLView.frameSource=self;
     bufferOutputGLView.frameSource=self;
+    
     
     
 }

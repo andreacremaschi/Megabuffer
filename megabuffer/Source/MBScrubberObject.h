@@ -23,7 +23,12 @@ typedef enum {
 
 @property (strong) id syphonOut;
 @property (unsafe_unretained) MBBufferObject * buffer;
-
+@property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) NSOpenGLContext *_openGLContext;
+@property (strong, nonatomic) NSOpenGLPixelFormat *_pixelFormat;
 
 - (CIImage *)currentFrame;
+- (void) stop;
+- (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error;
+
 @end

@@ -29,8 +29,9 @@
 
 -(void)dealloc
 {
-    buffer = nil;
     scrubber=nil;
+    [scrubber stop];
+    buffer = nil;
 }
 
 - (void)makeWindowControllers

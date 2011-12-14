@@ -29,5 +29,5 @@
 
 -(void)setServerDescription:(NSDictionary *)serverDescription;
 
-- (CIImage *)imageAtTime: (NSTimeInterval) time;
+- (CIImage *)ciImageAtTime: (NSTimeInterval) time;
 @end

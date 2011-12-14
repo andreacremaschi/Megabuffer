@@ -40,17 +40,11 @@
         srcDescription = description ;
         
         syClient= [[SyphonClient alloc] initWithServerDescription:description options:nil newFrameHandler:^(SyphonClient *client) {
+            
+            @autoreleasepool {
             // This gets called whenever the client receives a new frame.
-            
-            // The new-frame handler could be called from any thread, but because we update our UI we have
-            // to do this on the main thread.
-            
-            
-            // attenzione: questo block non viene mai rilasciato. perché diavolo?????
-            // TODO: fix
             if (self.delegate)
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-
+            {
                 // First we track our framerate...
                 fpsCount++;
                 float elapsed = [NSDate timeIntervalSinceReferenceDate] - fpsStart;
@@ -61,39 +55,14 @@
                     fpsCount = 0;
                 }
                 
-                // ...then we check to see if our dimensions display or window shape needs to be updated
-             /*   SyphonImage *frame = [client newFrameImageForContext: self.delegate.openGLContext.CGLContextObj];
-                
-                NSSize imageSize = frame.textureSize;
-                
-                 BOOL changed = NO;
-                 if (frameWidth != imageSize.width)
-                 {
-                     changed = YES;
-                     frameWidth = imageSize.width;
-                 }
-                 if (frameHeight != imageSize.height)
-                 {
-                     changed = YES;
-                     frameHeight = imageSize.height;
-                 }
-
-             if (changed)
-             {
-             }*/
-                
-                
-                // attenzione!!!!! si sta chiamando newFrameImageForContext 2 volte!!!!!!! 
-                // TODO: FIX!!
                 NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
                 if ((self.delegate) && ([self.delegate respondsToSelector: @selector(syphonSource:didReceiveNewFrameOnTime:)]))
                     [self.delegate syphonSource: self 
                        didReceiveNewFrameOnTime: now-textureSourceStart ];
-                
-                
-             // ...then mark our view as needing display, it will get the frame when it's ready to draw
-             //[glView setNeedsDisplay:YES];
-             }];
+
+             };
+            }
+            
         }];
         
     }
