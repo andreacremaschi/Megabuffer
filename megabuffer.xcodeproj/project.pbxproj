@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
-		CD4BA16E1491000E00A58899 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA16B1491000E00A58899 /* VVBasics.framework */; };
-		CD4BA16F1491000E00A58899 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA16C1491000E00A58899 /* VVMIDI.framework */; };
-		CD4BA1701491000E00A58899 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA16D1491000E00A58899 /* VVOSC.framework */; };
 		CD4BA1721491002400A58899 /* VVBasics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16B1491000E00A58899 /* VVBasics.framework */; };
 		CD4BA1731491002400A58899 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16C1491000E00A58899 /* VVMIDI.framework */; };
 		CD4BA1741491002400A58899 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16D1491000E00A58899 /* VVOSC.framework */; };
@@ -100,9 +97,6 @@
 				CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */,
 				CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */,
 				CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */,
-				CD4BA16E1491000E00A58899 /* VVBasics.framework in Frameworks */,
-				CD4BA16F1491000E00A58899 /* VVMIDI.framework in Frameworks */,
-				CD4BA1701491000E00A58899 /* VVOSC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

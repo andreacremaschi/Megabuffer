@@ -123,11 +123,101 @@ CVReturn MyDisplayLinkCallback (
     }
 }
 
+
+- (void)drawRect:(NSRect)dirtyRect 
+{	
+	id <KeystoneTextureSourceProtocol> textureSource = self.frameSource;
+	
+	CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
+	
+	CGLLockContext(cgl_ctx);
+	
+	[textureSource lockTexture];
+    
+	NSRect frame = self.frame;
+	
+	/*if (needsRebuild)
+	{*/		
+		
+		// Setup OpenGL states
+		glViewport(0, 0, frame.size.width, frame.size.height);
+		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0.0, frame.size.width, 0.0, frame.size.height, -1, 1);
+		
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		
+		glTranslated(frame.size.width * 0.5, frame.size.height * 0.5, 0.0);
+        
+		[[self openGLContext] update];
+		
+	/*	needsRebuild = NO;
+	}*/
+	
+	// Draw our renderer's texture
+    
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	if (textureSource.textureName != 0)
+	{
+		glEnable(GL_TEXTURE_RECTANGLE_EXT);
+		
+		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, textureSource.textureName);
+		
+		NSSize textureSize = textureSource.textureSize;
+		
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		
+		NSSize scaled;
+		float wr = textureSize.width / frame.size.width;
+		float hr = textureSize.height / frame.size.height;
+		float ratio;
+		ratio = (hr < wr ? wr : hr);
+		scaled = NSMakeSize((textureSize.width / ratio), (textureSize.height / ratio));
+		
+		GLfloat tex_coords[] = 
+		{
+			0.0,	0.0,
+			textureSize.width,	0.0,
+			textureSize.width,	textureSize.height,
+			0.0,	textureSize.height
+		};
+		
+		float halfw = scaled.width * 0.5;
+		float halfh = scaled.height * 0.5;
+		
+		GLfloat verts[] = 
+		{
+			-halfw, -halfh,
+			halfw, -halfh,
+			halfw, halfh,
+			-halfw, halfh
+		};
+        
+		glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+		glTexCoordPointer(2, GL_FLOAT, 0, tex_coords );
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, verts );
+		glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
+		glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+		glDisableClientState(GL_VERTEX_ARRAY);
+        glFlush();
+	}
+    
+	[[self openGLContext] flushBuffer];
+    
+	[textureSource unlockTexture];
+    
+	CGLUnlockContext(cgl_ctx);
+}
+
+/*
 -(void)drawRect:(NSRect)dirtyRect
 {
-    
 
-    
     CIImage *imageToDraw = [frameSource GLView: self wantsFrameWithOptions: nil];
     
     NSRect frame = self.frame;
@@ -167,7 +257,7 @@ CVReturn MyDisplayLinkCallback (
     
     //[[self openGLContext] flushBuffer];
     CGLUnlockContext(cgl_ctx);
-}
+}*/
 
 
 - (CVReturn)displayFrame: (const CVTimeStamp *)timeStamp

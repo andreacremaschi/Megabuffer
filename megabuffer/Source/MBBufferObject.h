@@ -12,7 +12,7 @@
 
 
 @class SourceSyphon,NSMutableStack;
-@interface MBBufferObject : NSObject <TextureSourceDelegate>
+@interface MBBufferObject : NSObject <TextureSourceDelegate, KeystoneTextureSourceProtocol>
 
 @property (strong) SourceSyphon* syphonIn;
 @property (strong) NSString *syInServerName;
@@ -24,6 +24,9 @@
 @property bool recording;
 
 @property (strong, nonatomic) NSMutableStack * frameStack;
+
+@property (strong, nonatomic) NSOpenGLContext *openGLContext;
+@property (strong, nonatomic) NSOpenGLPixelFormat *pixelFormat;
 
 -(id)initWithOpenGLContext: (NSOpenGLContext *)context;
 

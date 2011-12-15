@@ -18,9 +18,11 @@
 {
     CVOpenGLBufferPoolRef _bufferPool;    
     NSSize _frameSize;
+    SyphonImage *_image;
+    CVOpenGLTextureRef _texture;
+    CVOpenGLTextureCacheRef _textureCache;
 }
-@property (strong, nonatomic) NSOpenGLContext *openGLContext;
-@property (strong, nonatomic) NSOpenGLPixelFormat *pixelFormat;
+
 
 - (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error;
 
@@ -50,6 +52,7 @@
         markers = [NSMutableArray array];
         bufferSize = 250; //10 secondi a 25 fps
         _frameSize = NSMakeSize(0,0);
+        _texture=nil;
         recording = true;
         frameStack = [[NSMutableStack alloc] init];
         NSError *error;
@@ -192,6 +195,7 @@
     if (!self.recording) return; // non in record mode: ignora il nuovo frame
     SyphonClient *syClient = sourceSyphon.syClient;
     
+    [self lockTexture];
     SyphonImage *image = [syClient newFrameImageForContext: openGLContext.CGLContextObj];
 	CGLContextObj cgl_ctx = openGLContext.CGLContextObj;
     
@@ -209,7 +213,7 @@
 	}
 	
 	if (changed)
-	{			
+	{		
 		glViewport(0, 0, imageSize.width, imageSize.height);
 		
 		glMatrixMode(GL_MODELVIEW);    // select the modelview matrix
@@ -226,6 +230,7 @@
     CVReturn theError = CVOpenGLBufferPoolCreateOpenGLBuffer (kCFAllocatorDefault, _bufferPool, &pixelBuffer);
     if(theError) {
         NSLog(@"CVOpenGLBufferPoolCreateOpenGLBuffer() failed with error %i", theError);
+        [self unlockTexture];
         return;
     }	
     
@@ -235,6 +240,7 @@
                                     [openGLContext currentVirtualScreen]);
     if (theError)	{
         NSLog(@"CVOpenGLBufferAttach() failed with error %i", theError);
+        [self unlockTexture];
         return;
     }
     
@@ -261,7 +267,6 @@
 		glDisable(target);
 		
         
-
         
         // è arrivato un nuovo frame? siamo in record mode? bisogna farne una copia e conservarla!         
 //        CIImage *ciImage = [CIImage imageWithCVImageBuffer: pixelBuffer];
@@ -277,6 +282,40 @@
             CVOpenGLBufferRelease(oldBuffer);
         }
         
+
+        
+        // Create the duplicate texture
+        CVOpenGLTextureRef textureOut;
+        CVReturn theError ;
+        
+        if (!_textureCache)
+        {
+            theError= CVOpenGLTextureCacheCreate(NULL, 0, 
+                                                 cgl_ctx, [pixelFormat CGLPixelFormatObj], 
+                                                 0, &_textureCache);
+            if (theError != kCVReturnSuccess)
+            {
+                //TODO: error handling
+            }
+            
+        }
+        theError= CVOpenGLTextureCacheCreateTextureFromImage ( NULL, 
+                                                              _textureCache, 
+                                                              pixelBuffer, 
+                                                              NULL, 
+                                                              &textureOut );
+        if (theError != kCVReturnSuccess)
+        {
+            //TODO: error handling
+        }
+
+        
+        if (_texture)
+            CVOpenGLTextureRelease(_texture);
+        _texture = textureOut;
+        
+        CVOpenGLTextureCacheFlush(_textureCache, 0);
+        
       /*  theError = CVOpenGLBufferAttach(0, 
                                         [openGLContext CGLContextObj], 
                                         0, 0, 
@@ -284,9 +323,41 @@
 		//CVOpenGLBufferRelease(pixelBuffer);		
 	}
 	
-    
+    [self unlockTexture];
+
 
     return;
 }
+
+
+
+#pragma mark - Texture source protocol
+
+- (GLuint) textureName
+{
+    return CVOpenGLTextureGetName(_texture);     
+}
+
+- (NSSize) textureSize
+{
+    GLfloat lowerLeft[2];
+    GLfloat lowerRight[2];
+    GLfloat upperRight[2];
+    GLfloat upperLeft[2];
+    CVOpenGLTextureGetCleanTexCoords(_texture, lowerLeft, lowerRight, upperRight, upperLeft);
+    
+    return NSMakeSize(abs(lowerLeft[0] - upperRight[0]), abs(lowerLeft[1] - upperRight[1]));
+};
+
+- (void)lockTexture
+{
+    CGLLockContext(openGLContext.CGLContextObj);
+}
+- (void)unlockTexture
+{
+    CGLUnlockContext(openGLContext.CGLContextObj);    
+}
+
+
 
 @end

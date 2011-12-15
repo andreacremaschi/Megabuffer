@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KeystoneTextureSourceProtocol.h"
 
 typedef enum {
     MBScrubMode_off,
@@ -16,7 +17,7 @@ typedef enum {
 
 @class MBBufferObject;
 
-@interface MBScrubberObject : NSObject
+@interface MBScrubberObject : NSObject <KeystoneTextureSourceProtocol>
 @property double rate;
 @property double delay;
 @property scrubModes scrubMode;
@@ -26,6 +27,7 @@ typedef enum {
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) NSOpenGLContext *_openGLContext;
 @property (strong, nonatomic) NSOpenGLPixelFormat *_pixelFormat;
+@property (strong, nonatomic) NSString * serverName;
 
 - (CIImage *)currentFrame;
 - (void) stop;

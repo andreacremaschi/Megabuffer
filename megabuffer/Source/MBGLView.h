@@ -7,11 +7,12 @@
 //
 
 #import <AppKit/AppKit.h>
+#import "KeystoneTextureSourceProtocol.h"
 
 @protocol MBGLViewFrameSource;
 
 @interface MBGLView : NSOpenGLView
-@property (strong, nonatomic) NSObject <MBGLViewFrameSource> *frameSource;
+@property (strong, nonatomic) NSObject <KeystoneTextureSourceProtocol> *frameSource;
 @end
 
 @protocol MBGLViewFrameSource
