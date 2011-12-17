@@ -96,4 +96,9 @@
     return object;
 }
 
+- (id) lastObject
+{
+    return _mutableArray.lastObject;
+}
+
 @end

@@ -60,16 +60,33 @@
     BDocument *bDoc=(BDocument *) self.document;
     
     //TEMP
-    [bDoc.buffer initWithOpenGLContext: self.liveInputGLView.openGLContext];
-    bDoc.scrubber._openGLContext = self.bufferOutputGLView.openGLContext;
-    bDoc.scrubber._pixelFormat = self.bufferOutputGLView.pixelFormat;
+    [bDoc.buffer initOpenGLContextWithSharedContext: self.liveInputGLView.openGLContext error:nil];
+    bDoc.scrubber.openGLContext = self.bufferOutputGLView.openGLContext;
+    bDoc.scrubber.pixelFormat = self.bufferOutputGLView.pixelFormat;
     //TEMP
     
     liveInputGLView.frameSource=bDoc.buffer;
     bufferOutputGLView.frameSource=bDoc.scrubber;
     
-    
-    
+    // ferma il display link quando la finestra perde il focus
+    [[NSNotificationCenter defaultCenter] addObserver: liveInputGLView 
+                                             selector: @selector(stopDisplayLink)
+                                                 name: NSWindowDidResignMainNotification 
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: bufferOutputGLView 
+                                             selector: @selector(stopDisplayLink)
+                                                 name: NSWindowDidResignMainNotification 
+                                               object: nil];
+
+    // avvia il display link quando la finestra prende il focus 
+    [[NSNotificationCenter defaultCenter] addObserver: liveInputGLView 
+                                             selector: @selector(startDisplayLink)
+                                                 name: NSWindowDidBecomeMainNotification 
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: bufferOutputGLView 
+                                             selector: @selector(startDisplayLink)
+                                                 name: NSWindowDidBecomeMainNotification 
+                                               object: nil];
 }
 
 #pragma mark - Accessors
@@ -81,6 +98,27 @@
         // it will, since our only video input is Syphon server
             [[(BDocument *) self.document buffer] setServerDescription: serverDescription];
     }
+}
+
++ (NSSet *)keyPathsForValuesAffectingRateSpeedSelection
+{
+    return [NSSet setWithObject: @"document.scrubber.rate"];
+}
+
+- (int) rateSpeedSelection
+{
+     BDocument *bDoc=(BDocument *) self.document;
+    int rate = bDoc.scrubber.rate;
+    if ((rate ==0) ||(rate ==-2)||(rate ==-1)||(rate ==2)||(rate ==1))
+        return rate;
+    else
+        return -3;
+}
+
+- (void) setRateSpeedSelection: (int)newRate
+{
+    BDocument *bDoc=(BDocument *) self.document;
+    bDoc.scrubber.rate = newRate ;
 }
 
 #pragma mark - MBGLView protocol implementation
@@ -97,5 +135,9 @@
     
     
 }
+
+
+#pragma mark - Window overrides
+
 
 @end

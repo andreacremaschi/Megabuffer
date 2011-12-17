@@ -6,13 +6,13 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "MBCanvas.h"
 #import "SourceSyphon.h"
 
 
 
 @class SourceSyphon,NSMutableStack;
-@interface MBBufferObject : NSObject <TextureSourceDelegate, KeystoneTextureSourceProtocol>
+@interface MBBufferObject : MBCanvas <TextureSourceDelegate>
 
 @property (strong) SourceSyphon* syphonIn;
 @property (strong) NSString *syInServerName;
@@ -25,12 +25,12 @@
 
 @property (strong, nonatomic) NSMutableStack * frameStack;
 
-@property (strong, nonatomic) NSOpenGLContext *openGLContext;
-@property (strong, nonatomic) NSOpenGLPixelFormat *pixelFormat;
 
 -(id)initWithOpenGLContext: (NSOpenGLContext *)context;
 
 -(void)setServerDescription:(NSDictionary *)serverDescription;
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time;
+- (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay;
+
 @end

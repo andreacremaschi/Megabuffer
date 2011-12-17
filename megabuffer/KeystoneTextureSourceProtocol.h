@@ -16,4 +16,6 @@
 - (void)lockTexture;
 - (void)unlockTexture;
 
+- (NSTimeInterval)currentFrameTimeStamp;
+
 @end

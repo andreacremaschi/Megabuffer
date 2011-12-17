@@ -21,10 +21,12 @@
     SyphonImage *_image;
     CVOpenGLTextureRef _texture;
     CVOpenGLTextureCacheRef _textureCache;
+    NSTimeInterval bufferStart;
+    NSTimeInterval lastReceivedFrameTimestamp;
+    NSTimeInterval lastPushFrameTimestamp;
+    NSTimeInterval lastPushFrameIndexTimestamp;
+    bool waitForFirstFrame;
 }
-
-
-- (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error;
 
 @end
 
@@ -40,8 +42,7 @@
 @synthesize syInServerName;
 @synthesize syInApplicationName;
 @synthesize bufferSize;
-@synthesize openGLContext;
-@synthesize pixelFormat;
+
 @synthesize frameStack;
 
 - (id)init
@@ -55,6 +56,10 @@
         _texture=nil;
         recording = true;
         frameStack = [[NSMutableStack alloc] init];
+        bufferStart = [NSDate timeIntervalSinceReferenceDate];
+        lastPushFrameIndexTimestamp = 0;
+        waitForFirstFrame = true;
+        
         NSError *error;
         if (! [self initOpenGLContextWithSharedContext: nil error: &error]) 
         {
@@ -67,22 +72,6 @@
 }
 
 
--(id)initWithOpenGLContext: (NSOpenGLContext *)context
-{
-    self = [self init];
-    if (self)
-    {   NSError *error;
-        if (! [self initOpenGLContextWithSharedContext: context error: &error]) 
-        {
-            NSLog(@"Error: couldn't init Opengl shared context.\n%@", error);
-            self = nil;
-            return nil;
-        }
-    }
-    return self;
-
-}
-
 -(void)dealloc 
 {
     syphonIn.delegate     = nil;
@@ -90,6 +79,13 @@
 }
 
 #pragma mark - Accessors
+
+-(void)setRecording:(_Bool)newVal    
+{
+    if (newVal!=recording) 
+        waitForFirstFrame= (newVal!=recording);
+    recording=newVal;
+}
 
 -(void)setServerDescription:(NSDictionary *)serverDescription   
 {
@@ -115,44 +111,6 @@
 }
 
 #pragma mark - Graphical stuff init
-- (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error {
-    
-	NSOpenGLPixelFormatAttribute	attributes[] = {
-		NSOpenGLPFAPixelBuffer,
-		//NSOpenGLPFANoRecovery,
-		//kCGLPFADoubleBuffer,
-		//NSOpenGLPFAAccelerated,
-		NSOpenGLPFADepthSize, 32,
-		(NSOpenGLPixelFormatAttribute) 0
-	};
-	NSOpenGLPixelFormat*	newPixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] ;
-	
-	NSOpenGLContext *newOpenGLContext = [[NSOpenGLContext alloc] initWithFormat:newPixelFormat 
-                                                                    shareContext:sharedContext] ;
-	if(newOpenGLContext == nil) {
-		return false;
-	}
-	
-	openGLContext = newOpenGLContext ;	
-	pixelFormat = newPixelFormat;
-	
-	/*
-	 // setup OpenGL multithreading
-     CGLError err = 0;
-     CGLContextObj ctx = [newOpenGLContext CGLContextObj];
-     
-     // Enable the multithreading
-     err =  CGLEnable( ctx, kCGLCEMPEngine);
-     
-     if (err != kCGLNoError )
-     {
-     // Multithreaded execution may not be available
-     // Insert your code to take appropriate action
-     }
-     */
-	return true;
-	
-}
 
 
 - (bool)initCVOpenGLBufferPoolWithSize: (NSSize) size
@@ -188,16 +146,35 @@
 
 #pragma mark - TextureSourceDelegate implementation
 
--(void)syphonSource:(SourceSyphon *)sourceSyphon didReceiveNewFrameOnTime:(NSTimeInterval)time
+-(void)syphonSource:(SourceSyphon *)sourceSyphon 
+didReceiveNewFrameOnTime:(NSTimeInterval)time
 {
-    
-    if (!openGLContext) return;
+    lastReceivedFrameTimestamp = [NSDate timeIntervalSinceReferenceDate] - bufferStart;
+}
+
+-(void) _timerTick
+{
+    if (!self.openGLContext) return;
     if (!self.recording) return; // non in record mode: ignora il nuovo frame
-    SyphonClient *syClient = sourceSyphon.syClient;
+    SyphonClient *syClient = syphonIn.syClient;
+    
+    if (lastPushFrameTimestamp > lastReceivedFrameTimestamp)
+    {
+        //  non è ancora arrivato un nuovo frame dall'ultimo push fatto.
+        //  TODO: replica l'ultimo frame aggiunto
+        //NSLog(@"ignoro");
+        return;
+    }
+    
+    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate] - bufferStart;
+    NSTimeInterval deltaTime = waitForFirstFrame ? 1.0 / self.fps : timestamp - lastPushFrameTimestamp; 
+    NSTimeInterval indexTimestamp = lastPushFrameIndexTimestamp + deltaTime;
+    
+    waitForFirstFrame = false;
     
     [self lockTexture];
-    SyphonImage *image = [syClient newFrameImageForContext: openGLContext.CGLContextObj];
-	CGLContextObj cgl_ctx = openGLContext.CGLContextObj;
+    SyphonImage *image = [syClient newFrameImageForContext: self.openGLContext.CGLContextObj];
+	CGLContextObj cgl_ctx = self.openGLContext.CGLContextObj;
     
 	GLuint texture = [image textureName];
 	NSSize imageSize = [image textureSize];
@@ -235,9 +212,9 @@
     }	
     
     theError = CVOpenGLBufferAttach(pixelBuffer, 
-                                    [openGLContext CGLContextObj], 
+                                    [self.openGLContext CGLContextObj], 
                                     0, 0, 
-                                    [openGLContext currentVirtualScreen]);
+                                    [self.openGLContext currentVirtualScreen]);
     if (theError)	{
         NSLog(@"CVOpenGLBufferAttach() failed with error %i", theError);
         [self unlockTexture];
@@ -253,7 +230,7 @@
         
         //glClearColor(1.0,0.0,0.0,1.0); 
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        
 		glBegin(GL_QUADS);
 		{
 			glTexCoord2f( imageSize.width, 0.0f );				glVertex2f(  1.0f, -1.0f );
@@ -269,11 +246,13 @@
         
         
         // è arrivato un nuovo frame? siamo in record mode? bisogna farne una copia e conservarla!         
-//        CIImage *ciImage = [CIImage imageWithCVImageBuffer: pixelBuffer];
-            NSDictionary *newDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSValue valueWithPointer: pixelBuffer], @"image",
-                                     [NSNumber numberWithDouble:time], @"time",
-                                     nil];
+        //        CIImage *ciImage = [CIImage imageWithCVImageBuffer: pixelBuffer];
+        NSDictionary *newDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSValue valueWithPointer: pixelBuffer], @"image",
+                                 [NSNumber numberWithDouble: indexTimestamp], @"timeIndex",
+                                 [NSNumber numberWithDouble: timestamp], @"timeStamp",
+                                 nil];
+       // NSLog (@"%@", newDict);
         
         NSDictionary *oldDict = [frameStack push: newDict];
         if (oldDict)
@@ -282,82 +261,57 @@
             CVOpenGLBufferRelease(oldBuffer);
         }
         
-
-        
+        lastPushFrameIndexTimestamp = indexTimestamp;
+        lastPushFrameTimestamp = timestamp;
         // Create the duplicate texture
-        CVOpenGLTextureRef textureOut;
-        CVReturn theError ;
-        
-        if (!_textureCache)
-        {
-            theError= CVOpenGLTextureCacheCreate(NULL, 0, 
-                                                 cgl_ctx, [pixelFormat CGLPixelFormatObj], 
-                                                 0, &_textureCache);
-            if (theError != kCVReturnSuccess)
-            {
-                //TODO: error handling
-            }
-            
-        }
-        theError= CVOpenGLTextureCacheCreateTextureFromImage ( NULL, 
-                                                              _textureCache, 
-                                                              pixelBuffer, 
-                                                              NULL, 
-                                                              &textureOut );
-        if (theError != kCVReturnSuccess)
-        {
-            //TODO: error handling
-        }
+      
+        CVOpenGLTextureRef textureOut= [self createNewTextureFromBuffer: pixelBuffer];
+        [self setCurrentTexture: textureOut];
+        [self setCurrentFrameTimeStamp: indexTimestamp];
+        CVOpenGLTextureRelease(textureOut);
 
         
-        if (_texture)
-            CVOpenGLTextureRelease(_texture);
-        _texture = textureOut;
-        
-        CVOpenGLTextureCacheFlush(_textureCache, 0);
-        
-      /*  theError = CVOpenGLBufferAttach(0, 
-                                        [openGLContext CGLContextObj], 
-                                        0, 0, 
-                                        [openGLContext currentVirtualScreen]);*/
-		//CVOpenGLBufferRelease(pixelBuffer);		
 	}
 	
     [self unlockTexture];
-
-
-    return;
-}
-
-
-
-#pragma mark - Texture source protocol
-
-- (GLuint) textureName
-{
-    return CVOpenGLTextureGetName(_texture);     
-}
-
-- (NSSize) textureSize
-{
-    GLfloat lowerLeft[2];
-    GLfloat lowerRight[2];
-    GLfloat upperRight[2];
-    GLfloat upperLeft[2];
-    CVOpenGLTextureGetCleanTexCoords(_texture, lowerLeft, lowerRight, upperRight, upperLeft);
     
-    return NSMakeSize(abs(lowerLeft[0] - upperRight[0]), abs(lowerLeft[1] - upperRight[1]));
-};
+    
+    return;
 
-- (void)lockTexture
-{
-    CGLLockContext(openGLContext.CGLContextObj);
-}
-- (void)unlockTexture
-{
-    CGLUnlockContext(openGLContext.CGLContextObj);    
 }
 
+#pragma mark - Frame stack management
+
+- (NSTimeInterval) firstFrameInBufferTimeStamp
+{
+    if (frameStack.count==0) return -1;
+    return [[[frameStack objectAtIndex:0] valueForKey:@"timeIndex"] doubleValue];
+}
+
+- (NSTimeInterval) lastFrameInBufferTimeStamp
+{
+    if (frameStack.count==0) return -1;
+    return [[[frameStack lastObject] valueForKey:@"timeIndex"] doubleValue];
+}
+
+- (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay
+{
+    NSTimeInterval preferredTimeStamp = delay + [self firstFrameInBufferTimeStamp];    
+    int ceilPosition = ceil(delay * self.fps); 
+    int floorPosition = floor(delay * self.fps);
+
+    NSDictionary *imageDict1 = frameStack.count > ceilPosition ? [frameStack objectAtIndex: ceilPosition] : nil;
+    NSDictionary *imageDict2 = frameStack.count > floorPosition ? [frameStack objectAtIndex: floorPosition] : nil;
+
+    NSTimeInterval time1 = [[imageDict1 valueForKey: @"timeIndex"] doubleValue];
+    NSTimeInterval time2 = [[imageDict2 valueForKey: @"timeIndex"] doubleValue];
+    
+    return fabs(time2-preferredTimeStamp) < fabs(time1 - preferredTimeStamp) ? imageDict1 : imageDict2;
+    
+//    if (stackPosition>=buffer.frameStack.count) scrubPosition=buffer.frameStack.count-1;
+    
+    
+}
 
 
 @end

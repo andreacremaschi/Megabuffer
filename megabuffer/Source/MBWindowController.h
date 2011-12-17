@@ -16,6 +16,7 @@
 @property (assign) IBOutlet NSArrayController *availableServersController;
 @property (unsafe_unretained) IBOutlet MBGLView *liveInputGLView;
 @property (unsafe_unretained) IBOutlet MBGLView *bufferOutputGLView;
+@property int rateSpeedSelection;
 
 
 @end

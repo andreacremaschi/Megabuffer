@@ -30,6 +30,7 @@
 		CDA583941475BEFB00993A14 /* BDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA583931475BEFB00993A14 /* BDocument.m */; };
 		CDA583971475BEFB00993A14 /* BDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA583951475BEFB00993A14 /* BDocument.xib */; };
 		CDA5839A1475BEFC00993A14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA583981475BEFC00993A14 /* MainMenu.xib */; };
+		CDC58D77149CBD8100555A3F /* MBCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = CDC58D76149CBD8100555A3F /* MBCanvas.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -85,6 +86,8 @@
 		CDA583931475BEFB00993A14 /* BDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDocument.m; sourceTree = "<group>"; };
 		CDA583961475BEFB00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BDocument.xib; sourceTree = "<group>"; };
 		CDA583991475BEFC00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CDC58D75149CBD8100555A3F /* MBCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBCanvas.h; path = Source/MBCanvas.h; sourceTree = "<group>"; };
+		CDC58D76149CBD8100555A3F /* MBCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBCanvas.m; path = Source/MBCanvas.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +155,8 @@
 				CD4BA19114911A7100A58899 /* MBBufferObject.m */,
 				CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */,
 				CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */,
+				CDC58D75149CBD8100555A3F /* MBCanvas.h */,
+				CDC58D76149CBD8100555A3F /* MBCanvas.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -316,6 +321,7 @@
 				CD4BA1F4149131F000A58899 /* NSMutableStack.m in Sources */,
 				CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */,
 				CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */,
+				CDC58D77149CBD8100555A3F /* MBCanvas.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

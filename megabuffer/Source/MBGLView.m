@@ -19,6 +19,7 @@
     CGDirectDisplayID mainViewDisplayID;
     CIContext *_ciContext;
     bool _needsRebuild;
+    NSTimeInterval lastFrameDrawnTimestamp;
 }
 - (CVReturn)displayFrame:(const CVTimeStamp *)timeStamp;
 
@@ -263,9 +264,21 @@ CVReturn MyDisplayLinkCallback (
 - (CVReturn)displayFrame: (const CVTimeStamp *)timeStamp
 {
     @autoreleasepool {
-        [self drawRect:NSZeroRect];
+        id <KeystoneTextureSourceProtocol> textureSource = self.frameSource;
+        NSTimeInterval curFrameTime = [textureSource currentFrameTimeStamp];
+        if (curFrameTime != lastFrameDrawnTimestamp)
+            [self drawRect:NSZeroRect];
     }
     return kCVReturnSuccess;
 }
 
+- (void) startDisplayLink
+{
+    CVDisplayLinkStart(_displayLink);
+}
+
+- (void) stopDisplayLink
+{
+    CVDisplayLinkStop(_displayLink);    
+}
 @end

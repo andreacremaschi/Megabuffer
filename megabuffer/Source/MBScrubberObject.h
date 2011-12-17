@@ -6,8 +6,7 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "KeystoneTextureSourceProtocol.h"
+#import "MBCanvas.h"
 
 typedef enum {
     MBScrubMode_off,
@@ -17,16 +16,14 @@ typedef enum {
 
 @class MBBufferObject;
 
-@interface MBScrubberObject : NSObject <KeystoneTextureSourceProtocol>
+@interface MBScrubberObject : MBCanvas
 @property double rate;
 @property double delay;
 @property scrubModes scrubMode;
 
 @property (strong) id syphonOut;
 @property (unsafe_unretained) MBBufferObject * buffer;
-@property (strong, nonatomic) NSTimer *timer;
-@property (strong, nonatomic) NSOpenGLContext *_openGLContext;
-@property (strong, nonatomic) NSOpenGLPixelFormat *_pixelFormat;
+
 @property (strong, nonatomic) NSString * serverName;
 
 - (CIImage *)currentFrame;

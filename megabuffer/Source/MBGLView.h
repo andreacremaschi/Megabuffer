@@ -13,6 +13,10 @@
 
 @interface MBGLView : NSOpenGLView
 @property (strong, nonatomic) NSObject <KeystoneTextureSourceProtocol> *frameSource;
+
+- (void) startDisplayLink;
+- (void) stopDisplayLink;
+
 @end
 
 @protocol MBGLViewFrameSource

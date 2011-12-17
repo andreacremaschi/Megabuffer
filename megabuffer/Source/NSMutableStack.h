@@ -16,5 +16,6 @@
 - (id)objectAtIndex:(NSUInteger)index;
 
 - (id)push:(id)object;
+- (id) lastObject;
 
 @end
