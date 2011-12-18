@@ -137,7 +137,22 @@
 }
 
 
-#pragma mark - Window overrides
+#pragma mark - IBActions
 
+- (IBAction)addMarkerToNextFrame:(id)sender
+{
+    BDocument *bDoc=(BDocument *) self.document;
+    [bDoc.buffer addMarkerToNextFrame];
+}
 
+- (IBAction)prevMarker:(id)sender
+{
+    BDocument *bDoc=(BDocument *) self.document;
+    [bDoc.scrubber gotoPreviousMarker];
+}
+- (IBAction)nextMarker:(id)sender
+{
+    BDocument *bDoc=(BDocument *) self.document;
+    [bDoc.scrubber gotoNextMarker];
+}
 @end

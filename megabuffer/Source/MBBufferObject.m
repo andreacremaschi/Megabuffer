@@ -26,6 +26,7 @@
     NSTimeInterval lastPushFrameTimestamp;
     NSTimeInterval lastPushFrameIndexTimestamp;
     bool waitForFirstFrame;
+    bool addMarkerToNextFrame;
 }
 
 @end
@@ -37,7 +38,7 @@
 
 @synthesize recording;
 
-@synthesize markers;
+@synthesize markersArray;
 
 @synthesize syInServerName;
 @synthesize syInApplicationName;
@@ -50,7 +51,7 @@
     self = [super init];
     if (self)
     {
-        markers = [NSMutableArray array];
+        markersArray = [NSMutableArray array];
         bufferSize = 250; //10 secondi a 25 fps
         _frameSize = NSMakeSize(0,0);
         _texture=nil;
@@ -59,6 +60,7 @@
         bufferStart = [NSDate timeIntervalSinceReferenceDate];
         lastPushFrameIndexTimestamp = 0;
         waitForFirstFrame = true;
+        addMarkerToNextFrame = false;
         
         NSError *error;
         if (! [self initOpenGLContextWithSharedContext: nil error: &error]) 
@@ -76,6 +78,7 @@
 {
     syphonIn.delegate     = nil;
     syphonIn     = nil;
+    markersArray=nil;
 }
 
 #pragma mark - Accessors
@@ -97,6 +100,23 @@
         syphonIn = [[SourceSyphon alloc] initWithDescription: serverDescription];
         syphonIn.delegate = self;
     }
+}
+
+-(NSTimeInterval)maxDelay
+{
+    return (NSTimeInterval)bufferSize / self.fps;
+}
+
+#pragma mark maxDelay
+
++ (NSSet *)keyPathsForValuesAffectingMaxDelay
+{
+    return [NSSet setWithObjects: @"bufferSize", @"fps", nil];
+}
+
+-(void)setMaxDelay:(NSTimeInterval)maxDelay
+{
+    [self setBufferSize: maxDelay * self.fps];
 }
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time
@@ -251,9 +271,16 @@ didReceiveNewFrameOnTime:(NSTimeInterval)time
                                  [NSValue valueWithPointer: pixelBuffer], @"image",
                                  [NSNumber numberWithDouble: indexTimestamp], @"timeIndex",
                                  [NSNumber numberWithDouble: timestamp], @"timeStamp",
+                                 // todo: aggiungere un riferimento a un marker, da utilizzare quando il frame viene droppato
                                  nil];
        // NSLog (@"%@", newDict);
         
+        if (addMarkerToNextFrame)
+        {
+           // NSDictionary *marker = [NSDictionary dictionaryWithObject: newDict forKey: [NSNumber numberWithDouble: indexTimestamp]];
+            [markersArray addObject: [NSNumber numberWithDouble: indexTimestamp]];
+            addMarkerToNextFrame = false;
+        }
         NSDictionary *oldDict = [frameStack push: newDict];
         if (oldDict)
         {
@@ -313,5 +340,35 @@ didReceiveNewFrameOnTime:(NSTimeInterval)time
     
 }
 
+#pragma mark - Markers
+-(void) addMarkerToNextFrame
+{
+    addMarkerToNextFrame = YES;
+}
 
+- (NSTimeInterval) markerPrecedingPosition: (NSTimeInterval) indexTimeStamp
+{
+    NSTimeInterval curMarker = 0;
+    NSTimeInterval prevMarker = 0;
+    int i = 0;
+    while ((indexTimeStamp> curMarker) && (markersArray.count> i)) {
+        prevMarker=curMarker;
+        curMarker = [[markersArray objectAtIndex: i]doubleValue];
+        i++;
+    }
+    return curMarker<indexTimeStamp? curMarker : prevMarker;
+}
+
+- (NSTimeInterval) markerFollowingPosition: (NSTimeInterval) indexTimeStamp
+{
+    NSTimeInterval curMarker = [[markersArray objectAtIndex:markersArray.count-1] doubleValue];
+    NSTimeInterval prevMarker = curMarker;
+    int i = (int)markersArray.count-1;
+    while ((indexTimeStamp< curMarker) && (i>=0)) {
+        prevMarker=curMarker;
+        curMarker = [[markersArray objectAtIndex: i] doubleValue];
+        i--;
+    }
+    return curMarker>indexTimeStamp? curMarker : prevMarker;    
+}
 @end

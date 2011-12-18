@@ -11,7 +11,7 @@
 
 #import "KeystoneTextureSourceProtocol.h"
 
-#define MB_FPS 15.0
+#define MB_FPS 15.0 
 
 @interface MBCanvas : NSObject  <KeystoneTextureSourceProtocol>
 @property (strong, nonatomic) NSOpenGLContext *openGLContext;

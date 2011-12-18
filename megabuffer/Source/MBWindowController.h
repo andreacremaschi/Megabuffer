@@ -19,4 +19,8 @@
 @property int rateSpeedSelection;
 
 
+- (IBAction)addMarkerToNextFrame:(id)sender;
+- (IBAction)prevMarker:(id)sender;
+- (IBAction)nextMarker:(id)sender;
+
 @end

@@ -18,12 +18,15 @@
 @property (strong) NSString *syInServerName;
 @property (strong) NSString *syInApplicationName;
 
+// bufferSize e maxDelay sono interdipendenti:
+// maxDelay = bufferSize / fps
 @property uint bufferSize;
+@property NSTimeInterval maxDelay;
 
-@property (strong) NSMutableArray * markers;
 @property bool recording;
 
 @property (strong, nonatomic) NSMutableStack * frameStack;
+@property (strong, nonatomic) NSMutableArray * markersArray;
 
 
 -(id)initWithOpenGLContext: (NSOpenGLContext *)context;
@@ -32,5 +35,13 @@
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time;
 - (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay;
+
+- (NSTimeInterval) firstFrameInBufferTimeStamp;
+- (NSTimeInterval) lastFrameInBufferTimeStamp;
+
+// markers
+-(void) addMarkerToNextFrame;
+- (NSTimeInterval) markerPrecedingPosition: (NSTimeInterval) indexTimeStamp;
+- (NSTimeInterval) markerFollowingPosition: (NSTimeInterval) indexTimeStamp;
 
 @end

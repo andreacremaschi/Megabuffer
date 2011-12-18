@@ -151,5 +151,20 @@
     return buffer? [buffer ciImageAtTime: 0] : nil;
 }
 
+#pragma mark - Markers
+
+- (void) gotoPreviousMarker
+{
+    NSTimeInterval prevMarker = [self.buffer markerPrecedingPosition: self.buffer.firstFrameInBufferTimeStamp- self.delay];
+    if (prevMarker)
+        [self setDelay: self.buffer.firstFrameInBufferTimeStamp - prevMarker];    
+}
+
+- (void) gotoNextMarker
+{
+    NSTimeInterval nextMarker = [buffer markerFollowingPosition: self.buffer.firstFrameInBufferTimeStamp  - self.delay];
+    if (nextMarker)
+        [self setDelay: self.buffer.firstFrameInBufferTimeStamp - nextMarker];
+}
 
 @end

@@ -30,4 +30,7 @@ typedef enum {
 - (void) stop;
 - (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error;
 
+- (void) gotoPreviousMarker;
+- (void) gotoNextMarker;
+
 @end
