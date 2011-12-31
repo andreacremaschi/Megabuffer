@@ -10,15 +10,19 @@
 #import "NSObject+BlockObservation.h"
 
 
+#pragma mark - Private interface
+
 @interface SourceSyphon ()
 
 @property (strong) AMBlockToken *waitingForServerObserver;
 @property (strong) AMBlockToken *validPropertyObserver;
 - (void) waitForServer;
 - (void) setupSyphonInWithDescription: (NSDictionary *)syphonDescription;
+- (NSDictionary *) checkIfServerIsAvailable;
 @end
 
-
+#pragma mark - Implementation
+#pragma mark Properties
 @implementation SourceSyphon
 @synthesize syClient;
 @synthesize srcDescription;
@@ -28,6 +32,51 @@
 @synthesize waitingForServerObserver;
 @synthesize validPropertyObserver;
 @synthesize isValid;
+ 
+#pragma mark Initialization
+
+- (id) init
+{
+    self = [super init];
+    if (self)
+    {
+        isValid = NO;
+    }
+    return self;
+}
+
+- (SourceSyphon *) initWithDescription:(NSDictionary *)description {
+    
+    self = [self init];
+    if (self)
+    {
+        
+        
+        NSString *serverName = [description objectForKey:SyphonServerDescriptionNameKey];
+        NSString *appName = [description objectForKey:SyphonServerDescriptionAppNameKey];
+        
+        if (!serverName || !appName)
+        {
+            self=nil;
+            return nil;
+        }
+        
+        srcDescription = [NSDictionary dictionaryWithObjectsAndKeys: 
+                          serverName, SyphonServerDescriptionNameKey,
+                          appName, SyphonServerDescriptionAppNameKey,
+                          nil];
+        
+        
+        
+        NSDictionary *concreteDescr = [self checkIfServerIsAvailable];
+        if (concreteDescr)
+            [self setupSyphonInWithDescription: concreteDescr];
+        else
+            [self waitForServer];
+    }
+    return self;
+}
+
 
 -(void)dealloc
 {
@@ -36,6 +85,7 @@
     delegate=nil;
 }
 
+#pragma mark Private methods
 
 - (NSDictionary *) checkIfServerIsAvailable
 {
@@ -142,52 +192,8 @@
 }
 
 
-#pragma mark KeystoneTextureSource protocol implementation
 
-- (id) init
-{
-    self = [super init];
-    if (self)
-    {
-        isValid = NO;
-    }
-    return self;
-}
-
-- (SourceSyphon *) initWithDescription:(NSDictionary *)description {
-  
-    self = [self init];
-    if (self)
-    {
-    
-        
-        NSString *serverName = [description objectForKey:SyphonServerDescriptionNameKey];
-        NSString *appName = [description objectForKey:SyphonServerDescriptionAppNameKey];
-
-        if (!serverName || !appName)
-        {
-            self=nil;
-            return nil;
-        }
-        
-        srcDescription = [NSDictionary dictionaryWithObjectsAndKeys: 
-                            serverName, SyphonServerDescriptionNameKey,
-                            appName, SyphonServerDescriptionAppNameKey,
-                          nil];
-
-        
-        
-        NSDictionary *concreteDescr = [self checkIfServerIsAvailable];
-        if (concreteDescr)
-            [self setupSyphonInWithDescription: concreteDescr];
-        else
-            [self waitForServer];
-    }
-    return self;
-}
-
-
-#pragma mark - TextureSource protocol imlpementation
+#pragma mark TextureSource protocol imlpementation
 - (GLuint) textureName 
 {   return _texture; }
 

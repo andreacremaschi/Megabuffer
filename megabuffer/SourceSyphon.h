@@ -42,7 +42,7 @@
 
 
 @protocol TextureSourceDelegate
--(NSOpenGLContext*) openGLContext;
+- (NSOpenGLContext*) openGLContext;
 - (void) syphonSource: (SourceSyphon*)textureSource didOpenSyphonClientAtTime: (NSDate *) date ;
 - (void) syphonSource: (SourceSyphon*)textureSource didReceiveNewFrameAtTime: (NSTimeInterval) time;
 - (void) syphonSource: (SourceSyphon*)textureSource didCloseSyphonClientAtTime: (NSTimeInterval) time ;
