@@ -238,7 +238,7 @@
 #pragma mark - TextureSourceDelegate implementation
 
 -(void)syphonSource:(SourceSyphon *)sourceSyphon 
-didReceiveNewFrameOnTime:(NSTimeInterval)time
+didReceiveNewFrameAtTime:(NSTimeInterval)time
 {
     lastReceivedFrameTimestamp = [NSDate timeIntervalSinceReferenceDate] - bufferStart;
 }
@@ -247,7 +247,17 @@ didReceiveNewFrameOnTime:(NSTimeInterval)time
 {
     if (!self.openGLContext) return;
     if (!self._recording) return; // non in record mode: ignora il nuovo frame
+    
     SyphonClient *syClient = syphonIn.syClient;
+    
+
+    // controlla se il client syphon è valido
+    if (!syClient || !syClient.isValid)
+    {
+        // non lo è: aggiunge un frame nero e passa oltre
+        return;
+    }
+    
     
     if (lastPushFrameTimestamp > lastReceivedFrameTimestamp)
     {
@@ -264,8 +274,18 @@ didReceiveNewFrameOnTime:(NSTimeInterval)time
     waitForFirstFrame = false;
     
     [self lockTexture];
+    
     SyphonImage *image = [syClient newFrameImageForContext: self.openGLContext.CGLContextObj];
 	CGLContextObj cgl_ctx = self.openGLContext.CGLContextObj;
+    
+    
+    if (!image)
+    {
+        // TODO: replica l'ultimo frame
+        [self unlockTexture];
+        return;
+    }
+    
     
 	GLuint texture = [image textureName];
 	NSSize imageSize = [image textureSize];

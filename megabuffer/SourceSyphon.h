@@ -31,6 +31,7 @@
 @property (strong, readonly, nonatomic) NSDictionary *srcDescription;
 @property (strong, readonly, nonatomic ) NSOpenGLContext* openGLContext;
 @property (strong, readonly, nonatomic) NSOpenGLPixelFormat* pixelFormat;
+@property (readonly) bool isValid;
 
 @property (unsafe_unretained, nonatomic) NSObject <TextureSourceDelegate>* delegate;
 
@@ -42,5 +43,8 @@
 
 @protocol TextureSourceDelegate
 -(NSOpenGLContext*) openGLContext;
-- (void) syphonSource: (SourceSyphon*)textureSource didReceiveNewFrameOnTime: (NSTimeInterval) time;
+- (void) syphonSource: (SourceSyphon*)textureSource didOpenSyphonClientAtTime: (NSDate *) date ;
+- (void) syphonSource: (SourceSyphon*)textureSource didReceiveNewFrameAtTime: (NSTimeInterval) time;
+- (void) syphonSource: (SourceSyphon*)textureSource didCloseSyphonClientAtTime: (NSTimeInterval) time ;
+
 @end
