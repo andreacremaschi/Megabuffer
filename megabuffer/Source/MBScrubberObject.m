@@ -17,14 +17,17 @@
     NSTimeInterval scrubStart;
     NSTimeInterval lastUpdateTimeStamp;
 }
+@property double _rate;
+@property double _delay;
+@property scrubModes _scrubMode;
 
 
 @end
 
 @implementation MBScrubberObject
-@synthesize delay;
-@synthesize scrubMode;
-@synthesize rate;
+@synthesize _rate;
+@synthesize _delay;
+@synthesize _scrubMode;
 @synthesize syphonOut;
 @synthesize buffer;
 
@@ -41,6 +44,7 @@
         // Kick off a new Thread
         [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
 
+        _scrubMode = [NSNumber numberWithInt:0];
     }
     return self;
 }
@@ -53,6 +57,58 @@
     syphonOut = nil;
 }
 
+#pragma mark - Accessors
+/*- (void) _setDelay: (double) newVal
+{
+    _delay = newVal;
+}
+*/
+
+
+#pragma mark - Attributes
+- (NSSet *)attributes
+{
+    return [[super attributes] setByAddingObjectsFromSet:[NSSet setWithObjects: @"delay", @"scrubMode", @"rate", @"gotoNextMarker", @"gotoPrevMarker",@"gotoMarkerWithLabel", nil]];
+}
+
+- (void) setDelay: (NSNumber *)newVal
+{   [self set_delay: [newVal doubleValue]]; }
+
++ (NSSet *)keyPathsForValuesAffectingRate
+{
+    return [NSSet setWithObject:@"_rate"];
+}
++ (NSSet *)keyPathsForValuesAffectingDelay
+{
+    return [NSSet setWithObject:@"_delay"];
+}
+- (NSNumber *) delay
+{   return [NSNumber numberWithDouble:_delay]; }
+
+- (void) setRate: (NSNumber *)newVal
+{   _rate = [newVal doubleValue]; }
+
+- (NSNumber *) rate
+{   return [NSNumber numberWithDouble:_rate]; }
+
+- (void) setGotoNextMaker: (id)options
+{   [self gotoNextMarker]; }
+
+- (void) setGotoPrevMaker: (id)options
+{   [self gotoPreviousMarker]; }
+
+- (void) setGotoMarkerWithLabel: (NSString *)label
+{  //TODO: implementare
+}
+
+- (void) setScrubMode: (id)options
+{  //TODO: implementare
+}
+
+- (id) scrubMode
+{  //TODO: implementare
+    return [NSNumber numberWithInt:0];
+}
 
 #pragma mark - Server creation
 
@@ -80,14 +136,14 @@
     NSTimeInterval deltaTime = lastUpdateTimeStamp - curTime;
     lastUpdateTimeStamp = curTime;
     
-    double framesStep = deltaTime * 1/self.fps;
+    double framesStep = deltaTime * 1/ [self.fps doubleValue];
 //    delay += framesStep * rate;
-    NSTimeInterval newDelay = delay + (buffer.recording? rate -1 : rate) * deltaTime;
+    NSTimeInterval newDelay = _delay + (buffer._recording? _rate -1 : _rate) * deltaTime;
     newDelay = newDelay < 0 ? 0 : newDelay;
-    newDelay = newDelay > buffer.bufferSize / buffer.fps ? buffer.bufferSize / buffer.fps : newDelay;
-    [self setDelay: newDelay ];
+    newDelay = newDelay > [buffer.bufferSize intValue] / [buffer.fps doubleValue] ? [buffer.bufferSize intValue] / [buffer.fps doubleValue] : newDelay;
+    [self set_delay: newDelay ];
     
-    NSDictionary *imageDict =[self.buffer imageDictForDelay: delay];
+    NSDictionary *imageDict =[self.buffer imageDictForDelay: _delay];
     if (!imageDict) return;
     
     
@@ -155,16 +211,31 @@
 
 - (void) gotoPreviousMarker
 {
-    NSTimeInterval prevMarker = [self.buffer markerPrecedingPosition: self.buffer.firstFrameInBufferTimeStamp- self.delay];
+    NSTimeInterval prevMarker = [self.buffer markerPrecedingPosition: self.buffer.firstFrameInBufferTimeStamp- self._delay];
     if (prevMarker)
-        [self setDelay: self.buffer.firstFrameInBufferTimeStamp - prevMarker];    
+        [self set_delay: self.buffer.firstFrameInBufferTimeStamp - prevMarker];    
 }
 
 - (void) gotoNextMarker
 {
-    NSTimeInterval nextMarker = [buffer markerFollowingPosition: self.buffer.firstFrameInBufferTimeStamp  - self.delay];
+    NSTimeInterval nextMarker = [buffer markerFollowingPosition: self.buffer.firstFrameInBufferTimeStamp  - self._delay];
     if (nextMarker)
-        [self setDelay: self.buffer.firstFrameInBufferTimeStamp - nextMarker];
+        [self set_delay: self.buffer.firstFrameInBufferTimeStamp - nextMarker];
 }
+
+#pragma mark -Serialization
+- (NSDictionary *)dictionaryRepresentation
+{
+    NSDictionary*dict= [NSDictionary dictionaryWithObjectsAndKeys:
+            self.name ? self.name : @"", @"name",
+            self.rate, @"rate",
+            self.delay, @"delay",
+            self.serverName, @"serverName",
+            self.scrubMode, @"scrubMode",
+            self.fps, @"fps",
+            nil];
+    return dict;
+}
+
 
 @end

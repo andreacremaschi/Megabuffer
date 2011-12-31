@@ -14,6 +14,7 @@
     CVOpenGLTextureCacheRef _textureCache;
 }
 - (void)timerFire:(NSTimer*)theTimer;
+@property int  _fps;
 
 @end
 
@@ -23,6 +24,8 @@
 @synthesize timer;
 @synthesize currentFrameTimeStamp;
 @synthesize fps;
+@synthesize _fps;
+@synthesize name;
 
 - (id)init
 {
@@ -35,7 +38,8 @@
         [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
         
         _texture=0;
-        fps=MB_FPS;
+        _fps=MB_FPS;
+        fps=[NSNumber numberWithInt: MB_FPS];
         
     }
     return self;
@@ -46,6 +50,12 @@
     [timer invalidate];
     CVOpenGLTextureRelease(_texture);
     timer=nil;
+}
+
+#pragma mark - Attributes
+- (NSSet *)attributes
+{
+    return [NSSet setWithObjects:@"fps", nil];
 }
 
 #pragma mark - Graphical stuff init
@@ -138,6 +148,10 @@
 
 
 }
+- (CVOpenGLBufferRef)currentTexture
+{
+    return _texture;
+}
 
 
 - (CVOpenGLTextureRef)createNewTextureFromBuffer: (CVOpenGLBufferRef) pixelBuffer
@@ -200,6 +214,15 @@
     CGLUnlockContext(_openGLContext.CGLContextObj);    
 }
 
+
+#pragma mark -Serialization
+- (NSDictionary *)dictionaryRepresentation
+{
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            self.name, @"name",
+            self.fps, @"fps",
+            nil];
+}
 
 
 

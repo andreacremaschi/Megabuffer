@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD0D492B14A50BA9004211D3 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492314A50AFE004211D3 /* VVBasics.framework */; };
+		CD0D492C14A50BA9004211D3 /* VVEssentials.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492414A50AFE004211D3 /* VVEssentials.framework */; };
+		CD0D492D14A50BA9004211D3 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492514A50AFE004211D3 /* VVMIDI.framework */; };
+		CD0D492E14A50BA9004211D3 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492614A50AFE004211D3 /* VVOSC.framework */; };
+		CD0D492F14A50BEF004211D3 /* VVBasics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492314A50AFE004211D3 /* VVBasics.framework */; };
+		CD0D493014A50BEF004211D3 /* VVEssentials.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492414A50AFE004211D3 /* VVEssentials.framework */; };
+		CD0D493114A50BEF004211D3 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492514A50AFE004211D3 /* VVMIDI.framework */; };
+		CD0D493214A50BEF004211D3 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492614A50AFE004211D3 /* VVOSC.framework */; };
 		CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
-		CD4BA1721491002400A58899 /* VVBasics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16B1491000E00A58899 /* VVBasics.framework */; };
-		CD4BA1731491002400A58899 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16C1491000E00A58899 /* VVMIDI.framework */; };
-		CD4BA1741491002400A58899 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA16D1491000E00A58899 /* VVOSC.framework */; };
 		CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
 		CD4BA177149105F000A58899 /* Syphon Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD4BA176149105F000A58899 /* Syphon Icon.icns */; };
 		CD4BA18F1491186F00A58899 /* MBWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4BA18E1491186F00A58899 /* MBWindowController.m */; };
@@ -23,6 +28,8 @@
 		CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B335B1494C64800E93C34 /* MBGLView.m */; };
 		CD6B33631494CF8F00E93C34 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B33621494CF8E00E93C34 /* OpenGL.framework */; };
 		CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */; };
+		CD96CE97149E5F6600C9C390 /* MBOSCPropertyBindingController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD96CE96149E5F6600C9C390 /* MBOSCPropertyBindingController.m */; };
+		CD96CEA3149E62F000C9C390 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = CD96CEA2149E62F000C9C390 /* NSObject+BlockObservation.m */; };
 		CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA583801475BEFB00993A14 /* Cocoa.framework */; };
 		CDA5838B1475BEFB00993A14 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA583891475BEFB00993A14 /* InfoPlist.strings */; };
 		CDA5838D1475BEFB00993A14 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA5838C1475BEFB00993A14 /* main.m */; };
@@ -40,20 +47,22 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CD4BA1721491002400A58899 /* VVBasics.framework in CopyFiles */,
-				CD4BA1731491002400A58899 /* VVMIDI.framework in CopyFiles */,
-				CD4BA1741491002400A58899 /* VVOSC.framework in CopyFiles */,
 				CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */,
+				CD0D492F14A50BEF004211D3 /* VVBasics.framework in CopyFiles */,
+				CD0D493014A50BEF004211D3 /* VVEssentials.framework in CopyFiles */,
+				CD0D493114A50BEF004211D3 /* VVMIDI.framework in CopyFiles */,
+				CD0D493214A50BEF004211D3 /* VVOSC.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CD0D492314A50AFE004211D3 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVBasics.framework; path = ../../Frameworks/VVopensource/VDMX/VVBasics.framework; sourceTree = "<group>"; };
+		CD0D492414A50AFE004211D3 /* VVEssentials.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVEssentials.framework; path = ../../Frameworks/VVopensource/VDMX/VVEssentials.framework; sourceTree = "<group>"; };
+		CD0D492514A50AFE004211D3 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVMIDI.framework; path = ../../Frameworks/VVopensource/VDMX/VVMIDI.framework; sourceTree = "<group>"; };
+		CD0D492614A50AFE004211D3 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVOSC.framework; path = ../../Frameworks/VVopensource/VDMX/VVOSC.framework; sourceTree = "<group>"; };
 		CD4BA15F1490FA2100A58899 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../../Frameworks/Syphon.framework; sourceTree = "<group>"; };
-		CD4BA16B1491000E00A58899 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVBasics.framework; path = ../../Frameworks/VVBasics.framework; sourceTree = "<group>"; };
-		CD4BA16C1491000E00A58899 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVMIDI.framework; path = ../../Frameworks/VVMIDI.framework; sourceTree = "<group>"; };
-		CD4BA16D1491000E00A58899 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVOSC.framework; path = ../../Frameworks/VVOSC.framework; sourceTree = "<group>"; };
 		CD4BA176149105F000A58899 /* Syphon Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Syphon Icon.icns"; path = "Resources/Syphon Icon.icns"; sourceTree = "<group>"; };
 		CD4BA18D1491186F00A58899 /* MBWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBWindowController.h; path = Source/MBWindowController.h; sourceTree = "<group>"; };
 		CD4BA18E1491186F00A58899 /* MBWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBWindowController.m; path = Source/MBWindowController.m; sourceTree = "<group>"; };
@@ -73,6 +82,10 @@
 		CD6B33621494CF8E00E93C34 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBScrubberObject.h; path = Source/MBScrubberObject.h; sourceTree = "<group>"; };
 		CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBScrubberObject.m; path = Source/MBScrubberObject.m; sourceTree = "<group>"; };
+		CD96CE95149E5F6600C9C390 /* MBOSCPropertyBindingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBOSCPropertyBindingController.h; path = Source/MBOSCPropertyBindingController.h; sourceTree = "<group>"; };
+		CD96CE96149E5F6600C9C390 /* MBOSCPropertyBindingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBOSCPropertyBindingController.m; path = Source/MBOSCPropertyBindingController.m; sourceTree = "<group>"; };
+		CD96CEA1149E62F000C9C390 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
+		CD96CEA2149E62F000C9C390 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
 		CDA5837C1475BEFB00993A14 /* megabuffer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = megabuffer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA583801475BEFB00993A14 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CDA583831475BEFB00993A14 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -99,6 +112,10 @@
 				CD4BA1F114912F0000A58899 /* QuartzCore.framework in Frameworks */,
 				CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */,
 				CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */,
+				CD0D492B14A50BA9004211D3 /* VVBasics.framework in Frameworks */,
+				CD0D492C14A50BA9004211D3 /* VVEssentials.framework in Frameworks */,
+				CD0D492D14A50BA9004211D3 /* VVMIDI.framework in Frameworks */,
+				CD0D492E14A50BA9004211D3 /* VVOSC.framework in Frameworks */,
 				CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,6 +163,7 @@
 		CD4BA17C1491132C00A58899 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CD96CEA0149E62F000C9C390 /* KVO+Block */,
 				CD4BA1991491234900A58899 /* KeystoneTextureSourceProtocol.h */,
 				CD4BA196149122EC00A58899 /* SourceSyphon.h */,
 				CD4BA197149122EC00A58899 /* SourceSyphon.m */,
@@ -157,6 +175,8 @@
 				CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */,
 				CDC58D75149CBD8100555A3F /* MBCanvas.h */,
 				CDC58D76149CBD8100555A3F /* MBCanvas.m */,
+				CD96CE95149E5F6600C9C390 /* MBOSCPropertyBindingController.h */,
+				CD96CE96149E5F6600C9C390 /* MBOSCPropertyBindingController.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -183,6 +203,28 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		CD96CE8F149E5EB200C9C390 /* Third party frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD0D492314A50AFE004211D3 /* VVBasics.framework */,
+				CD0D492414A50AFE004211D3 /* VVEssentials.framework */,
+				CD0D492514A50AFE004211D3 /* VVMIDI.framework */,
+				CD0D492614A50AFE004211D3 /* VVOSC.framework */,
+				CD4BA15F1490FA2100A58899 /* Syphon.framework */,
+			);
+			name = "Third party frameworks";
+			sourceTree = "<group>";
+		};
+		CD96CEA0149E62F000C9C390 /* KVO+Block */ = {
+			isa = PBXGroup;
+			children = (
+				CD96CEA1149E62F000C9C390 /* NSObject+BlockObservation.h */,
+				CD96CEA2149E62F000C9C390 /* NSObject+BlockObservation.m */,
+			);
+			name = "KVO+Block";
+			path = "Source/thirdparty/KVO+Block";
+			sourceTree = "<group>";
+		};
 		CDA583711475BEFB00993A14 = {
 			isa = PBXGroup;
 			children = (
@@ -203,10 +245,7 @@
 		CDA5837F1475BEFB00993A14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD4BA16B1491000E00A58899 /* VVBasics.framework */,
-				CD4BA16C1491000E00A58899 /* VVMIDI.framework */,
-				CD4BA16D1491000E00A58899 /* VVOSC.framework */,
-				CD4BA15F1490FA2100A58899 /* Syphon.framework */,
+				CD96CE8F149E5EB200C9C390 /* Third party frameworks */,
 				CDA583821475BEFB00993A14 /* Apple frameworks */,
 			);
 			name = Frameworks;
@@ -322,6 +361,8 @@
 				CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */,
 				CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */,
 				CDC58D77149CBD8100555A3F /* MBCanvas.m in Sources */,
+				CD96CE97149E5F6600C9C390 /* MBOSCPropertyBindingController.m in Sources */,
+				CD96CEA3149E62F000C9C390 /* NSObject+BlockObservation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,16 +452,20 @@
 		CDA5839E1475BEFC00993A14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Frameworks\"",
+					"\"$(SRCROOT)/../../Frameworks/VVopensource/10.6\"",
+					"\"$(SRCROOT)/../../Frameworks/VVopensource/VDMX\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "megabuffer/megabuffer-Prefix.pch";
 				INFOPLIST_FILE = "megabuffer/megabuffer-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -428,16 +473,20 @@
 		CDA5839F1475BEFC00993A14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Frameworks\"",
+					"\"$(SRCROOT)/../../Frameworks/VVopensource/10.6\"",
+					"\"$(SRCROOT)/../../Frameworks/VVopensource/VDMX\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "megabuffer/megabuffer-Prefix.pch";
 				INFOPLIST_FILE = "megabuffer/megabuffer-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

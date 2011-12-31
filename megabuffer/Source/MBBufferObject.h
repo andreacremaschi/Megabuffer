@@ -20,14 +20,13 @@
 
 // bufferSize e maxDelay sono interdipendenti:
 // maxDelay = bufferSize / fps
-@property uint bufferSize;
+@property NSNumber * bufferSize;
 @property NSTimeInterval maxDelay;
 
-@property bool recording;
+@property bool _recording;
 
 @property (strong, nonatomic) NSMutableStack * frameStack;
 @property (strong, nonatomic) NSMutableArray * markersArray;
-
 
 -(id)initWithOpenGLContext: (NSOpenGLContext *)context;
 
@@ -43,5 +42,7 @@
 -(void) addMarkerToNextFrame;
 - (NSTimeInterval) markerPrecedingPosition: (NSTimeInterval) indexTimeStamp;
 - (NSTimeInterval) markerFollowingPosition: (NSTimeInterval) indexTimeStamp;
+
+- (void) setRecording: (NSNumber *)recording;
 
 @end

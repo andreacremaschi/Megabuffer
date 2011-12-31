@@ -108,7 +108,7 @@
 - (int) rateSpeedSelection
 {
      BDocument *bDoc=(BDocument *) self.document;
-    int rate = bDoc.scrubber.rate;
+    int rate = [bDoc.scrubber.rate intValue];
     if ((rate ==0) ||(rate ==-2)||(rate ==-1)||(rate ==2)||(rate ==1))
         return rate;
     else
@@ -118,7 +118,7 @@
 - (void) setRateSpeedSelection: (int)newRate
 {
     BDocument *bDoc=(BDocument *) self.document;
-    bDoc.scrubber.rate = newRate ;
+    bDoc.scrubber.rate = [NSNumber numberWithInt: newRate] ;
 }
 
 #pragma mark - MBGLView protocol implementation

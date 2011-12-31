@@ -17,14 +17,15 @@ typedef enum {
 @class MBBufferObject;
 
 @interface MBScrubberObject : MBCanvas
-@property double rate;
-@property double delay;
-@property scrubModes scrubMode;
 
 @property (strong) id syphonOut;
 @property (unsafe_unretained) MBBufferObject * buffer;
 
 @property (strong, nonatomic) NSString * serverName;
+
+@property (strong, nonatomic) NSNumber *rate;
+@property (strong, nonatomic) NSNumber *delay;
+@property (strong, nonatomic) NSNumber *scrubMode;
 
 - (CIImage *)currentFrame;
 - (void) stop;

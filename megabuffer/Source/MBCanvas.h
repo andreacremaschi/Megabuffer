@@ -11,18 +11,23 @@
 
 #import "KeystoneTextureSourceProtocol.h"
 
-#define MB_FPS 15.0 
+#define MB_FPS 24.0 
 
 @interface MBCanvas : NSObject  <KeystoneTextureSourceProtocol>
 @property (strong, nonatomic) NSOpenGLContext *openGLContext;
 @property (strong, nonatomic) NSOpenGLPixelFormat *pixelFormat;
 @property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) NSString *name;
 @property CVOpenGLTextureRef currentTexture;
 @property NSTimeInterval currentFrameTimeStamp;
 
-@property int fps;
+@property (readonly) NSDictionary *dictionaryRepresentation;
+
+@property (strong, nonatomic) NSNumber * fps;
 
 - (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error;
 - (CVOpenGLTextureRef)createNewTextureFromBuffer: (CVOpenGLBufferRef) pixelBuffer;
+
+- (NSSet *)attributes;
 
 @end
