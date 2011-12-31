@@ -27,6 +27,10 @@ typedef enum {
 @property (strong, nonatomic) NSNumber *delay;
 @property (strong, nonatomic) NSNumber *scrubMode;
 
+
+// Persistence
+- (BOOL) setupWithDictionary: (NSDictionary *)dict;
+
 - (CIImage *)currentFrame;
 - (void) stop;
 - (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error;

@@ -69,12 +69,6 @@
 }
 
 
--(void)dealloc
-{
-    inPort=nil;
-    manualOutPort=nil;
-    manager=nil;
-}
 
 #pragma mark - Bindings
 

@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD0D492B14A50BA9004211D3 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492314A50AFE004211D3 /* VVBasics.framework */; };
-		CD0D492C14A50BA9004211D3 /* VVEssentials.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492414A50AFE004211D3 /* VVEssentials.framework */; };
-		CD0D492D14A50BA9004211D3 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492514A50AFE004211D3 /* VVMIDI.framework */; };
-		CD0D492E14A50BA9004211D3 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0D492614A50AFE004211D3 /* VVOSC.framework */; };
-		CD0D492F14A50BEF004211D3 /* VVBasics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492314A50AFE004211D3 /* VVBasics.framework */; };
-		CD0D493014A50BEF004211D3 /* VVEssentials.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492414A50AFE004211D3 /* VVEssentials.framework */; };
-		CD0D493114A50BEF004211D3 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492514A50AFE004211D3 /* VVMIDI.framework */; };
-		CD0D493214A50BEF004211D3 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD0D492614A50AFE004211D3 /* VVOSC.framework */; };
 		CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
 		CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
 		CD4BA177149105F000A58899 /* Syphon Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD4BA176149105F000A58899 /* Syphon Icon.icns */; };
@@ -28,6 +20,12 @@
 		CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B335B1494C64800E93C34 /* MBGLView.m */; };
 		CD6B33631494CF8F00E93C34 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B33621494CF8E00E93C34 /* OpenGL.framework */; };
 		CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */; };
+		CD83249B14AF597700B91660 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249514AF595500B91660 /* VVBasics.framework */; };
+		CD83249C14AF597700B91660 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249614AF595500B91660 /* VVMIDI.framework */; };
+		CD83249D14AF597700B91660 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249714AF595500B91660 /* VVOSC.framework */; };
+		CD83249E14AF597E00B91660 /* VVBasics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD83249514AF595500B91660 /* VVBasics.framework */; };
+		CD83249F14AF597E00B91660 /* VVMIDI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD83249614AF595500B91660 /* VVMIDI.framework */; };
+		CD8324A014AF597E00B91660 /* VVOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD83249714AF595500B91660 /* VVOSC.framework */; };
 		CD96CE97149E5F6600C9C390 /* MBOSCPropertyBindingController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD96CE96149E5F6600C9C390 /* MBOSCPropertyBindingController.m */; };
 		CD96CEA3149E62F000C9C390 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = CD96CEA2149E62F000C9C390 /* NSObject+BlockObservation.m */; };
 		CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA583801475BEFB00993A14 /* Cocoa.framework */; };
@@ -48,20 +46,15 @@
 			dstSubfolderSpec = 10;
 			files = (
 				CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */,
-				CD0D492F14A50BEF004211D3 /* VVBasics.framework in CopyFiles */,
-				CD0D493014A50BEF004211D3 /* VVEssentials.framework in CopyFiles */,
-				CD0D493114A50BEF004211D3 /* VVMIDI.framework in CopyFiles */,
-				CD0D493214A50BEF004211D3 /* VVOSC.framework in CopyFiles */,
+				CD83249E14AF597E00B91660 /* VVBasics.framework in CopyFiles */,
+				CD83249F14AF597E00B91660 /* VVMIDI.framework in CopyFiles */,
+				CD8324A014AF597E00B91660 /* VVOSC.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CD0D492314A50AFE004211D3 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVBasics.framework; path = ../../Frameworks/VVopensource/VDMX/VVBasics.framework; sourceTree = "<group>"; };
-		CD0D492414A50AFE004211D3 /* VVEssentials.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVEssentials.framework; path = ../../Frameworks/VVopensource/VDMX/VVEssentials.framework; sourceTree = "<group>"; };
-		CD0D492514A50AFE004211D3 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVMIDI.framework; path = ../../Frameworks/VVopensource/VDMX/VVMIDI.framework; sourceTree = "<group>"; };
-		CD0D492614A50AFE004211D3 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VVOSC.framework; path = ../../Frameworks/VVopensource/VDMX/VVOSC.framework; sourceTree = "<group>"; };
 		CD4BA15F1490FA2100A58899 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../../Frameworks/Syphon.framework; sourceTree = "<group>"; };
 		CD4BA176149105F000A58899 /* Syphon Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Syphon Icon.icns"; path = "Resources/Syphon Icon.icns"; sourceTree = "<group>"; };
 		CD4BA18D1491186F00A58899 /* MBWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBWindowController.h; path = Source/MBWindowController.h; sourceTree = "<group>"; };
@@ -82,6 +75,9 @@
 		CD6B33621494CF8E00E93C34 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBScrubberObject.h; path = Source/MBScrubberObject.h; sourceTree = "<group>"; };
 		CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBScrubberObject.m; path = Source/MBScrubberObject.m; sourceTree = "<group>"; };
+		CD83249514AF595500B91660 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVBasics.framework; sourceTree = "<group>"; };
+		CD83249614AF595500B91660 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVMIDI.framework; sourceTree = "<group>"; };
+		CD83249714AF595500B91660 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVOSC.framework; sourceTree = "<group>"; };
 		CD96CE95149E5F6600C9C390 /* MBOSCPropertyBindingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBOSCPropertyBindingController.h; path = Source/MBOSCPropertyBindingController.h; sourceTree = "<group>"; };
 		CD96CE96149E5F6600C9C390 /* MBOSCPropertyBindingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBOSCPropertyBindingController.m; path = Source/MBOSCPropertyBindingController.m; sourceTree = "<group>"; };
 		CD96CEA1149E62F000C9C390 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
@@ -112,10 +108,9 @@
 				CD4BA1F114912F0000A58899 /* QuartzCore.framework in Frameworks */,
 				CD4BA1ED1491297C00A58899 /* CoreVideo.framework in Frameworks */,
 				CDA583811475BEFB00993A14 /* Cocoa.framework in Frameworks */,
-				CD0D492B14A50BA9004211D3 /* VVBasics.framework in Frameworks */,
-				CD0D492C14A50BA9004211D3 /* VVEssentials.framework in Frameworks */,
-				CD0D492D14A50BA9004211D3 /* VVMIDI.framework in Frameworks */,
-				CD0D492E14A50BA9004211D3 /* VVOSC.framework in Frameworks */,
+				CD83249B14AF597700B91660 /* VVBasics.framework in Frameworks */,
+				CD83249C14AF597700B91660 /* VVMIDI.framework in Frameworks */,
+				CD83249D14AF597700B91660 /* VVOSC.framework in Frameworks */,
 				CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,19 +122,19 @@
 			isa = PBXGroup;
 			children = (
 				CD4BA17A1491130E00A58899 /* Graphics */,
-				CD4BA1791491130200A58899 /* Interaces */,
+				CD4BA1791491130200A58899 /* Interfaces */,
 				CDA583871475BEFB00993A14 /* Supporting Files */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		CD4BA1791491130200A58899 /* Interaces */ = {
+		CD4BA1791491130200A58899 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
 				CDA583951475BEFB00993A14 /* BDocument.xib */,
 				CDA583981475BEFC00993A14 /* MainMenu.xib */,
 			);
-			name = Interaces;
+			name = Interfaces;
 			sourceTree = "<group>";
 		};
 		CD4BA17A1491130E00A58899 /* Graphics */ = {
@@ -206,10 +201,9 @@
 		CD96CE8F149E5EB200C9C390 /* Third party frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD0D492314A50AFE004211D3 /* VVBasics.framework */,
-				CD0D492414A50AFE004211D3 /* VVEssentials.framework */,
-				CD0D492514A50AFE004211D3 /* VVMIDI.framework */,
-				CD0D492614A50AFE004211D3 /* VVOSC.framework */,
+				CD83249514AF595500B91660 /* VVBasics.framework */,
+				CD83249614AF595500B91660 /* VVMIDI.framework */,
+				CD83249714AF595500B91660 /* VVOSC.framework */,
 				CD4BA15F1490FA2100A58899 /* Syphon.framework */,
 			);
 			name = "Third party frameworks";
@@ -459,6 +453,7 @@
 					"\"$(SRCROOT)/../../Frameworks\"",
 					"\"$(SRCROOT)/../../Frameworks/VVopensource/10.6\"",
 					"\"$(SRCROOT)/../../Frameworks/VVopensource/VDMX\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "megabuffer/megabuffer-Prefix.pch";
@@ -480,6 +475,7 @@
 					"\"$(SRCROOT)/../../Frameworks\"",
 					"\"$(SRCROOT)/../../Frameworks/VVopensource/10.6\"",
 					"\"$(SRCROOT)/../../Frameworks/VVopensource/VDMX\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "megabuffer/megabuffer-Prefix.pch";

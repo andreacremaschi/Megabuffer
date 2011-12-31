@@ -54,7 +54,6 @@
 {
 
     buffer=nil;
-    syphonOut = nil;
 }
 
 #pragma mark - Accessors
@@ -114,12 +113,13 @@
 
 - (void)setServerName:(NSString *)object
 {
-    @synchronized(self)
+    @synchronized(syphonOut)
     {
-        syphonOut = [[SyphonServer alloc] initWithName:	 object
-                                               context:		self.openGLContext.CGLContextObj
-                                               options:		nil]; 
+        syphonOut = nil;
     }
+    syphonOut = [[SyphonServer alloc] initWithName:	 object
+                                           context:		self.openGLContext.CGLContextObj
+                                           options:		nil]; 
     serverName=object;
     
 }
@@ -168,7 +168,7 @@
     
     
     // publish our frame to our server. 
-    @synchronized(self)
+    @synchronized(syphonOut)
     {
         if (nil == syphonOut)
             [self setServerName: @"scrubber1"];
@@ -237,5 +237,15 @@
     return dict;
 }
 
+- (BOOL) setupWithDictionary: (NSDictionary *)dict
+{
+    self.name = [dict objectForKey:@"name"];
+    self.rate = [dict objectForKey:@"rate"] ;
+    self.delay = [dict objectForKey:@"delay"] ;
+    self.serverName = [dict objectForKey:@"serverName"] ;
+    self.scrubMode = [dict objectForKey:@"scrubMode"] ;
+    self.fps = [dict objectForKey:@"fps"] ;
+    return YES;
+}
 
 @end

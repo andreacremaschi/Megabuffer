@@ -32,8 +32,7 @@
 @property (strong, readonly, nonatomic ) NSOpenGLContext* openGLContext;
 @property (strong, readonly, nonatomic) NSOpenGLPixelFormat* pixelFormat;
 
-@property (assign, nonatomic) NSObject <TextureSourceDelegate>* delegate;
-@property (assign, nonatomic) NSObject <TextureSourceDelegate>* previewDelegate;
+@property (unsafe_unretained, nonatomic) NSObject <TextureSourceDelegate>* delegate;
 
 - (SourceSyphon *) initWithDescription:(NSDictionary *)description;
 

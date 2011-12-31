@@ -78,8 +78,6 @@
 -(void)dealloc 
 {
     syphonIn.delegate     = nil;
-    syphonIn     = nil;
-    markersArray=nil;
 }
 
 #pragma mark - Accessors
@@ -95,18 +93,57 @@
     return _recording;
 }
 
++ (NSSet *)keyPathsForValuesAffectingSyInApplicationName
+{
+    return [NSSet setWithObject:@"serverDescription"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingSyInServerName
+{
+    return [NSSet setWithObject:@"serverDescription"];
+}
+
 -(void)setServerDescription:(NSDictionary *)serverDescription   
 {
+    // ferma il vecchio syphon client
+    if (syphonIn)
+    {
+        [syphonIn.syClient stop];
+        syphonIn = nil;
+    }
+    
+    // se la descrizione è valida, crea un nuovo syphon client
     if ([[serverDescription allKeys] containsObject: SyphonServerDescriptionNameKey] &&
         [[serverDescription allKeys] containsObject: SyphonServerDescriptionAppNameKey])
     {
+        [self willChangeValueForKey:@"serverDescription"];
         syInServerName = [serverDescription valueForKey: SyphonServerDescriptionNameKey];
-        syInApplicationName = [serverDescription valueForKey: SyphonServerDescriptionAppNameKey];
+        syInApplicationName = [serverDescription valueForKey: SyphonServerDescriptionAppNameKey];        
         syphonIn = [[SourceSyphon alloc] initWithDescription: serverDescription];
         syphonIn.delegate = self;
+        [self didChangeValueForKey:@"serverDescription"];
     }
 }
 
+- (void)setSyInApplicationName:(NSString *)newVal
+{
+    if ([syInServerName isEqualToString: newVal]) return;    
+    syInApplicationName = [newVal copy];
+    [self setServerDescription: [NSDictionary dictionaryWithObjectsAndKeys:
+                                 syInServerName, SyphonServerDescriptionNameKey,
+                                 syInApplicationName, SyphonServerDescriptionAppNameKey,
+                                 nil]];
+}
+
+-(void)setSyInServerName:(NSString *)newVal
+{
+    if ([syInServerName isEqualToString: newVal]) return;
+    syInServerName = [newVal copy];
+    [self setServerDescription: [NSDictionary dictionaryWithObjectsAndKeys:
+                                 syInServerName, SyphonServerDescriptionNameKey,
+                                 syInApplicationName, SyphonServerDescriptionAppNameKey,
+                                nil]];
+}
 
 -(NSTimeInterval)maxDelay
 {
@@ -414,8 +451,18 @@ didReceiveNewFrameOnTime:(NSTimeInterval)time
             self.bufferSize , @"bufferSize",
             self.recording, @"recording",
             self.fps, @"fps",
+            self.syphonIn.srcDescription, @"syphonSource",
             nil];
 }
 
+- (BOOL) setupWithDictionary: (NSDictionary *)dict
+{
+    self.name = [dict objectForKey:@"name"];
+    self.bufferSize = [dict objectForKey:@"bufferSize"] ;
+    self.fps = [dict objectForKey:@"fps"] ;
+    self.recording = [dict objectForKey:@"recording"] ;
+    [self setServerDescription: [dict objectForKey:@"syphonSource"]];
+    return YES;
+}
 
 @end

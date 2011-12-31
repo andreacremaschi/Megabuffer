@@ -21,7 +21,7 @@
 @property CVOpenGLTextureRef currentTexture;
 @property NSTimeInterval currentFrameTimeStamp;
 
-@property (readonly) NSDictionary *dictionaryRepresentation;
+@property (unsafe_unretained, readonly) NSDictionary *dictionaryRepresentation;
 
 @property (strong, nonatomic) NSNumber * fps;
 

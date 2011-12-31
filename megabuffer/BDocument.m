@@ -28,7 +28,7 @@
         scrubber = [[MBScrubberObject alloc] init];
         scrubber.buffer = buffer;
         
-        __block BDocument *selfCopy= self;
+        __unsafe_unretained BDocument *selfCopy= self;
         [buffer addObserverForKeyPath: @"name" task:^(id obj, NSDictionary *change) {
 
             // bind the buffer
@@ -64,7 +64,7 @@
                                                                                            options: nil];
                 }
                 
-                __block BDocument *selfCopy2= selfCopy;
+                __unsafe_unretained BDocument *selfCopy2= selfCopy;
                 [selfCopy.scrubber addObserverForKeyPath:@"name" task:^(id obj, NSDictionary *change) {
                     
                     NSString *bindingPath2 =  [NSString stringWithFormat: @"/%@/%@/%@", selfCopy2.buffer.name, [change valueForKey: NSKeyValueChangeOldKey], newBinding ];
@@ -92,9 +92,7 @@
 
 -(void)dealloc
 {
-    scrubber=nil;
     [scrubber stop];
-    buffer = nil;
 }
 
 -(void)awakeFromNib
@@ -117,6 +115,19 @@
     
 }
 
+- (BOOL) setupWithDictionary: (NSDictionary *)docDict
+{
+    NSDictionary *bufferDict = [docDict objectForKey:@"buffer"];
+    NSDictionary *scrubberDict = [docDict objectForKey:@"scrubber"];
+    
+    if( ![bufferDict isKindOfClass:[NSDictionary class]] || ![scrubberDict isKindOfClass:[NSDictionary class]]) return NO;
+    
+    if (![self.buffer setupWithDictionary: bufferDict ]) return NO;
+    if (![self.scrubber setupWithDictionary: scrubberDict ]) return NO;
+    
+    return YES;
+
+}
 
 #pragma mark - NSDocument overrides
 
@@ -158,7 +169,18 @@
     */
     /*NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
     @throw exception;*/
-    return YES;
+    
+    NSDictionary *dict = [NSPropertyListSerialization propertyListWithData: data 
+                                                                   options: NSPropertyListImmutable
+                                                                    format: NULL
+                                                                     error: outError];
+    if (!dict)
+    {  
+        NSLog(@"%@", *outError);
+        return NO;
+    }
+
+    return [self setupWithDictionary: dict];
 }
 
 

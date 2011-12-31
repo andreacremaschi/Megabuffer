@@ -49,7 +49,6 @@
 {
     [timer invalidate];
     CVOpenGLTextureRelease(_texture);
-    timer=nil;
 }
 
 #pragma mark - Attributes

@@ -7,6 +7,8 @@
 //
 
 #import "SourceSyphon.h"
+#import "NSObject+BlockObservation.h"
+
 
 @implementation SourceSyphon
 @synthesize syClient;
@@ -17,29 +19,48 @@
 
 -(void)dealloc
 {
+    if (syClient.isValid)
+        [syClient stop];
     delegate=nil;
-    srcDescription=nil;
-    openGLContext=nil;
-    pixelFormat=nil;
 }
 
 #pragma mark KeystoneTextureSource protocol implementation
-- (SourceSyphon *) initWithDescription:(NSDictionary *)descr {
+- (SourceSyphon *) initWithDescription:(NSDictionary *)description {
   
     self = [super init];
     if (self)
     {
     
+
+        NSString *serverName = [description objectForKey:SyphonServerDescriptionNameKey];
+        NSString *appName = [description objectForKey:SyphonServerDescriptionAppNameKey];
+
+        if (!serverName || !appName)
+        {
+            self=nil;
+            return nil;
+        }
+        
+        srcDescription = [NSDictionary dictionaryWithObjectsAndKeys: 
+                            serverName, SyphonServerDescriptionNameKey,
+                            appName, SyphonServerDescriptionAppNameKey,
+                          nil];
+
+        
+        
+        NSArray *matchingServers = [[SyphonServerDirectory sharedDirectory] serversMatchingName: serverName
+                                                                                        appName: appName ];
+
+        NSDictionary *concreteSyServer;
+        if (matchingServers.count>0)
+            concreteSyServer = matchingServers.lastObject;
+        
         fpsStart = [NSDate timeIntervalSinceReferenceDate];
         textureSourceStart = [NSDate timeIntervalSinceReferenceDate]; 
         fpsCount = 0;
         FPS = 0;
-        
-        
-        NSDictionary *description = [descr copy];
-        srcDescription = description ;
-        
-        syClient= [[SyphonClient alloc] initWithServerDescription:description options:nil newFrameHandler:^(SyphonClient *client) {
+
+        syClient= [[SyphonClient alloc] initWithServerDescription:concreteSyServer options:nil newFrameHandler:^(SyphonClient *client) {
             
             @autoreleasepool {
             // This gets called whenever the client receives a new frame.

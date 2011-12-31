@@ -15,12 +15,12 @@
 @interface MBBufferObject : MBCanvas <TextureSourceDelegate>
 
 @property (strong) SourceSyphon* syphonIn;
-@property (strong) NSString *syInServerName;
-@property (strong) NSString *syInApplicationName;
+@property (copy, nonatomic) NSString *syInServerName;
+@property (copy, nonatomic) NSString *syInApplicationName;
 
 // bufferSize e maxDelay sono interdipendenti:
 // maxDelay = bufferSize / fps
-@property NSNumber * bufferSize;
+@property (copy) NSNumber * bufferSize;
 @property NSTimeInterval maxDelay;
 
 @property bool _recording;
@@ -28,8 +28,13 @@
 @property (strong, nonatomic) NSMutableStack * frameStack;
 @property (strong, nonatomic) NSMutableArray * markersArray;
 
+// Initialization
 -(id)initWithOpenGLContext: (NSOpenGLContext *)context;
 
+// Persistence
+- (BOOL) setupWithDictionary: (NSDictionary *)dict;
+
+// Other methods
 -(void)setServerDescription:(NSDictionary *)serverDescription;
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time;
