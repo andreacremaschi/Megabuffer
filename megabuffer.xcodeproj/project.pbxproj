@@ -20,6 +20,8 @@
 		CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B335B1494C64800E93C34 /* MBGLView.m */; };
 		CD6B33631494CF8F00E93C34 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B33621494CF8E00E93C34 /* OpenGL.framework */; };
 		CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */; };
+		CD820FA014B101AC004CF750 /* MBSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CD820F9F14B101AC004CF750 /* MBSlider.m */; };
+		CD820FA314B101CC004CF750 /* MBSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD820FA214B101CC004CF750 /* MBSliderCell.m */; };
 		CD83249B14AF597700B91660 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249514AF595500B91660 /* VVBasics.framework */; };
 		CD83249C14AF597700B91660 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249614AF595500B91660 /* VVMIDI.framework */; };
 		CD83249D14AF597700B91660 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249714AF595500B91660 /* VVOSC.framework */; };
@@ -75,6 +77,10 @@
 		CD6B33621494CF8E00E93C34 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBScrubberObject.h; path = Source/MBScrubberObject.h; sourceTree = "<group>"; };
 		CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBScrubberObject.m; path = Source/MBScrubberObject.m; sourceTree = "<group>"; };
+		CD820F9E14B101AC004CF750 /* MBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBSlider.h; sourceTree = "<group>"; };
+		CD820F9F14B101AC004CF750 /* MBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBSlider.m; sourceTree = "<group>"; };
+		CD820FA114B101CC004CF750 /* MBSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBSliderCell.h; sourceTree = "<group>"; };
+		CD820FA214B101CC004CF750 /* MBSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBSliderCell.m; sourceTree = "<group>"; };
 		CD83249514AF595500B91660 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVBasics.framework; sourceTree = "<group>"; };
 		CD83249614AF595500B91660 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVMIDI.framework; sourceTree = "<group>"; };
 		CD83249714AF595500B91660 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVOSC.framework; sourceTree = "<group>"; };
@@ -149,7 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				CD4BA17E1491133E00A58899 /* Controller */,
-				CD4BA17D1491133800A58899 /* View */,
+				CD4BA17D1491133800A58899 /* View and custom controls */,
 				CD4BA17C1491132C00A58899 /* Model */,
 			);
 			name = Source;
@@ -176,13 +182,14 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		CD4BA17D1491133800A58899 /* View */ = {
+		CD4BA17D1491133800A58899 /* View and custom controls */ = {
 			isa = PBXGroup;
 			children = (
+				CD820F9D14B10195004CF750 /* MBSlider */,
 				CD6B335A1494C64800E93C34 /* MBGLView.h */,
 				CD6B335B1494C64800E93C34 /* MBGLView.m */,
 			);
-			name = View;
+			name = "View and custom controls";
 			sourceTree = "<group>";
 		};
 		CD4BA17E1491133E00A58899 /* Controller */ = {
@@ -196,6 +203,17 @@
 				CD4BA1F3149131F000A58899 /* NSMutableStack.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		CD820F9D14B10195004CF750 /* MBSlider */ = {
+			isa = PBXGroup;
+			children = (
+				CD820F9E14B101AC004CF750 /* MBSlider.h */,
+				CD820F9F14B101AC004CF750 /* MBSlider.m */,
+				CD820FA114B101CC004CF750 /* MBSliderCell.h */,
+				CD820FA214B101CC004CF750 /* MBSliderCell.m */,
+			);
+			name = MBSlider;
 			sourceTree = "<group>";
 		};
 		CD96CE8F149E5EB200C9C390 /* Third party frameworks */ = {
@@ -357,6 +375,8 @@
 				CDC58D77149CBD8100555A3F /* MBCanvas.m in Sources */,
 				CD96CE97149E5F6600C9C390 /* MBOSCPropertyBindingController.m in Sources */,
 				CD96CEA3149E62F000C9C390 /* NSObject+BlockObservation.m in Sources */,
+				CD820FA014B101AC004CF750 /* MBSlider.m in Sources */,
+				CD820FA314B101CC004CF750 /* MBSliderCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
