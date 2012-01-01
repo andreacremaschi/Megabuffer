@@ -20,6 +20,7 @@
 @synthesize bufferOutputGLView;
 @synthesize selectedServerDescriptions;
 
+
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
@@ -39,6 +40,16 @@
     
     return self;    
 }
+
++(NSSet *)keyPathsForValuesAffectingSyphonAvailableApplications 
+{
+    return [NSSet setWithObject: @"availableServersController.contentArray"];
+}
+
++(NSSet *)keyPathsForValuesAffectingSyphonAvailableServerForCurrentApplication 
+{
+    return [NSSet setWithObject: @"document.buffer.syInServerName"];
+}           
 
 - (void)windowDidLoad
 {
@@ -90,6 +101,29 @@
 }
 
 #pragma mark - Accessors
+- (NSArray *)syphonAvailableApplications
+{
+    NSString *keyPath = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@",  SyphonServerDescriptionAppNameKey];
+    NSArray *availableApps= [[[SyphonServerDirectory sharedDirectory] servers] valueForKeyPath: keyPath];
+    return availableApps;
+    
+}
+
+- (NSArray *)syphonAvailableServerForCurrentApplication
+{
+    BDocument *bDoc=(BDocument *) self.document;
+
+    NSMutableArray *availableServers = [NSMutableArray array];
+
+    NSString *selAppName = bDoc.buffer.syInApplicationName;
+    for (NSDictionary *syServerDescr in [[SyphonServerDirectory sharedDirectory] servers])
+    {
+        if ([[syServerDescr objectForKey: SyphonServerDescriptionAppNameKey] isEqualToString: selAppName])
+            [availableServers addObject: [syServerDescr objectForKey: SyphonServerDescriptionNameKey]];
+    }
+    return [availableServers copy];    
+}
+
 - (void)setSelectedServerDescriptions: (NSArray *)descriptions
 {   
     NSDictionary *serverDescription = [descriptions lastObject];

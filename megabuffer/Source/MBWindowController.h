@@ -12,6 +12,8 @@
 @class MBGLView;
 @interface MBWindowController : NSWindowController <MBGLViewFrameSource>
 @property (strong, nonatomic) NSArray *selectedServerDescriptions;
+@property (strong, readonly, nonatomic) IBOutlet NSArray *syphonAvailableApplications;
+@property (strong, readonly, nonatomic) IBOutlet NSArray *syphonAvailableServerForCurrentApplication;
 
 @property (unsafe_unretained) IBOutlet NSArrayController *availableServersController;
 @property (unsafe_unretained) IBOutlet MBGLView *liveInputGLView;
