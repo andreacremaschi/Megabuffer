@@ -10,7 +10,7 @@
 #import "MBRateSliderCell.h"
 
 @implementation MBSlider
-- (void)awakeFromNib {
+/*- (void)awakeFromNib {
     
     [super awakeFromNib];
     
@@ -20,7 +20,7 @@
     aCell.minValue = [self.cell minValue];
     
     [self setCell: aCell];
-}
+}*/
 
 //invalidate everything!
 -(void)setNeedsDisplayInRect:(NSRect)invalidRect{

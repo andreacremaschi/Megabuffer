@@ -27,5 +27,6 @@
 - (IBAction)prevMarker:(id)sender;
 - (IBAction)nextMarker:(id)sender;
 - (IBAction)setSpeedButton:(id)sender;
+- (IBAction)setDelayButton:(id)sender;
 
 @end

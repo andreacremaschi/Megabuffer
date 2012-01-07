@@ -30,7 +30,7 @@
     
     NSBezierPath* thePath = [NSBezierPath bezierPath];    
     [[NSColor darkGrayColor] setFill];
-    [thePath appendBezierPathWithRoundedRect:ovalRect xRadius:2 yRadius:2];
+    [thePath appendBezierPathWithRect:ovalRect];
     [thePath fill];
     
     [[self controlView] unlockFocus];

@@ -201,4 +201,16 @@
     [bDoc.scrubber setRate: [NSNumber numberWithDouble:speed]];
     
 }
+
+- (IBAction)setDelayButton:(id)sender
+{
+    NSMatrix *matrix = (NSMatrix *)sender;
+    NSButtonCell *button =[matrix cellAtRow: matrix.selectedRow column:0];
+    double delay = button.tag;
+    
+    BDocument *bDoc=(BDocument *) self.document;
+    [bDoc.scrubber setDelay: [NSNumber numberWithDouble:delay]];
+    
+}
+
 @end
