@@ -20,8 +20,10 @@
 		CD6B335C1494C64800E93C34 /* MBGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B335B1494C64800E93C34 /* MBGLView.m */; };
 		CD6B33631494CF8F00E93C34 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B33621494CF8E00E93C34 /* OpenGL.framework */; };
 		CD6B336E1494DFE300E93C34 /* MBScrubberObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */; };
+		CD81CF0F14B7509A007B4DDA /* tasto rec.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CF0E14B7509A007B4DDA /* tasto rec.png */; };
+		CD81CF1114B752AC007B4DDA /* tasto rec emboss.png in Resources */ = {isa = PBXBuildFile; fileRef = CD81CF1014B752AC007B4DDA /* tasto rec emboss.png */; };
 		CD820FA014B101AC004CF750 /* MBSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CD820F9F14B101AC004CF750 /* MBSlider.m */; };
-		CD820FA314B101CC004CF750 /* MBSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD820FA214B101CC004CF750 /* MBSliderCell.m */; };
+		CD820FA314B101CC004CF750 /* MBRateSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD820FA214B101CC004CF750 /* MBRateSliderCell.m */; };
 		CD83249B14AF597700B91660 /* VVBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249514AF595500B91660 /* VVBasics.framework */; };
 		CD83249C14AF597700B91660 /* VVMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249614AF595500B91660 /* VVMIDI.framework */; };
 		CD83249D14AF597700B91660 /* VVOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD83249714AF595500B91660 /* VVOSC.framework */; };
@@ -38,6 +40,12 @@
 		CDA583971475BEFB00993A14 /* BDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA583951475BEFB00993A14 /* BDocument.xib */; };
 		CDA5839A1475BEFC00993A14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA583981475BEFC00993A14 /* MainMenu.xib */; };
 		CDC58D77149CBD8100555A3F /* MBCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = CDC58D76149CBD8100555A3F /* MBCanvas.m */; };
+		CDF8CEBA14B8508200DA012F /* fast fwd.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB514B8508200DA012F /* fast fwd.png */; };
+		CDF8CEBB14B8508200DA012F /* fast rew.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB614B8508200DA012F /* fast rew.png */; };
+		CDF8CEBC14B8508200DA012F /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB714B8508200DA012F /* play.png */; };
+		CDF8CEBD14B8508200DA012F /* play reverse.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB814B8508200DA012F /* play reverse.png */; };
+		CDF8CEBE14B8508200DA012F /* stop.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB914B8508200DA012F /* stop.png */; };
+		CDF8CEC214B85A5D00DA012F /* MBDelaySliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF8CEC114B85A5D00DA012F /* MBDelaySliderCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -77,10 +85,12 @@
 		CD6B33621494CF8E00E93C34 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		CD6B336C1494DFE300E93C34 /* MBScrubberObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBScrubberObject.h; path = Source/MBScrubberObject.h; sourceTree = "<group>"; };
 		CD6B336D1494DFE300E93C34 /* MBScrubberObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBScrubberObject.m; path = Source/MBScrubberObject.m; sourceTree = "<group>"; };
+		CD81CF0E14B7509A007B4DDA /* tasto rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tasto rec.png"; path = "Design/Assets/tasto rec.png"; sourceTree = SOURCE_ROOT; };
+		CD81CF1014B752AC007B4DDA /* tasto rec emboss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tasto rec emboss.png"; path = "Design/Assets/tasto rec emboss.png"; sourceTree = SOURCE_ROOT; };
 		CD820F9E14B101AC004CF750 /* MBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBSlider.h; sourceTree = "<group>"; };
 		CD820F9F14B101AC004CF750 /* MBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBSlider.m; sourceTree = "<group>"; };
-		CD820FA114B101CC004CF750 /* MBSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBSliderCell.h; sourceTree = "<group>"; };
-		CD820FA214B101CC004CF750 /* MBSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBSliderCell.m; sourceTree = "<group>"; };
+		CD820FA114B101CC004CF750 /* MBRateSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRateSliderCell.h; sourceTree = "<group>"; };
+		CD820FA214B101CC004CF750 /* MBRateSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRateSliderCell.m; sourceTree = "<group>"; };
 		CD83249514AF595500B91660 /* VVBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVBasics.framework; sourceTree = "<group>"; };
 		CD83249614AF595500B91660 /* VVMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVMIDI.framework; sourceTree = "<group>"; };
 		CD83249714AF595500B91660 /* VVOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVOSC.framework; sourceTree = "<group>"; };
@@ -103,6 +113,13 @@
 		CDA583991475BEFC00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		CDC58D75149CBD8100555A3F /* MBCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBCanvas.h; path = Source/MBCanvas.h; sourceTree = "<group>"; };
 		CDC58D76149CBD8100555A3F /* MBCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBCanvas.m; path = Source/MBCanvas.m; sourceTree = "<group>"; };
+		CDF8CEB514B8508200DA012F /* fast fwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fast fwd.png"; path = "Design/Assets/fast fwd.png"; sourceTree = SOURCE_ROOT; };
+		CDF8CEB614B8508200DA012F /* fast rew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fast rew.png"; path = "Design/Assets/fast rew.png"; sourceTree = SOURCE_ROOT; };
+		CDF8CEB714B8508200DA012F /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = play.png; path = Design/Assets/play.png; sourceTree = SOURCE_ROOT; };
+		CDF8CEB814B8508200DA012F /* play reverse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "play reverse.png"; path = "Design/Assets/play reverse.png"; sourceTree = SOURCE_ROOT; };
+		CDF8CEB914B8508200DA012F /* stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stop.png; path = Design/Assets/stop.png; sourceTree = SOURCE_ROOT; };
+		CDF8CEC014B85A5D00DA012F /* MBDelaySliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBDelaySliderCell.h; sourceTree = "<group>"; };
+		CDF8CEC114B85A5D00DA012F /* MBDelaySliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBDelaySliderCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +163,13 @@
 		CD4BA17A1491130E00A58899 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				CDF8CEB514B8508200DA012F /* fast fwd.png */,
+				CDF8CEB614B8508200DA012F /* fast rew.png */,
+				CDF8CEB714B8508200DA012F /* play.png */,
+				CDF8CEB814B8508200DA012F /* play reverse.png */,
+				CDF8CEB914B8508200DA012F /* stop.png */,
+				CD81CF0E14B7509A007B4DDA /* tasto rec.png */,
+				CD81CF1014B752AC007B4DDA /* tasto rec emboss.png */,
 				CD4BA176149105F000A58899 /* Syphon Icon.icns */,
 			);
 			name = Graphics;
@@ -210,8 +234,10 @@
 			children = (
 				CD820F9E14B101AC004CF750 /* MBSlider.h */,
 				CD820F9F14B101AC004CF750 /* MBSlider.m */,
-				CD820FA114B101CC004CF750 /* MBSliderCell.h */,
-				CD820FA214B101CC004CF750 /* MBSliderCell.m */,
+				CD820FA114B101CC004CF750 /* MBRateSliderCell.h */,
+				CD820FA214B101CC004CF750 /* MBRateSliderCell.m */,
+				CDF8CEC014B85A5D00DA012F /* MBDelaySliderCell.h */,
+				CDF8CEC114B85A5D00DA012F /* MBDelaySliderCell.m */,
 			);
 			name = MBSlider;
 			sourceTree = "<group>";
@@ -353,6 +379,13 @@
 				CDA583971475BEFB00993A14 /* BDocument.xib in Resources */,
 				CDA5839A1475BEFC00993A14 /* MainMenu.xib in Resources */,
 				CD4BA177149105F000A58899 /* Syphon Icon.icns in Resources */,
+				CD81CF0F14B7509A007B4DDA /* tasto rec.png in Resources */,
+				CD81CF1114B752AC007B4DDA /* tasto rec emboss.png in Resources */,
+				CDF8CEBA14B8508200DA012F /* fast fwd.png in Resources */,
+				CDF8CEBB14B8508200DA012F /* fast rew.png in Resources */,
+				CDF8CEBC14B8508200DA012F /* play.png in Resources */,
+				CDF8CEBD14B8508200DA012F /* play reverse.png in Resources */,
+				CDF8CEBE14B8508200DA012F /* stop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,7 +409,8 @@
 				CD96CE97149E5F6600C9C390 /* MBOSCPropertyBindingController.m in Sources */,
 				CD96CEA3149E62F000C9C390 /* NSObject+BlockObservation.m in Sources */,
 				CD820FA014B101AC004CF750 /* MBSlider.m in Sources */,
-				CD820FA314B101CC004CF750 /* MBSliderCell.m in Sources */,
+				CD820FA314B101CC004CF750 /* MBRateSliderCell.m in Sources */,
+				CDF8CEC214B85A5D00DA012F /* MBDelaySliderCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

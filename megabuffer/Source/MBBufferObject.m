@@ -52,6 +52,7 @@
     self = [super init];
     if (self)
     {
+        self.name = @"buffer";
         markersArray = [NSMutableArray array];
         _bufferSize = 250; //10 secondi a 25 fps
         _frameSize = NSMakeSize(0,0);

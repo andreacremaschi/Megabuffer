@@ -18,8 +18,8 @@
 @synthesize availableServersController;
 @synthesize liveInputGLView;
 @synthesize bufferOutputGLView;
-@synthesize selectedServerDescriptions;
 
+#pragma mark - Initialization
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -41,19 +41,16 @@
     return self;    
 }
 
-+(NSSet *)keyPathsForValuesAffectingSyphonAvailableApplications 
-{
-    return [NSSet setWithObject: @"availableServersController.contentArray"];
-}
 
-+(NSSet *)keyPathsForValuesAffectingSyphonAvailableServerForCurrentApplication 
-{
-    return [NSSet setWithObject: @"document.buffer.syInServerName"];
-}           
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    
+    // tweak interfaccia
+    self.window.backgroundColor = [NSColor darkGrayColor];
+    
+    
     
     // We use an NSArrayController to populate the menu of available servers
     // Here we bind its content to SyphonServerDirectory's servers array
@@ -62,12 +59,6 @@
                          withKeyPath:@"servers" 
                              options:nil];
     
-    // Slightly weird binding here, if anyone can neatly and non-weirdly improve on this then feel free...
-    [self bind:@"selectedServerDescriptions" 
-      toObject:availableServersController 
-   withKeyPath:@"selectedObjects" 
-       options:nil];
-
     BDocument *bDoc=(BDocument *) self.document;
     
     //TEMP
@@ -100,7 +91,18 @@
                                                object: nil];
 }
 
-#pragma mark - Accessors
+#pragma mark - Accessors and KVO
+
++(NSSet *)keyPathsForValuesAffectingSyphonAvailableApplications 
+{
+    return [NSSet setWithObject: @"availableServersController.contentArray"];
+}
+
++(NSSet *)keyPathsForValuesAffectingSyphonAvailableServerForCurrentApplication 
+{
+    return [NSSet setWithObject: @"document.buffer.syInServerName"];
+}           
+
 - (NSArray *)syphonAvailableApplications
 {
     NSString *keyPath = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@",  SyphonServerDescriptionAppNameKey];
@@ -188,5 +190,15 @@
 {
     BDocument *bDoc=(BDocument *) self.document;
     [bDoc.scrubber gotoNextMarker];
+}
+
+- (IBAction)setSpeedButton:(id)sender
+{
+    NSButton *button = (NSButton *)sender;
+    double speed = button.tag;
+
+    BDocument *bDoc=(BDocument *) self.document;
+    [bDoc.scrubber setRate: [NSNumber numberWithDouble:speed]];
+    
 }
 @end

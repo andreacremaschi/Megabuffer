@@ -40,6 +40,7 @@
     self = [super init];
     if (self)
     {
+        self.name = @"scrubber";
 
         // Kick off a new Thread
         [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
@@ -63,6 +64,11 @@
 }
 */
 
+#pragma mark - KVO
++(NSSet *)keyPathsForValuesAffectingReverseDelay
+{
+    return [NSSet setWithObject:@"delay"];
+}
 
 #pragma mark - Attributes
 - (NSSet *)attributes
@@ -83,6 +89,12 @@
 }
 - (NSNumber *) delay
 {   return [NSNumber numberWithDouble:_delay]; }
+
+- (NSNumber *) reverseDelay
+{   return [NSNumber numberWithDouble: buffer.maxDelay - _delay]; }
+
+- (void) setReverseDelay: (NSNumber *)revDelay
+{   self.delay = [NSNumber numberWithDouble: buffer.maxDelay - revDelay.doubleValue]; }
 
 - (void) setRate: (NSNumber *)newVal
 {   _rate = [newVal doubleValue]; }

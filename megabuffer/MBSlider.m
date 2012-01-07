@@ -7,14 +7,14 @@
 //
 
 #import "MBSlider.h"
-#import "MBSliderCell.h"
+#import "MBRateSliderCell.h"
 
 @implementation MBSlider
 - (void)awakeFromNib {
     
     [super awakeFromNib];
     
-    MBSliderCell * aCell = [[MBSliderCell alloc] init] ;
+    MBRateSliderCell * aCell = [[MBRateSliderCell alloc] init] ;
     [aCell setControlSize: NSSmallControlSize];
     aCell.maxValue = [self.cell maxValue];
     aCell.minValue = [self.cell minValue];
