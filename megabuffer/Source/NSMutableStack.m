@@ -59,7 +59,7 @@
 
 - (id)push:(id)object {
     id returnObject;
-    @synchronized(_mutableArray)
+    @synchronized(self)
     {
         [_mutableArray insertObject:object atIndex:0];
         if (self.count > maxObjects) 
@@ -77,19 +77,24 @@
 }
 
 - (id)pop {
-    if (self.count > 0) {
-        id returnObject = _mutableArray.lastObject;
-        [_mutableArray removeLastObject];
-        return returnObject;
+    id returnObject;
+    @synchronized(self)
+    {
+        if (self.count > 0) {
+            returnObject = _mutableArray.lastObject;
+            [_mutableArray removeLastObject];
+        }
+        else 
+            returnObject=nil;
     }
-    else 
-        return nil;
+    return returnObject;
+
 }
 
 - (id)objectAtIndex:(NSUInteger)index 
 {
     id object ;
-    @synchronized(_mutableArray)
+    @synchronized(self)
     {
         object = [_mutableArray objectAtIndex:index];
     }

@@ -15,6 +15,10 @@
 #import <Syphon/Syphon.h>
 
 @implementation MBWindowController
+@synthesize markersView;
+@synthesize syphonSourceViewContainer;
+@synthesize syphonSourceViewController;
+@synthesize oscButtonAccessoryView;
 @synthesize availableServersController;
 @synthesize liveInputGLView;
 @synthesize bufferOutputGLView;
@@ -58,7 +62,7 @@
                             toObject: [SyphonServerDirectory sharedDirectory] 
                          withKeyPath:@"servers" 
                              options:nil];
-    
+        
     BDocument *bDoc=(BDocument *) self.document;
     
     //TEMP
@@ -66,6 +70,24 @@
     bDoc.scrubber.openGLContext = self.bufferOutputGLView.openGLContext;
     bDoc.scrubber.pixelFormat = self.bufferOutputGLView.pixelFormat;
     //TEMP
+    
+
+    [self bind: @"curTime"
+      toObject: bDoc.buffer 
+   withKeyPath: @"curIndexTime"
+       options: nil];
+
+    
+    [self.markersView bind: @"markersArray"
+                  toObject: bDoc.buffer 
+               withKeyPath: @"markersArray"
+                   options: nil];
+
+    
+    [self.markersView bind: @"maxDelay"
+                  toObject: bDoc.buffer 
+               withKeyPath: @"maxDelay"
+                   options: nil];
     
     liveInputGLView.frameSource=bDoc.buffer;
     bufferOutputGLView.frameSource=bDoc.scrubber;
@@ -89,6 +111,28 @@
                                              selector: @selector(startDisplayLink)
                                                  name: NSWindowDidBecomeMainNotification 
                                                object: nil];
+    
+    // syphon source custom view
+    syphonSourceViewController.view.frame = syphonSourceViewContainer.bounds;
+    [syphonSourceViewContainer addSubview: syphonSourceViewController.view];
+    
+    [bDoc.buffer bind: @"serverDescription"
+             toObject: syphonSourceViewController
+          withKeyPath: @"representedObject"
+              options: nil];
+    [syphonSourceViewController bind: @"representedObject" 
+                            toObject:bDoc.buffer 
+                         withKeyPath:@"syphonIn.syClient.serverDescription"
+                             options:nil];
+    
+    // osc accessory view
+    NSView * windowMainView =[self.window.contentView superview] ;
+    NSRect oscFrame= self.oscButtonAccessoryView.frame;
+    double margin = 2; //5 pixel di margine
+    oscFrame.origin.x = windowMainView.bounds.size.width - oscFrame.size.width - margin;
+    oscFrame.origin.y = windowMainView.bounds.size.height - oscFrame.size.height- margin;
+    self.oscButtonAccessoryView.frame=oscFrame;
+    [windowMainView addSubview:self.oscButtonAccessoryView];
 }
 
 #pragma mark - Accessors and KVO
@@ -157,6 +201,25 @@
     bDoc.scrubber.rate = [NSNumber numberWithInt: newRate] ;
 }
 
+#define STEP 0
+
+- (void) setCurTime:(NSTimeInterval)newVal
+{
+    static int nDropped; 
+    if (newVal-self.markersView.curTime>STEP)
+    {
+        self.markersView.curTime = newVal;
+        //NSLog(@"Dropped: %i", nDropped);
+        nDropped=0;
+    }
+    else nDropped++;
+    
+}
+
+-(NSTimeInterval)curTime
+{
+    return self.markersView.curTime;
+}
 #pragma mark - MBGLView protocol implementation
 
 - (CIImage *)GLView:(NSOpenGLView *)view wantsFrameWithOptions:(NSDictionary *)dict 

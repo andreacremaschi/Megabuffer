@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD2525C414BB4EE0001C8670 /* MBMarkersView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2525C314BB4EE0001C8670 /* MBMarkersView.m */; };
 		CD4BA1601490FA2100A58899 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
 		CD4BA1751491002400A58899 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD4BA15F1490FA2100A58899 /* Syphon.framework */; };
 		CD4BA177149105F000A58899 /* Syphon Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD4BA176149105F000A58899 /* Syphon Icon.icns */; };
@@ -46,6 +47,14 @@
 		CDF8CEBD14B8508200DA012F /* play reverse.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB814B8508200DA012F /* play reverse.png */; };
 		CDF8CEBE14B8508200DA012F /* stop.png in Resources */ = {isa = PBXBuildFile; fileRef = CDF8CEB914B8508200DA012F /* stop.png */; };
 		CDF8CEC214B85A5D00DA012F /* MBDelaySliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF8CEC114B85A5D00DA012F /* MBDelaySliderCell.m */; };
+		CDFAE83F14BC51B100B440D9 /* SyphonLibrary.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDFAE83E14BC51B100B440D9 /* SyphonLibrary.xib */; };
+		CDFAE84214BC528B00B440D9 /* Syphon Icon 32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = CDFAE84114BC528B00B440D9 /* Syphon Icon 32x32.png */; };
+		CDFAE84814BC530600B440D9 /* SyphonLibraryController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFAE84714BC530600B440D9 /* SyphonLibraryController.m */; };
+		CDFAE84C14BC536600B440D9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFAE84B14BC536600B440D9 /* AppDelegate.m */; };
+		CDFAE84F14BC761C00B440D9 /* SyphonSourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFAE84E14BC761C00B440D9 /* SyphonSourceView.m */; };
+		CDFAE85314BC80A400B440D9 /* SyphonSourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFAE85114BC80A400B440D9 /* SyphonSourceViewController.m */; };
+		CDFAE85414BC80A400B440D9 /* SyphonSourceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDFAE85214BC80A400B440D9 /* SyphonSourceViewController.xib */; };
+		CDFAE85614BC8EB500B440D9 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = CDFAE85514BC8EB500B440D9 /* cancel.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CD2525C214BB4EE0001C8670 /* MBMarkersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMarkersView.h; sourceTree = "<group>"; };
+		CD2525C314BB4EE0001C8670 /* MBMarkersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMarkersView.m; sourceTree = "<group>"; };
 		CD4BA15F1490FA2100A58899 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../../Frameworks/Syphon.framework; sourceTree = "<group>"; };
 		CD4BA176149105F000A58899 /* Syphon Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Syphon Icon.icns"; path = "Resources/Syphon Icon.icns"; sourceTree = "<group>"; };
 		CD4BA18D1491186F00A58899 /* MBWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBWindowController.h; path = Source/MBWindowController.h; sourceTree = "<group>"; };
@@ -120,6 +131,18 @@
 		CDF8CEB914B8508200DA012F /* stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stop.png; path = Design/Assets/stop.png; sourceTree = SOURCE_ROOT; };
 		CDF8CEC014B85A5D00DA012F /* MBDelaySliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBDelaySliderCell.h; sourceTree = "<group>"; };
 		CDF8CEC114B85A5D00DA012F /* MBDelaySliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBDelaySliderCell.m; sourceTree = "<group>"; };
+		CDFAE83E14BC51B100B440D9 /* SyphonLibrary.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyphonLibrary.xib; sourceTree = "<group>"; };
+		CDFAE84114BC528B00B440D9 /* Syphon Icon 32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Syphon Icon 32x32.png"; path = "Design/Assets/Syphon Icon 32x32.png"; sourceTree = SOURCE_ROOT; };
+		CDFAE84614BC530600B440D9 /* SyphonLibraryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonLibraryController.h; sourceTree = "<group>"; };
+		CDFAE84714BC530600B440D9 /* SyphonLibraryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonLibraryController.m; sourceTree = "<group>"; };
+		CDFAE84A14BC536600B440D9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CDFAE84B14BC536600B440D9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CDFAE84D14BC761C00B440D9 /* SyphonSourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonSourceView.h; sourceTree = "<group>"; };
+		CDFAE84E14BC761C00B440D9 /* SyphonSourceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonSourceView.m; sourceTree = "<group>"; };
+		CDFAE85014BC80A400B440D9 /* SyphonSourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonSourceViewController.h; sourceTree = "<group>"; };
+		CDFAE85114BC80A400B440D9 /* SyphonSourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonSourceViewController.m; sourceTree = "<group>"; };
+		CDFAE85214BC80A400B440D9 /* SyphonSourceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyphonSourceViewController.xib; sourceTree = "<group>"; };
+		CDFAE85514BC8EB500B440D9 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cancel.png; path = Design/Assets/cancel.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +179,8 @@
 			children = (
 				CDA583951475BEFB00993A14 /* BDocument.xib */,
 				CDA583981475BEFC00993A14 /* MainMenu.xib */,
+				CDFAE83E14BC51B100B440D9 /* SyphonLibrary.xib */,
+				CDFAE85214BC80A400B440D9 /* SyphonSourceViewController.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -163,6 +188,7 @@
 		CD4BA17A1491130E00A58899 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				CDFAE84114BC528B00B440D9 /* Syphon Icon 32x32.png */,
 				CDF8CEB514B8508200DA012F /* fast fwd.png */,
 				CDF8CEB614B8508200DA012F /* fast rew.png */,
 				CDF8CEB714B8508200DA012F /* play.png */,
@@ -170,6 +196,7 @@
 				CDF8CEB914B8508200DA012F /* stop.png */,
 				CD81CF0E14B7509A007B4DDA /* tasto rec.png */,
 				CD81CF1014B752AC007B4DDA /* tasto rec emboss.png */,
+				CDFAE85514BC8EB500B440D9 /* cancel.png */,
 				CD4BA176149105F000A58899 /* Syphon Icon.icns */,
 			);
 			name = Graphics;
@@ -178,6 +205,7 @@
 		CD4BA17B1491132700A58899 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CDFAE84914BC535600B440D9 /* Other source */,
 				CD4BA17E1491133E00A58899 /* Controller */,
 				CD4BA17D1491133800A58899 /* View and custom controls */,
 				CD4BA17C1491132C00A58899 /* Model */,
@@ -212,6 +240,10 @@
 				CD820F9D14B10195004CF750 /* MBSlider */,
 				CD6B335A1494C64800E93C34 /* MBGLView.h */,
 				CD6B335B1494C64800E93C34 /* MBGLView.m */,
+				CDFAE85014BC80A400B440D9 /* SyphonSourceViewController.h */,
+				CDFAE85114BC80A400B440D9 /* SyphonSourceViewController.m */,
+				CDFAE84D14BC761C00B440D9 /* SyphonSourceView.h */,
+				CDFAE84E14BC761C00B440D9 /* SyphonSourceView.m */,
 			);
 			name = "View and custom controls";
 			sourceTree = "<group>";
@@ -225,6 +257,8 @@
 				CD4BA18E1491186F00A58899 /* MBWindowController.m */,
 				CD4BA1F2149131F000A58899 /* NSMutableStack.h */,
 				CD4BA1F3149131F000A58899 /* NSMutableStack.m */,
+				CDFAE84614BC530600B440D9 /* SyphonLibraryController.h */,
+				CDFAE84714BC530600B440D9 /* SyphonLibraryController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -238,6 +272,8 @@
 				CD820FA214B101CC004CF750 /* MBRateSliderCell.m */,
 				CDF8CEC014B85A5D00DA012F /* MBDelaySliderCell.h */,
 				CDF8CEC114B85A5D00DA012F /* MBDelaySliderCell.m */,
+				CD2525C214BB4EE0001C8670 /* MBMarkersView.h */,
+				CD2525C314BB4EE0001C8670 /* MBMarkersView.m */,
 			);
 			name = MBSlider;
 			sourceTree = "<group>";
@@ -323,6 +359,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		CDFAE84914BC535600B440D9 /* Other source */ = {
+			isa = PBXGroup;
+			children = (
+				CDFAE84A14BC536600B440D9 /* AppDelegate.h */,
+				CDFAE84B14BC536600B440D9 /* AppDelegate.m */,
+			);
+			name = "Other source";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -386,6 +431,10 @@
 				CDF8CEBC14B8508200DA012F /* play.png in Resources */,
 				CDF8CEBD14B8508200DA012F /* play reverse.png in Resources */,
 				CDF8CEBE14B8508200DA012F /* stop.png in Resources */,
+				CDFAE83F14BC51B100B440D9 /* SyphonLibrary.xib in Resources */,
+				CDFAE84214BC528B00B440D9 /* Syphon Icon 32x32.png in Resources */,
+				CDFAE85414BC80A400B440D9 /* SyphonSourceViewController.xib in Resources */,
+				CDFAE85614BC8EB500B440D9 /* cancel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +460,11 @@
 				CD820FA014B101AC004CF750 /* MBSlider.m in Sources */,
 				CD820FA314B101CC004CF750 /* MBRateSliderCell.m in Sources */,
 				CDF8CEC214B85A5D00DA012F /* MBDelaySliderCell.m in Sources */,
+				CD2525C414BB4EE0001C8670 /* MBMarkersView.m in Sources */,
+				CDFAE84814BC530600B440D9 /* SyphonLibraryController.m in Sources */,
+				CDFAE84C14BC536600B440D9 /* AppDelegate.m in Sources */,
+				CDFAE84F14BC761C00B440D9 /* SyphonSourceView.m in Sources */,
+				CDFAE85314BC80A400B440D9 /* SyphonSourceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,8 @@
 // maxDelay = bufferSize / fps
 @property (copy) NSNumber * bufferSize;
 @property NSTimeInterval maxDelay;
+@property NSTimeInterval curTime;
+@property NSTimeInterval curIndexTime;
 
 @property bool _recording;
 

@@ -38,6 +38,8 @@
 @synthesize syphonIn;
 
 //@synthesize _recording;
+@synthesize curTime;
+@synthesize curIndexTime;
 
 @synthesize markersArray;
 
@@ -86,7 +88,7 @@
 -(void)set_recording:(_Bool)newVal    
 {
     if (newVal!=_recording) 
-        waitForFirstFrame= (newVal!=_recording);
+        waitForFirstFrame= newVal == YES;
     _recording=newVal;
 }
 - (_Bool)_recording
@@ -124,6 +126,14 @@
         syphonIn.delegate = self;
         [self didChangeValueForKey:@"serverDescription"];
     }
+}
+
+-(NSDictionary *)serverDescription
+{
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            self.syInServerName, SyphonServerDescriptionNameKey,
+            self.syInApplicationName, SyphonServerDescriptionAppNameKey, 
+            nil];
 }
 
 - (void)setSyInApplicationName:(NSString *)newVal
@@ -165,7 +175,7 @@
 {   return [NSNumber numberWithInt: _bufferSize]; }
 
 - (void) setRecording: (NSNumber *)recording
-{   _recording = recording.boolValue;}
+{   self._recording = recording.boolValue;}
 
 - (NSNumber *) recording
 {   return [NSNumber numberWithBool: _recording];}
@@ -269,7 +279,11 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     }
     
     NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate] - bufferStart;
-    NSTimeInterval deltaTime = waitForFirstFrame ? 1.0 / [self.fps doubleValue] : timestamp - lastPushFrameTimestamp; 
+    NSTimeInterval deltaTime;
+    if (!waitForFirstFrame)
+        deltaTime = timestamp - lastPushFrameTimestamp;
+    else
+        deltaTime = 1.0 / [self.fps doubleValue];
     NSTimeInterval indexTimestamp = lastPushFrameIndexTimestamp + deltaTime;
     
     waitForFirstFrame = false;
@@ -369,9 +383,12 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
         
         if (addMarkerToNextFrame)
         {
+            
            // NSDictionary *marker = [NSDictionary dictionaryWithObject: newDict forKey: [NSNumber numberWithDouble: indexTimestamp]];
+            [self willChangeValueForKey:@"markersArray"];
             [markersArray addObject: [NSNumber numberWithDouble: indexTimestamp]];
             addMarkerToNextFrame = false;
+            [self didChangeValueForKey:@"markersArray"];
         }
         NSDictionary *oldDict = [frameStack push: newDict];
         if (oldDict)
@@ -394,6 +411,8 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
 	
     [self unlockTexture];
     
+    self.curIndexTime = lastPushFrameIndexTimestamp;
+    self.curTime = timestamp;
     
     return;
 
@@ -418,10 +437,13 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     NSTimeInterval preferredTimeStamp = delay + [self firstFrameInBufferTimeStamp];    
     int ceilPosition = ceil(delay * [self.fps doubleValue]); 
     int floorPosition = floor(delay * [self.fps doubleValue]);
-
-    NSDictionary *imageDict1 = frameStack.count > ceilPosition ? [frameStack objectAtIndex: ceilPosition] : nil;
-    NSDictionary *imageDict2 = frameStack.count > floorPosition ? [frameStack objectAtIndex: floorPosition] : nil;
-
+    
+    NSDictionary *imageDict1, *imageDict2;
+    @synchronized(frameStack)
+    {
+        imageDict1 = frameStack.count > ceilPosition ? [frameStack objectAtIndex: ceilPosition] : nil;
+        imageDict2 = frameStack.count > floorPosition ? [frameStack objectAtIndex: floorPosition] : nil;
+    }
     NSTimeInterval time1 = [[imageDict1 valueForKey: @"timeIndex"] doubleValue];
     NSTimeInterval time2 = [[imageDict2 valueForKey: @"timeIndex"] doubleValue];
     

@@ -46,6 +46,7 @@
     if (self)
     {
         manager = [[OSCManager alloc] initWithInPortClass: [OSCInPort class] outPortClass:nil];
+        
         //	by default, the osc manager's delegate will be told when osc messages are received
         [manager setDelegate:self];
         bindings=[NSMutableDictionary dictionary];
@@ -54,14 +55,15 @@
         inPort = [manager createNewInputForPort: 5000 withLabel:@"megabuffer"];
         
         //	register to receive notifications that the list of osc outputs has changed
-        [[NSNotificationCenter defaultCenter] addObserver:self 
+    /*    [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(_oscOutputsChangedNotification:) 
                                                      name:OSCOutPortsChangedNotification 
                                                    object:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(_oscOutputsChangedNotification:) 
                                                      name:OSCInPortsChangedNotification 
-                                                   object:nil];
+                                                   object:nil];*/
         
         
     }
