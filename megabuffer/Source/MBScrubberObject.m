@@ -12,15 +12,33 @@
 #import "MBBufferObject.h"
 #import "NSMutableStack.h"
 
+
+
+#define IN_MARKER_THRESHOLD 0.1
+
 @interface MBScrubberObject () {
     CGSize _currentSize;
     NSTimeInterval scrubStart;
     NSTimeInterval lastUpdateTimeStamp;
 }
 @property double _rate;
+//@property double _delay;
 @property double _delay;
+
+@property double _autoScrubDuration;
+
+@property double _isInAutoScrub;
+@property double _autoScrubStartTime;
+@property double _autoScrubEndTime;
+@property double _autoScrubTargetDelay;
+@property double _scrubStep;
+
 @property scrubModes _scrubMode;
 
+@property NSTimeInterval _selectedMarker;
+
+
+//@property (strong, nonatomic) NSOperation *_autoScrubOperation;
 
 @end
 
@@ -30,6 +48,16 @@
 @synthesize _scrubMode;
 @synthesize syphonOut;
 @synthesize buffer;
+//@synthesize _autoScrubOperation;
+@synthesize _autoScrubDuration;
+
+@synthesize _autoScrubStartTime;
+@synthesize _autoScrubEndTime;
+@synthesize _autoScrubTargetDelay;
+@synthesize _scrubStep;
+@synthesize _isInAutoScrub;
+
+@synthesize _selectedMarker;
 
 @synthesize serverName;
 
@@ -45,7 +73,8 @@
         // Kick off a new Thread
         [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
 
-        _scrubMode = [NSNumber numberWithInt:0];
+        _scrubMode = MBScrubMode_off;
+        _selectedMarker=0;
     }
     return self;
 }
@@ -73,7 +102,7 @@
 #pragma mark - Attributes
 - (NSSet *)attributes
 {
-    return [[super attributes] setByAddingObjectsFromSet:[NSSet setWithObjects: @"delay", @"scrubMode", @"rate", @"gotoNextMarker", @"gotoPrevMarker",@"gotoMarkerWithLabel", nil]];
+    return [[super attributes] setByAddingObjectsFromSet:[NSSet setWithObjects: @"delay", @"scrubMode", @"rate", @"gotoNextMarker", @"gotoPrevMarker", @"gotoMarkerWithLabel", @"autoScrubToDelay", @"autoScrubDuration", @"gotoDelay", nil]];
 }
 
 - (void) setDelay: (NSNumber *)newVal
@@ -102,14 +131,28 @@
 - (NSNumber *) rate
 {   return [NSNumber numberWithDouble:_rate]; }
 
-- (void) setGotoNextMaker: (id)options
+- (NSNumber *) autoScrubTargetDelay
+{   return [NSNumber numberWithDouble:_autoScrubTargetDelay]; }
+
+-(void)setAutoScrubTargetDelay:(NSNumber *)newVal
+{
+    _autoScrubTargetDelay = newVal.doubleValue;
+}
+
+- (void) setGotoNextMarker: (id)options
 {   [self gotoNextMarker]; }
 
-- (void) setGotoPrevMaker: (id)options
+- (void) setGotoPrevMarker: (id)options
 {   [self gotoPreviousMarker]; }
 
 - (void) setGotoMarkerWithLabel: (NSString *)label
 {  //TODO: implementare
+}
+
+- (void) setGotoDelay: (NSNumber *)value
+{
+    [self gotoDelay:value];
+
 }
 
 - (void) setScrubMode: (id)options
@@ -120,6 +163,62 @@
 {  //TODO: implementare
     return [NSNumber numberWithInt:0];
 }
+
+- (void) setAutoScrubDuration: (NSNumber *)newVal
+{   _autoScrubDuration= [newVal doubleValue]; }
+
+- (NSNumber *) autoScrubDuration
+{   return [NSNumber numberWithDouble:_autoScrubDuration]; }
+
+
+
+- (void) autoScrubToDelay: (NSNumber *)delay
+{
+//    if (_autoScrubOperation) return;
+  
+    if (_isInAutoScrub) return;
+    
+     NSNumber * initDelay = [self.delay copy];
+     NSNumber *outDelay = [delay copy];
+     NSTimeInterval startTime = lastUpdateTimeStamp;
+     NSTimeInterval scrubTime = _autoScrubDuration;
+     NSTimeInterval endTime = startTime + scrubTime;
+   //  double scrubStep = scrubTime / (outDelay.doubleValue - initDelay.doubleValue);
+
+   /* __block NSBlockOperation* autoScrubOperation = [NSBlockOperation blockOperationWithBlock:^{
+
+        
+        NSLog(@"qui");
+        if (lastUpdateTimeStamp > endTime)
+        {
+        NSLog(@"quo");
+            [autoScrubOperation cancel];
+        }
+        else
+        {
+                    NSLog(@"qua");
+            double newDelayValue = _delay + scrubStep;
+            self.delay = [NSNumber numberWithDouble: newDelayValue];
+        }
+    }];
+    _autoScrubOperation = autoScrubOperation;*/
+    //_scrubStep = scrubStep;
+    _autoScrubStartTime = lastUpdateTimeStamp;
+    _autoScrubEndTime = endTime;
+    
+    [self willChangeValueForKey:@"autoScrubTargetDelay"];
+    _autoScrubTargetDelay = delay.doubleValue;
+    [self didChangeValueForKey:@"autoScrubTargetDelay"];
+    _isInAutoScrub= YES;
+    
+}
+
+- (void) setAutoScrubToDelay: (NSNumber *)delay
+{
+    [self autoScrubToDelay:delay];
+}
+
+
 
 #pragma mark - Server creation
 
@@ -144,17 +243,61 @@
     if (scrubStart == 0) 
         scrubStart = [NSDate timeIntervalSinceReferenceDate];
 
+    
+    // auto scrub
+/*    if (_autoScrubOperation ) 
+    {   [_autoScrubOperation start];
+        [_autoScrubOperation waitUntilFinished];
+//        [[NSOperationQueue currentQueue] addOperation: _autoScrubOperation];   
+    }
+
+    if ([_autoScrubOperation isCancelled])
+        _autoScrubOperation = nil;*/
+    
+    
     NSTimeInterval curTime = [NSDate timeIntervalSinceReferenceDate] - scrubStart;
     NSTimeInterval deltaTime = lastUpdateTimeStamp - curTime;
     lastUpdateTimeStamp = curTime;
+
+    double framesStep;
+    if (_isInAutoScrub)
+    {
+        if (_autoScrubEndTime < curTime)
+            _isInAutoScrub = NO;
+        else
+        {
+            NSTimeInterval scrubTime = _autoScrubEndTime - curTime;
+            double scrubStep = (_autoScrubTargetDelay - _delay) / scrubTime;
+
+            framesStep= scrubStep * 1/ self.fps.doubleValue;
+
+        }
+        
+    }
     
-    double framesStep = deltaTime * 1/ [self.fps doubleValue];
+    
+    if (!_isInAutoScrub)
+        framesStep = deltaTime * (buffer._recording? _rate - 1 : _rate);
 //    delay += framesStep * rate;
-    NSTimeInterval newDelay = _delay + (buffer._recording? _rate -1 : _rate) * deltaTime;
+    
+    
+    NSTimeInterval newDelay = _delay + framesStep;
+
     newDelay = newDelay < 0 ? 0 : newDelay;
     newDelay = newDelay > [buffer.bufferSize intValue] / [buffer.fps doubleValue] ? [buffer.bufferSize intValue] / [buffer.fps doubleValue] : newDelay;
     [self set_delay: newDelay ];
+
+    // controlla se siamo usciti dall'area del marker
+    if (!_isInAutoScrub)
+    {
+        if ((_selectedMarker> 0) && (fabs(_delay + _selectedMarker - self.buffer.firstFrameInBufferTimeStamp)> IN_MARKER_THRESHOLD)) 
+        {
+            //NSLog (@"%.2f, %.2f, %.2f", _delay, _selectedMarker, self.buffer.firstFrameInBufferTimeStamp);
+            _selectedMarker = 0;
+        }
+    }
     
+    //NSLog(@"Posizione scrubber: %.4f", _delay);
     NSDictionary *imageDict =[self.buffer imageDictForDelay: _delay];
     if (!imageDict) return;
     
@@ -186,7 +329,7 @@
             [self setServerName: @"scrubber1"];
         [syphonOut publishFrameTexture: name
                          textureTarget: target
-                           imageRegion: NSMakeRect(0, 0, frame.size.width, frame.size.height)
+                           imageRegion: frame
                      textureDimensions: frame.size
                                flipped: NO];
     }
@@ -220,19 +363,38 @@
 }
 
 #pragma mark - Markers
+- (void)gotoDelay:(NSNumber *)value
+{
+    if (_autoScrubDuration>0) 
+        [self autoScrubToDelay:value];
+    else 
+        [self setDelay:value];
+}
 
 - (void) gotoPreviousMarker
 {
-    NSTimeInterval prevMarker = [self.buffer markerPrecedingPosition: self.buffer.firstFrameInBufferTimeStamp- self._delay];
+    NSTimeInterval curPosition = _selectedMarker ? _selectedMarker : self.buffer.firstFrameInBufferTimeStamp - self._delay;
+    NSTimeInterval prevMarker = [self.buffer markerPrecedingPosition: curPosition];
     if (prevMarker)
-        [self set_delay: self.buffer.firstFrameInBufferTimeStamp - prevMarker];    
+    {
+        _selectedMarker= prevMarker;
+        NSTimeInterval newDelayValue = self.buffer.firstFrameInBufferTimeStamp - prevMarker;
+        [self gotoDelay: [NSNumber numberWithDouble:newDelayValue]];
+        
+    }
 }
 
 - (void) gotoNextMarker
 {
-    NSTimeInterval nextMarker = [buffer markerFollowingPosition: self.buffer.firstFrameInBufferTimeStamp  - self._delay];
+
+    NSTimeInterval curPosition = _selectedMarker ? _selectedMarker : self.buffer.firstFrameInBufferTimeStamp - self._delay;
+    NSTimeInterval nextMarker = [buffer markerFollowingPosition: curPosition];    
     if (nextMarker)
-        [self set_delay: self.buffer.firstFrameInBufferTimeStamp - nextMarker];
+    {
+        _selectedMarker= nextMarker;
+        NSTimeInterval newDelayValue = self.buffer.firstFrameInBufferTimeStamp - nextMarker;
+        [self gotoDelay: [NSNumber numberWithDouble:newDelayValue]];
+    }
 }
 
 #pragma mark -Serialization

@@ -27,6 +27,8 @@ typedef enum {
 @property (strong, nonatomic) NSNumber *delay;
 @property (readonly, nonatomic) NSNumber *reverseDelay;
 @property (strong, nonatomic) NSNumber *scrubMode;
+@property (strong, nonatomic) NSNumber *autoScrubDuration;
+@property (strong, nonatomic) NSNumber *autoScrubTargetDelay;
 
 
 // Persistence
@@ -38,5 +40,8 @@ typedef enum {
 
 - (void) gotoPreviousMarker;
 - (void) gotoNextMarker;
+
+- (void) autoScrubToDelay: (NSNumber *)delay;
+- (void) gotoDelay: (NSNumber *) value;
 
 @end

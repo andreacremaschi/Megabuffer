@@ -10,7 +10,7 @@
 #import "MBGLView.h"
 #import "MBMarkersView.h"
 
-@class MBGLView;
+@class MBGLView, MBOSCPropertyBindingController;
 @interface MBWindowController : NSWindowController <MBGLViewFrameSource> {
     __unsafe_unretained MBMarkersView *markersView;
     __unsafe_unretained NSView *syphonSourceViewContainer;
@@ -33,6 +33,11 @@
 @property (unsafe_unretained) IBOutlet MBGLView *bufferOutputGLView;
 @property int rateSpeedSelection;
 @property NSTimeInterval curTime;
+@property (strong,nonatomic) NSNumber *reverseAutoScrubTarget;
+//@property double autoScrubTarget;
+
+@property (readonly,nonatomic) MBOSCPropertyBindingController *bindingController;
+
 
 // Actions
 - (IBAction)addMarkerToNextFrame:(id)sender;
@@ -40,5 +45,6 @@
 - (IBAction)nextMarker:(id)sender;
 - (IBAction)setSpeedButton:(id)sender;
 - (IBAction)setDelayButton:(id)sender;
+- (IBAction)autoScrubButton:(id)sender;
 
 @end

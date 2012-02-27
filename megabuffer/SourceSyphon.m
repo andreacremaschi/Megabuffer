@@ -134,9 +134,12 @@
     fpsCount = 0;
     FPS = 0;
     
-    syClient= [[SyphonClient alloc] initWithServerDescription:syphonDescription options:nil newFrameHandler:^(SyphonClient *client) {
+    syClient= [[SyphonClient alloc] initWithServerDescription: syphonDescription 
+                                                      options: nil 
+                                              newFrameHandler: ^(SyphonClient *client) {
         
-        @autoreleasepool {
+        //@autoreleasepool 
+        {
             // This gets called whenever the client receives a new frame.
             if (self.delegate)
             {

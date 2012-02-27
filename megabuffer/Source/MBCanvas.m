@@ -12,8 +12,10 @@
 @interface MBCanvas () {
     CVOpenGLTextureRef _texture;
     CVOpenGLTextureCacheRef _textureCache;
+    bool dropNext;
 }
 - (void)timerFire:(NSTimer*)theTimer;
+- (void) stop;
 @property int  _fps;
 
 @end
@@ -40,7 +42,7 @@
         _texture=0;
         _fps=MB_FPS;
         fps=[NSNumber numberWithInt: MB_FPS];
-        
+
     }
     return self;
 }
@@ -49,6 +51,19 @@
 {
     [timer invalidate];
     CVOpenGLTextureRelease(_texture);
+}
+
+#pragma mark - Accessors
+-(void)setFps:(NSNumber *)value
+{
+    [self willChangeValueForKey:@"fps"];
+    [self stop];
+    fps=[NSNumber numberWithDouble: fabs( value.doubleValue)];
+
+    // Kick off a new Thread
+    [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
+
+    [self didChangeValueForKey:@"fps"];    
 }
 
 #pragma mark - Attributes
@@ -89,8 +104,11 @@
 #pragma mark - Timer creation
 - (void) createTimer{
     @autoreleasepool {
+        
+                dropNext=false;
+        
         // Create a time for the thread
-        timer = [NSTimer timerWithTimeInterval:1.0/MB_FPS
+        timer = [NSTimer timerWithTimeInterval:1.0/ self.fps.doubleValue
                                         target:self 
                                       selector:@selector(timerFire:)
                                       userInfo:nil repeats:YES];
@@ -109,21 +127,28 @@
 }
 - (void)timerFire:(NSTimer*)theTimer
 {
-    @autoreleasepool {
+
         
-        
+        if (dropNext) 
+        {
+            // NSLog(@"%@ drop a frame.", self);
+            return;   
+        }
         @synchronized(timer)
         {
-            if (!timer.isValid)
+
+            if ((!timer.isValid) )
                 return;
 
-            [self _timerTick];
-
-            CVOpenGLTextureCacheFlush(_textureCache, 0);
-
-            
+            @autoreleasepool {
+                dropNext=YES;
+                [self _timerTick];
+                dropNext=NO;
+                
+                CVOpenGLTextureCacheFlush(_textureCache, 0);
+                                
+            }
         }
-    }
 }
 
 - (void) stop
@@ -131,6 +156,7 @@
     @synchronized (timer)
     {
         [timer invalidate];
+        timer=nil;
     }
 }
 
@@ -140,7 +166,9 @@
 - (void)setCurrentTexture:(CVOpenGLTextureRef)texture
 {
     if (_texture)
+    {
         CVOpenGLTextureRelease(_texture);
+    }
     _texture = texture;
     CVOpenGLTextureRetain(texture);
     

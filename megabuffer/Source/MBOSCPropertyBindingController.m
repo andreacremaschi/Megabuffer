@@ -14,7 +14,9 @@
 @property (strong, nonatomic) OSCManager    *manager;
 @property (strong, nonatomic) OSCInPort		*inPort;
 @property (strong, nonatomic) OSCOutPort	*manualOutPort;	//	this is the port that will actually be sending the data
-@property (strong, nonatomic) NSMutableDictionary    *bindings;
+@property (strong, nonatomic) NSMutableDictionary    *_bindings;
+@property (strong, nonatomic) NSMutableDictionary    *_lastValues;
+
 @end
 
 
@@ -23,7 +25,8 @@
 @synthesize manager;
 @synthesize inPort;
 @synthesize manualOutPort;
-@synthesize bindings;
+@synthesize _bindings;
+@synthesize _lastValues;
 
 
 #pragma mark - Singleton
@@ -49,7 +52,8 @@
         
         //	by default, the osc manager's delegate will be told when osc messages are received
         [manager setDelegate:self];
-        bindings=[NSMutableDictionary dictionary];
+        _bindings=[NSMutableDictionary dictionary];
+        _lastValues=[NSMutableDictionary dictionary];
 
         //inPort = [manager createNewInput];
         inPort = [manager createNewInputForPort: 5000 withLabel:@"megabuffer"];
@@ -71,30 +75,60 @@
 }
 
 
+- (void)dealloc
+{
+    _lastValues=nil;
+    _bindings=nil;
+    inPort=nil;
+    manager=nil;
+}
 
-#pragma mark - Bindings
+#pragma mark - _bindings
 
 - (void)bindOSCMessagesWithAddress: (NSString *)binding 
                           toObject: (id)observable 
                        withKeyPath: (NSString *)keyPath 
                            options: (NSDictionary *)options
 {
+    // NSLog(@"adding key: %@", binding);
+    
     NSMapTable *bindingMap = [NSMapTable mapTableWithStrongToStrongObjects];
     [bindingMap setObject: observable forKey: @"object"];
     [bindingMap setObject: keyPath forKey: @"keyPath"];    
     
     // TODO: controllare se l'oggetto risponde a quel keypath e fare qualcosa nel caso
     
-    [bindings setObject: bindingMap
+    [self willChangeValueForKey:@"bindings"];
+    [_bindings setObject: bindingMap
                  forKey: binding];
+    [_lastValues setObject: [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                             [NSNull null], @"value",
+                             [NSNull null], @"timestamp",
+                             nil]
+                    forKey: binding];
+    [self didChangeValueForKey:@"bindings"];    
 }
 
 - (void)unbindOSCAddress:(NSString *)address
 {
-    [bindings removeObjectForKey: address];
+    // NSLog(@"removing key: %@", address);
+    [self willChangeValueForKey:@"bindings"];    
+    [_lastValues removeObjectForKey: address];
+    [_bindings removeObjectForKey: address];
+    [self didChangeValueForKey:@"bindings"];    
+
 }
 
 
++ (NSSet *)keyPathsForValuesAffectingBindings
+{
+    return [NSSet setWithObject: @"_lastValues"];
+}
+
+-(NSDictionary *)bindings
+{
+    return _lastValues;
+}
 
 #pragma mark - Observing callbacks
 
@@ -128,7 +162,8 @@
  }*/
 
 - (void) receivedOSCMessage:(OSCMessage *)m	{
-    id binding = [bindings objectForKey: m.address];
+    // NSLog(@"%@", m);
+    id binding = [_bindings objectForKey: m.address];
     if (binding)
     {
         if (m.valueCount == 1)
@@ -167,7 +202,14 @@
             }            
             id object = [binding objectForKey:@"object"];
             NSString *keyPath = [binding objectForKey:@"keyPath"];
-
+            /*
+            [self willChangeValueForKey: @"bindings"];
+            NSMutableDictionary *lastVal = [_lastValues objectForKey: m.address];
+            [lastVal setObject:value forKey:@"value"];
+            [lastVal setObject:[NSDate date] forKey:@"timestamp"];
+            [self didChangeValueForKey: @"bindings"];
+*/
+            
             [object setValue: value forKey: keyPath];
             
         } else

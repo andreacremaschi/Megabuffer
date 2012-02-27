@@ -28,6 +28,7 @@
     bool waitForFirstFrame;
     bool addMarkerToNextFrame;
     bool _recording;
+    bool _bufferSizeChanged;
 }
 @property uint _bufferSize;
 @end
@@ -56,7 +57,7 @@
     {
         self.name = @"buffer";
         markersArray = [NSMutableArray array];
-        _bufferSize = 250; //10 secondi a 25 fps
+        _bufferSize = 72; //10 secondi a 25 fps
         _frameSize = NSMakeSize(0,0);
         _texture=nil;
         _recording = true;
@@ -65,6 +66,7 @@
         lastPushFrameIndexTimestamp = 0;
         waitForFirstFrame = true;
         addMarkerToNextFrame = false;
+        _bufferSizeChanged = YES;
         
         NSError *error;
         if (! [self initOpenGLContextWithSharedContext: nil error: &error]) 
@@ -165,11 +167,16 @@
 - (NSSet *)attributes
 {
     return [[super attributes] setByAddingObjectsFromSet:
-            [NSSet setWithObjects: @"bufferSize", @"recording", @"addMarker", @"addMarkerWithLabel",  nil]];
+            [NSSet setWithObjects: @"bufferSize", @"recording", @"addMarker", @"addMarkerWithLabel", 
+             @"syInServerName", @"syInApplicationName", nil]];
 }
 
 -(void)setBufferSize:(NSNumber *)bufferSize
-{   _bufferSize = [bufferSize intValue];    }
+{  
+    
+    _bufferSize = abs([bufferSize intValue]);
+    _bufferSizeChanged = YES;
+}
 
 - (NSNumber *)bufferSize
 {   return [NSNumber numberWithInt: _bufferSize]; }
@@ -226,7 +233,7 @@
     
 	//Create buffer pool
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    //	[attributes setObject:[NSNumber numberWithUnsignedInt:15] forKey:(NSString*)kCVOpenGLBufferPoolMinimumBufferCountKey];
+    [attributes setObject: [NSNumber numberWithInt: _bufferSize] forKey:(NSString*)kCVOpenGLBufferPoolMinimumBufferCountKey];
     //	[attributes setObject:[NSNumber numberWithUnsignedInt:0.3] forKey:(NSString*)kCVOpenGLBufferPoolMaximumBufferAgeKey];
 	[attributes setValue:[NSNumber numberWithInt:size.width] forKey:(NSString*)kCVOpenGLBufferWidth];
 	[attributes setValue:[NSNumber numberWithInt:size.height] forKey:(NSString*)kCVOpenGLBufferHeight];
@@ -307,12 +314,25 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
 	
 	BOOL changed = NO;
 	if ((_frameSize.width != imageSize.width) || 
-		(_frameSize.height != imageSize.height))
+		(_frameSize.height != imageSize.height)
+        || _bufferSizeChanged)
 	{
 		changed = YES;
 		_frameSize.width = imageSize.width;
 		_frameSize.height = imageSize.height;
 		[self initCVOpenGLBufferPoolWithSize: imageSize error: nil];
+        frameStack.maxObjects = _bufferSize;
+        while (frameStack.count > frameStack.maxObjects)
+        {
+            
+            NSDictionary *oldDict = [frameStack pop];
+            if (oldDict)
+            {
+                CVPixelBufferRef oldBuffer = [[oldDict valueForKey: @"image"] pointerValue];
+                CVOpenGLBufferRelease(oldBuffer);
+            }
+        }
+        _bufferSizeChanged = NO;
 	}
 	
 	if (changed)
@@ -434,9 +454,14 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
 
 - (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay
 {
+    
     NSTimeInterval preferredTimeStamp = delay + [self firstFrameInBufferTimeStamp];    
-    int ceilPosition = ceil(delay * [self.fps doubleValue]); 
-    int floorPosition = floor(delay * [self.fps doubleValue]);
+    int position = ceil(delay * [self.fps doubleValue]); 
+    position = position >= frameStack.count ? frameStack.count-1: position;
+    NSDictionary *imageDict1 = [frameStack objectAtIndex:position];
+    return imageDict1;
+    
+/*    int floorPosition = floor(delay * [self.fps doubleValue]);
     
     NSDictionary *imageDict1, *imageDict2;
     @synchronized(frameStack)
@@ -448,10 +473,7 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     NSTimeInterval time2 = [[imageDict2 valueForKey: @"timeIndex"] doubleValue];
     
     return fabs(time2-preferredTimeStamp) < fabs(time1 - preferredTimeStamp) ? imageDict1 : imageDict2;
-    
-//    if (stackPosition>=buffer.frameStack.count) scrubPosition=buffer.frameStack.count-1;
-    
-    
+  */  
 }
 
 #pragma mark - Markers

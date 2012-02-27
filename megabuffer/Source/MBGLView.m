@@ -137,7 +137,8 @@ CVReturn MyDisplayLinkCallback (
     
 	NSRect frame = self.frame;
 	
-	/*if (needsRebuild)
+    // TODO: ottimizzare!
+	/*if (_needsRebuild)
 	{*/		
 		
 		// Setup OpenGL states
@@ -154,7 +155,7 @@ CVReturn MyDisplayLinkCallback (
         
 		[[self openGLContext] update];
 		
-	/*	needsRebuild = NO;
+	/*	_needsRebuild = NO;
 	}*/
 	
 	// Draw our renderer's texture
@@ -267,7 +268,12 @@ CVReturn MyDisplayLinkCallback (
         id <KeystoneTextureSourceProtocol> textureSource = self.frameSource;
         NSTimeInterval curFrameTime = [textureSource currentFrameTimeStamp];
         if (curFrameTime != lastFrameDrawnTimestamp)
+        {
             [self drawRect:NSZeroRect];
+            lastFrameDrawnTimestamp = curFrameTime;
+        }
+/*        else
+            NSLog(@"%@ skips frame.", self);*/
     }
     return kCVReturnSuccess;
 }

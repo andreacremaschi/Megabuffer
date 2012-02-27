@@ -13,7 +13,12 @@
 
 + (MBOSCPropertyBindingController *)sharedController;
 
-- (void)bindOSCMessagesWithAddress:(NSString *)binding toObject:(id)observable withKeyPath:(NSString *)keyPath options:(NSDictionary *)options;
+- (void)bindOSCMessagesWithAddress: (NSString *)binding 
+                          toObject: (id)observable 
+                       withKeyPath: (NSString *)keyPath 
+                           options: (NSDictionary *)options;
 - (void)unbindOSCAddress:(NSString *)address;
+
+@property (readonly, nonatomic) NSDictionary    *bindings;
 
 @end

@@ -43,7 +43,7 @@
                 bindingPath =  [NSString stringWithFormat: @"/%@/%@", selfCopy.buffer.name, newBinding];
                 [[MBOSCPropertyBindingController sharedController]  bindOSCMessagesWithAddress: bindingPath
                                                                                       toObject: selfCopy.buffer 
-                                                                                   withKeyPath: @"recording" 
+                                                                                   withKeyPath: newBinding
                                                                                        options: nil];
             }
             

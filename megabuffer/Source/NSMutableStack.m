@@ -106,4 +106,9 @@
     return _mutableArray.lastObject;
 }
 
+- (void)enumerateObjectsUsingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
+{
+    [_mutableArray enumerateObjectsUsingBlock: block];
+}
+
 @end

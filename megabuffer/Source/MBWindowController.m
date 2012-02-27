@@ -12,6 +12,12 @@
 #import "MBScrubberObject.h"
 #import "MBGLView.h"
 
+#import "SyphonSourceViewController.h"
+
+#import "MBOSCPropertyBindingController.h"
+
+#import "NSObject+BlockObservation.h"
+
 #import <Syphon/Syphon.h>
 
 @implementation MBWindowController
@@ -22,6 +28,7 @@
 @synthesize availableServersController;
 @synthesize liveInputGLView;
 @synthesize bufferOutputGLView;
+//@synthesize autoScrubTarget;
 
 #pragma mark - Initialization
 
@@ -67,7 +74,7 @@
     
     //TEMP
     [bDoc.buffer initOpenGLContextWithSharedContext: self.liveInputGLView.openGLContext error:nil];
-    bDoc.scrubber.openGLContext = self.bufferOutputGLView.openGLContext;
+    [bDoc.scrubber initOpenGLContextWithSharedContext: self.bufferOutputGLView.openGLContext error:nil];
     bDoc.scrubber.pixelFormat = self.bufferOutputGLView.pixelFormat;
     //TEMP
     
@@ -124,6 +131,23 @@
                             toObject:bDoc.buffer 
                          withKeyPath:@"syphonIn.syClient.serverDescription"
                              options:nil];
+
+    SyphonSourceViewController __block *syphonSourceViewControllerCopy = (SyphonSourceViewController *)syphonSourceViewController;
+    [bDoc.buffer addObserverForKeyPath:@"serverDescription" 
+                                  task:^(id obj, NSDictionary *change) {
+
+//                                      [syphonSourceViewControllerCopy setServerDescription: bDoc.buffer.
+                                      NSString *name = [[change objectForKey: @"new"] objectForKey: SyphonServerDescriptionNameKey];
+                                      NSString *appName = [[change objectForKey: @"new"] objectForKey: SyphonServerDescriptionAppNameKey];
+                                      NSArray *matchingServers = [[SyphonServerDirectory sharedDirectory] serversMatchingName:  name
+                                                                                                                      appName:appName];
+                                      NSDictionary *actualServerDescription = [matchingServers lastObject];
+                                      
+                                     // NSLog (@"%@", actualServerDescription);
+                                      [syphonSourceViewControllerCopy setServerDescription: actualServerDescription];
+                                      [syphonSourceViewControllerCopy.view setNeedsDisplay: YES];
+                                  }];
+    
     
     // osc accessory view
     NSView * windowMainView =[self.window.contentView superview] ;
@@ -235,6 +259,24 @@
     
 }
 
+- (MBOSCPropertyBindingController *)bindingController
+{ 
+    return [MBOSCPropertyBindingController sharedController];
+}
+
++(NSSet *)keyPathsForValuesAffectingReverseAutoScrubTarget
+{
+    return [NSSet setWithObject:@"self.document.scrubber.autoScrubTargetDelay"];
+}
+- (NSNumber *) reverseAutoScrubTarget
+{   
+        BDocument *bDocument = (BDocument*)self.document;
+    return [NSNumber numberWithDouble: bDocument.buffer.maxDelay - bDocument.scrubber.autoScrubTargetDelay.doubleValue]; }
+
+- (void) setReverseAutoScrubTarget: (NSNumber *)revVal
+{         BDocument *bDocument = (BDocument*)self.document;
+    bDocument.scrubber.autoScrubTargetDelay = [NSNumber numberWithDouble: bDocument.buffer.maxDelay - revVal.doubleValue]; }
+
 
 #pragma mark - IBActions
 
@@ -273,6 +315,13 @@
     
     BDocument *bDoc=(BDocument *) self.document;
     [bDoc.scrubber setDelay: [NSNumber numberWithDouble:delay]];
+    
+}
+
+- (IBAction)autoScrubButton:(id)sender
+{
+    BDocument *bDoc=(BDocument *) self.document;
+    [bDoc.scrubber gotoDelay: [NSNumber numberWithDouble: bDoc.scrubber.autoScrubTargetDelay.doubleValue ]];
     
 }
 

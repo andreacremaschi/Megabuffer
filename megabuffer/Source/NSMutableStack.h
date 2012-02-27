@@ -16,6 +16,9 @@
 - (id)objectAtIndex:(NSUInteger)index;
 
 - (id)push:(id)object;
+- (id) pop;
 - (id) lastObject;
+
+- (void)enumerateObjectsUsingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block;
 
 @end

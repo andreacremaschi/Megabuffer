@@ -15,6 +15,12 @@
 {
     self.representedObject = serverDescription;
 }
+
+-(void)setRepresentedObject:(id)representedObject
+{
+    [super setRepresentedObject:representedObject];
+    [self.view setNeedsDisplay: YES];
+}
 -(NSDictionary *)serverDescription
 {
     return self.representedObject;
@@ -22,7 +28,6 @@
 
 - (IBAction)resetSelectedServer:(id)sender {
     self.representedObject = nil;
-    self.view.needsDisplay=YES;
 }
 
 - (void)loadView
