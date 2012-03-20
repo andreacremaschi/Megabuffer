@@ -29,7 +29,9 @@ typedef enum {
 @property (strong, nonatomic) NSNumber *scrubMode;
 @property (strong, nonatomic) NSNumber *autoScrubDuration;
 @property (strong, nonatomic) NSNumber *autoScrubTargetDelay;
-
+@property (readonly) NSTimeInterval scrubberPosition;
+@property (readwrite, nonatomic) double percentualDelay;
+@property (readwrite, nonatomic) double percentualAutoScrubTargetDelay;
 
 // Persistence
 - (BOOL) setupWithDictionary: (NSDictionary *)dict;

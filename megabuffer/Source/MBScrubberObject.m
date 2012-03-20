@@ -20,17 +20,19 @@
     CGSize _currentSize;
     NSTimeInterval scrubStart;
     NSTimeInterval lastUpdateTimeStamp;
+    NSTimeInterval _autoScrubStartIndexPosition;
+    double _autoscrubRate;
 }
 @property double _rate;
 //@property double _delay;
-@property double _delay;
+@property NSTimeInterval _scrubberPosition;
 
 @property double _autoScrubDuration;
 
 @property double _isInAutoScrub;
 @property double _autoScrubStartTime;
 @property double _autoScrubEndTime;
-@property double _autoScrubTargetDelay;
+@property NSTimeInterval _autoScrubTargetDelay;
 @property double _scrubStep;
 
 @property scrubModes _scrubMode;
@@ -44,7 +46,7 @@
 
 @implementation MBScrubberObject
 @synthesize _rate;
-@synthesize _delay;
+@synthesize _scrubberPosition;
 @synthesize _scrubMode;
 @synthesize syphonOut;
 @synthesize buffer;
@@ -99,6 +101,11 @@
     return [NSSet setWithObject:@"delay"];
 }
 
++(NSSet *)keyPathsForValuesAffectingDelay
+{
+    return [NSSet setWithObjects:@"_scrubberPosition", @"_delay", nil];
+}
+
 #pragma mark - Attributes
 - (NSSet *)attributes
 {
@@ -106,21 +113,50 @@
 }
 
 - (void) setDelay: (NSNumber *)newVal
-{   [self set_delay: [newVal doubleValue]]; }
-
+{  
+    [self set_scrubberPosition: self.buffer.curIndexTime  - newVal.doubleValue]; 
+//NSLog(@"Buffer cur time: %.2f delay: %.2f, cur scrubber pos: %.2f", self.buffer.curIndexTime, newVal.doubleValue, _scrubberPosition);
+}
 + (NSSet *)keyPathsForValuesAffectingRate
 {
     return [NSSet setWithObject:@"_rate"];
 }
-+ (NSSet *)keyPathsForValuesAffectingDelay
-{
-    return [NSSet setWithObject:@"_delay"];
-}
+
+- (NSTimeInterval) scrubberPosition
+{   return _scrubberPosition; }
+
+
 - (NSNumber *) delay
-{   return [NSNumber numberWithDouble:_delay]; }
+{   return [NSNumber numberWithDouble:self.buffer.curIndexTime - _scrubberPosition]; }
 
 - (NSNumber *) reverseDelay
-{   return [NSNumber numberWithDouble: buffer.maxDelay - _delay]; }
+{   //NSLog (@"first frame : %.2f\nlastframe : %.2f\ncur position : %.2f\n", buffer.firstFrameInBufferTimeStamp , buffer.lastFrameInBufferTimeStamp , _scrubberPosition );
+    return [NSNumber numberWithDouble: _scrubberPosition-buffer.lastFrameInBufferTimeStamp]; 
+}
++ (NSSet *)keyPathsForValuesAffectingPercentualDelay
+{
+    return [NSSet setWithObject:@"_scrubberPosition"];
+}
+
+- (double) percentualDelay {
+    NSTimeInterval lastFr = buffer.lastFrameInBufferTimeStamp;
+    NSTimeInterval firstFr = buffer.firstFrameInBufferTimeStamp;
+   //NSLog (@"first frame : %.2f\nlastframe : %.2f\ncur position : %.2f\n", buffer.firstFrameInBufferTimeStamp , buffer.lastFrameInBufferTimeStamp , _scrubberPosition );
+    double percD =  (_scrubberPosition - lastFr) / (firstFr - lastFr);
+
+   // NSLog (@"percD: %.2f", percD);
+    return percD;
+}
+
+- (void) setPercentualDelay: (double) newVal {
+    NSTimeInterval lastFr = buffer.lastFrameInBufferTimeStamp;
+    NSTimeInterval firstFr = buffer.firstFrameInBufferTimeStamp;
+    //NSLog (@"first frame : %.2f\nlastframe : %.2f\ncur position : %.2f\n", buffer.firstFrameInBufferTimeStamp , buffer.lastFrameInBufferTimeStamp , _scrubberPosition );
+    [self  set_scrubberPosition: newVal * (firstFr - lastFr) + lastFr];
+    // NSLog (@"percD: %.2f", percD);
+}
+
+//{   return [NSNumber numberWithDouble: buffer.maxDelay - _delay]; }
 
 - (void) setReverseDelay: (NSNumber *)revDelay
 {   self.delay = [NSNumber numberWithDouble: buffer.maxDelay - revDelay.doubleValue]; }
@@ -134,9 +170,25 @@
 - (NSNumber *) autoScrubTargetDelay
 {   return [NSNumber numberWithDouble:_autoScrubTargetDelay]; }
 
+- (double) percentualAutoScrubTargetDelay
+{
+    NSTimeInterval lastFr = buffer.lastFrameInBufferTimeStamp;
+    NSTimeInterval firstFr = buffer.firstFrameInBufferTimeStamp;
+    return _autoScrubTargetDelay / (firstFr - lastFr);
+}
+
+- (void) setPercentualAutoScrubTargetDelay: (double) newVal
+{
+    NSTimeInterval lastFr = buffer.lastFrameInBufferTimeStamp;
+    NSTimeInterval firstFr = buffer.firstFrameInBufferTimeStamp;
+    [self  set_autoScrubTargetDelay:(1.0- newVal) * (firstFr - lastFr) ];
+}
+
 -(void)setAutoScrubTargetDelay:(NSNumber *)newVal
 {
-    _autoScrubTargetDelay = newVal.doubleValue;
+    NSTimeInterval lastFr = buffer.lastFrameInBufferTimeStamp;
+    NSTimeInterval firstFr = buffer.firstFrameInBufferTimeStamp;
+    _autoScrubTargetDelay = self.buffer.curIndexTime - newVal.doubleValue;
 }
 
 - (void) setGotoNextMarker: (id)options
@@ -180,10 +232,26 @@
     
      NSNumber * initDelay = [self.delay copy];
      NSNumber *outDelay = [delay copy];
-     NSTimeInterval startTime = lastUpdateTimeStamp;
-     NSTimeInterval scrubTime = _autoScrubDuration;
-     NSTimeInterval endTime = startTime + scrubTime;
-   //  double scrubStep = scrubTime / (outDelay.doubleValue - initDelay.doubleValue);
+    
+    
+    
+    NSTimeInterval startTime = lastUpdateTimeStamp;
+    NSTimeInterval scrubTime = _autoScrubDuration;
+    NSTimeInterval endTime = startTime + scrubTime;
+   
+    NSTimeInterval startIndex = _scrubberPosition;
+    NSTimeInterval endIndex =  buffer.firstFrameInBufferTimeStamp - delay.doubleValue;
+    
+    if (self.buffer._recording)
+    {
+        endIndex += scrubTime;
+    }
+    
+    
+    _autoscrubRate = (endIndex - startIndex) / (endTime - startTime);
+    _autoScrubStartIndexPosition = _scrubberPosition;
+    
+    //  double scrubStep = scrubTime / (outDelay.doubleValue - initDelay.doubleValue);
 
    /* __block NSBlockOperation* autoScrubOperation = [NSBlockOperation blockOperationWithBlock:^{
 
@@ -203,6 +271,7 @@
     }];
     _autoScrubOperation = autoScrubOperation;*/
     //_scrubStep = scrubStep;
+    
     _autoScrubStartTime = lastUpdateTimeStamp;
     _autoScrubEndTime = endTime;
     
@@ -260,45 +329,51 @@
     lastUpdateTimeStamp = curTime;
 
     double framesStep;
+    NSTimeInterval newScrubPosition;
     if (_isInAutoScrub)
     {
         if (_autoScrubEndTime < curTime)
             _isInAutoScrub = NO;
         else
         {
+            // ancora nel periodo di autoscrub: calcola la nuova posizione dello scrubber
+            
             NSTimeInterval scrubTime = _autoScrubEndTime - curTime;
-            double scrubStep = (_autoScrubTargetDelay - _delay) / scrubTime;
+            double scrubStep = (_autoScrubTargetDelay - self.delay.doubleValue) / scrubTime;
 
-            framesStep= scrubStep * 1/ self.fps.doubleValue;
-
+            //framesStep= scrubStep * 1/ self.fps.doubleValue;
+            newScrubPosition =  _autoscrubRate * (curTime - _autoScrubStartTime) + _autoScrubStartIndexPosition ;
+            
+            
         }
-        
     }
+
     
     
     if (!_isInAutoScrub)
-        framesStep = deltaTime * (buffer._recording? _rate - 1 : _rate);
-//    delay += framesStep * rate;
+    {
+        framesStep = deltaTime * (buffer._recording? _rate : _rate );
+        newScrubPosition = _scrubberPosition - framesStep;  
+    }
+    newScrubPosition = newScrubPosition > buffer.firstFrameInBufferTimeStamp ? buffer.firstFrameInBufferTimeStamp : newScrubPosition;
+    newScrubPosition = newScrubPosition < buffer.lastFrameInBufferTimeStamp ? buffer.lastFrameInBufferTimeStamp : newScrubPosition;
+    [self set_scrubberPosition:newScrubPosition];
+    //NSLog(@"New scrubber pos: %.2f",  _scrubberPosition);
     
-    
-    NSTimeInterval newDelay = _delay + framesStep;
-
-    newDelay = newDelay < 0 ? 0 : newDelay;
-    newDelay = newDelay > [buffer.bufferSize intValue] / [buffer.fps doubleValue] ? [buffer.bufferSize intValue] / [buffer.fps doubleValue] : newDelay;
-    [self set_delay: newDelay ];
-
     // controlla se siamo usciti dall'area del marker
     if (!_isInAutoScrub)
     {
-        if ((_selectedMarker> 0) && (fabs(_delay + _selectedMarker - self.buffer.firstFrameInBufferTimeStamp)> IN_MARKER_THRESHOLD)) 
+        // TODO
+/*        if ((_selectedMarker> 0) && (fabs(_delay + _selectedMarker - self.buffer.firstFrameInBufferTimeStamp)> IN_MARKER_THRESHOLD)) 
         {
             //NSLog (@"%.2f, %.2f, %.2f", _delay, _selectedMarker, self.buffer.firstFrameInBufferTimeStamp);
             _selectedMarker = 0;
-        }
+        }*/
     }
     
     //NSLog(@"Posizione scrubber: %.4f", _delay);
-    NSDictionary *imageDict =[self.buffer imageDictForDelay: _delay];
+//    NSDictionary *imageDict =[self.buffer imageDictForDelay: _delay];
+    NSDictionary *imageDict =[self.buffer imageDictForTimeIndex: newScrubPosition];
     if (!imageDict) return;
     
     
@@ -373,7 +448,8 @@
 
 - (void) gotoPreviousMarker
 {
-    NSTimeInterval curPosition = _selectedMarker ? _selectedMarker : self.buffer.firstFrameInBufferTimeStamp - self._delay;
+//    NSTimeInterval curPosition = _selectedMarker ? _selectedMarker : self.buffer.firstFrameInBufferTimeStamp - self._delay;
+    NSTimeInterval curPosition = _scrubberPosition;
     NSTimeInterval prevMarker = [self.buffer markerPrecedingPosition: curPosition];
     if (prevMarker)
     {
@@ -387,7 +463,8 @@
 - (void) gotoNextMarker
 {
 
-    NSTimeInterval curPosition = _selectedMarker ? _selectedMarker : self.buffer.firstFrameInBufferTimeStamp - self._delay;
+//    NSTimeInterval curPosition = _selectedMarker ? _selectedMarker : self.buffer.firstFrameInBufferTimeStamp - self._delay;
+    NSTimeInterval curPosition = _scrubberPosition;
     NSTimeInterval nextMarker = [buffer markerFollowingPosition: curPosition];    
     if (nextMarker)
     {

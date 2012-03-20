@@ -41,6 +41,7 @@
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time;
 - (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay;
+- (NSDictionary *)imageDictForTimeIndex: (NSTimeInterval)scrubPosition;
 
 - (NSTimeInterval) firstFrameInBufferTimeStamp;
 - (NSTimeInterval) lastFrameInBufferTimeStamp;

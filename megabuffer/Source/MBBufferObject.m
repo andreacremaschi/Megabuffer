@@ -232,15 +232,29 @@
         CVOpenGLBufferPoolRelease(_bufferPool);
     
 	//Create buffer pool
-	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    [attributes setObject: [NSNumber numberWithInt: _bufferSize] forKey:(NSString*)kCVOpenGLBufferPoolMinimumBufferCountKey];
+	NSMutableDictionary *poolAttributes = [NSMutableDictionary dictionary];
+    NSMutableDictionary *bufferAttributes = [NSMutableDictionary dictionary];
+
+    // pool attributes
+    [poolAttributes setObject: [NSNumber numberWithInt: _bufferSize] forKey:(NSString*)kCVOpenGLBufferPoolMinimumBufferCountKey];
     //	[attributes setObject:[NSNumber numberWithUnsignedInt:0.3] forKey:(NSString*)kCVOpenGLBufferPoolMaximumBufferAgeKey];
-	[attributes setValue:[NSNumber numberWithInt:size.width] forKey:(NSString*)kCVOpenGLBufferWidth];
-	[attributes setValue:[NSNumber numberWithInt:size.height] forKey:(NSString*)kCVOpenGLBufferHeight];
+    
+    // buffer attributes
+	[bufferAttributes setValue: [NSNumber numberWithInt:size.width] 
+                  forKey: (NSString*)kCVOpenGLBufferWidth];
 	
-    CFDictionaryRef cfDict = CFBridgingRetain(attributes);
-	theError = CVOpenGLBufferPoolCreate(kCFAllocatorDefault, NULL, cfDict, &_bufferPool);
-    CFBridgingRelease(cfDict);
+	[bufferAttributes setValue: [NSNumber numberWithInt:size.height] 
+                        forKey: (NSString*)kCVOpenGLBufferHeight];
+    
+/*    [bufferAttributes setValue: [NSNumber numberWithInt:GL_INTENSITY8] 
+                  forKey: (NSString*)kCVOpenGLBufferInternalFormat];*/
+    
+	
+    CFDictionaryRef cfPDict = CFBridgingRetain(poolAttributes);
+    CFDictionaryRef cfBDict = CFBridgingRetain(bufferAttributes);
+	theError = CVOpenGLBufferPoolCreate(kCFAllocatorDefault, cfPDict, cfBDict, &_bufferPool);
+    CFBridgingRelease(cfPDict);
+    CFBridgingRelease(cfPDict);
     
 	if(theError) {
 		NSLog(@"CVPixelBufferPoolCreate() failed with error %i", theError);
@@ -474,6 +488,43 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     
     return fabs(time2-preferredTimeStamp) < fabs(time1 - preferredTimeStamp) ? imageDict1 : imageDict2;
   */  
+}
+
+- (NSDictionary *)imageDictForTimeIndex:(NSTimeInterval)scrubPosition
+{
+    
+    NSTimeInterval preferredTimeStamp = scrubPosition;    
+    NSDictionary *imageDict;
+
+//    int position = ceil(delay * [self.fps doubleValue]); 
+
+    @synchronized(frameStack)
+    {
+        int i ;
+        for (i=0;i<frameStack.count; i++)
+        {
+            imageDict = [frameStack objectAtIndex: i];
+            NSTimeInterval time = [[imageDict valueForKey: @"timeIndex"] doubleValue];
+            if (time < scrubPosition)
+                break;
+        }
+    }
+    
+    return imageDict;
+    
+    /*    int floorPosition = floor(delay * [self.fps doubleValue]);
+     
+     NSDictionary *imageDict1, *imageDict2;
+     @synchronized(frameStack)
+     {
+     imageDict1 = frameStack.count > ceilPosition ? [frameStack objectAtIndex: ceilPosition] : nil;
+     imageDict2 = frameStack.count > floorPosition ? [frameStack objectAtIndex: floorPosition] : nil;
+     }
+     NSTimeInterval time1 = [[imageDict1 valueForKey: @"timeIndex"] doubleValue];
+     NSTimeInterval time2 = [[imageDict2 valueForKey: @"timeIndex"] doubleValue];
+     
+     return fabs(time2-preferredTimeStamp) < fabs(time1 - preferredTimeStamp) ? imageDict1 : imageDict2;
+     */  
 }
 
 #pragma mark - Markers

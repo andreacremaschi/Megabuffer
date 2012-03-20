@@ -127,12 +127,12 @@
              toObject: syphonSourceViewController
           withKeyPath: @"representedObject"
               options: nil];
-    [syphonSourceViewController bind: @"representedObject" 
+  /*  [syphonSourceViewController bind: @"representedObject" 
                             toObject:bDoc.buffer 
                          withKeyPath:@"syphonIn.syClient.serverDescription"
-                             options:nil];
+                             options:nil];*/
 
-    SyphonSourceViewController __block *syphonSourceViewControllerCopy = (SyphonSourceViewController *)syphonSourceViewController;
+  /*  SyphonSourceViewController __block *syphonSourceViewControllerCopy = (SyphonSourceViewController *)syphonSourceViewController;
     [bDoc.buffer addObserverForKeyPath:@"serverDescription" 
                                   task:^(id obj, NSDictionary *change) {
 
@@ -146,7 +146,7 @@
                                      // NSLog (@"%@", actualServerDescription);
                                       [syphonSourceViewControllerCopy setServerDescription: actualServerDescription];
                                       [syphonSourceViewControllerCopy.view setNeedsDisplay: YES];
-                                  }];
+                                  }];*/
     
     
     // osc accessory view
@@ -274,8 +274,10 @@
     return [NSNumber numberWithDouble: bDocument.buffer.maxDelay - bDocument.scrubber.autoScrubTargetDelay.doubleValue]; }
 
 - (void) setReverseAutoScrubTarget: (NSNumber *)revVal
-{         BDocument *bDocument = (BDocument*)self.document;
-    bDocument.scrubber.autoScrubTargetDelay = [NSNumber numberWithDouble: bDocument.buffer.maxDelay - revVal.doubleValue]; }
+{     
+    BDocument *bDocument = (BDocument*)self.document;
+    bDocument.scrubber.autoScrubTargetDelay = [NSNumber numberWithDouble: bDocument.buffer.maxDelay - revVal.doubleValue]; 
+}
 
 
 #pragma mark - IBActions

@@ -13,7 +13,7 @@
 
 -(void)setServerDescription:(NSDictionary *)serverDescription
 {
-    self.representedObject = serverDescription;
+    self.representedObject = [serverDescription copy];
 }
 
 -(void)setRepresentedObject:(id)representedObject
