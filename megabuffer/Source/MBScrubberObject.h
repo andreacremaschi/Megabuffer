@@ -25,7 +25,7 @@ typedef enum {
 
 @property (strong, nonatomic) NSNumber *rate;
 @property (strong, nonatomic) NSNumber *delay;
-@property (readonly, nonatomic) NSNumber *reverseDelay;
+@property (unsafe_unretained, readonly, nonatomic) NSNumber *reverseDelay;
 @property (strong, nonatomic) NSNumber *scrubMode;
 @property (strong, nonatomic) NSNumber *autoScrubDuration;
 @property (strong, nonatomic) NSNumber *autoScrubTargetDelay;

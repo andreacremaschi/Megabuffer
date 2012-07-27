@@ -75,13 +75,6 @@
 }
 
 
-- (void)dealloc
-{
-    _lastValues=nil;
-    _bindings=nil;
-    inPort=nil;
-    manager=nil;
-}
 
 #pragma mark - _bindings
 
@@ -201,7 +194,7 @@
                     break;
             }            
             id object = [binding objectForKey:@"object"];
-            NSString *keyPath = [binding objectForKey:@"keyPath"];
+            NSString *keyPath = m.address; //[binding objectForKey:@"keyPath"];
             /*
             [self willChangeValueForKey: @"bindings"];
             NSMutableDictionary *lastVal = [_lastValues objectForKey: m.address];
@@ -210,7 +203,8 @@
             [self didChangeValueForKey: @"bindings"];
 */
             
-            [object setValue: value forKey: keyPath];
+            [object setValue: value 
+                      forKey: keyPath];
             
         } else
         {            // più di un valore. un pacchetto? come ci si comporta?

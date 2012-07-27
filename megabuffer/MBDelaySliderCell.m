@@ -55,8 +55,7 @@
     float valuePix = insideRect.size.width * (self.doubleValue / (self.maxValue - self.minValue));
     NSRect valueRect = NSMakeRect(insideRect.origin.x + valuePix, insideRect.origin.y, insideRect.size.width-valuePix, insideRect.size.height);
     [valuePath appendBezierPathWithRect:valueRect];
-
-    
+        
     // disegna il riempimento grigio chiaro
     [[NSColor lightGrayColor] setFill];
     [thePath fill];

@@ -10,12 +10,14 @@
 #import "MBGLView.h"
 #import "MBMarkersView.h"
 
-@class MBGLView, MBOSCPropertyBindingController;
+@class MBGLView, MBOSCPropertyBindingController, MBBufferController;
 @interface MBWindowController : NSWindowController <MBGLViewFrameSource> {
     __unsafe_unretained MBMarkersView *markersView;
     __unsafe_unretained NSView *syphonSourceViewContainer;
     NSViewController *syphonSourceViewController;
     NSView *oscButtonAccessoryView;
+    
+    IBOutlet MBBufferController *bufferController;
 }
 
 
@@ -26,6 +28,7 @@
 @property (unsafe_unretained) IBOutlet NSView *syphonSourceViewContainer;
 @property (strong) IBOutlet NSViewController *syphonSourceViewController;
 @property (strong) IBOutlet NSView *oscButtonAccessoryView;
+@property (strong) IBOutlet MBBufferController *bufferController;
 
 // Properties
 @property (unsafe_unretained) IBOutlet NSArrayController *availableServersController;
@@ -36,7 +39,7 @@
 @property (strong,nonatomic) NSNumber *reverseAutoScrubTarget;
 //@property double autoScrubTarget;
 
-@property (readonly,nonatomic) MBOSCPropertyBindingController *bindingController;
+@property (unsafe_unretained, readonly,nonatomic) MBOSCPropertyBindingController *bindingController;
 
 
 // Actions

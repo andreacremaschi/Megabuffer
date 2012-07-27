@@ -14,7 +14,6 @@
 
 #import "MBOSCPropertyBindingController.h"
 
-#import "NSObject+BlockObservation.h"
 
 @implementation BDocument
 @synthesize buffer;
@@ -27,65 +26,7 @@
         buffer = [[MBBufferObject alloc] init];
         scrubber = [[MBScrubberObject alloc] init];
         scrubber.buffer = buffer;
-        
-        __unsafe_unretained BDocument *selfCopy= self;
-        [buffer addObserverForKeyPath: @"name" task:^(id obj, NSDictionary *change) {
-
-            // bind the buffer
             
-            NSSet *bindingNames = [selfCopy.buffer attributes];
-            for (NSString *newBinding in bindingNames)
-            {
-                
-                NSString *bindingPath =  [NSString stringWithFormat: @"/%@/%@", [change valueForKey: NSKeyValueChangeOldKey], newBinding];
-                [[MBOSCPropertyBindingController sharedController] unbindOSCAddress: bindingPath ];
-                
-                bindingPath =  [NSString stringWithFormat: @"/%@/%@", selfCopy.buffer.name, newBinding];
-                [[MBOSCPropertyBindingController sharedController]  bindOSCMessagesWithAddress: bindingPath
-                                                                                      toObject: selfCopy.buffer 
-                                                                                   withKeyPath: newBinding
-                                                                                       options: nil];
-            }
-            
-            // bind the scrubber
-            bindingNames = [selfCopy.scrubber attributes];
-            
-            for (NSString *newBinding in bindingNames)
-            {
-                if (selfCopy.scrubber.name)
-                {
-                     NSString *bindingPath =  [NSString stringWithFormat: @"/%@/%@/%@", [change valueForKey: NSKeyValueChangeOldKey], selfCopy.scrubber.name, newBinding ];
-                    [[MBOSCPropertyBindingController sharedController] unbindOSCAddress:bindingPath ];
-                    
-                    bindingPath =  [NSString stringWithFormat: @"/%@/%@/%@", selfCopy.buffer.name, selfCopy.scrubber.name, newBinding ];
-                    [[MBOSCPropertyBindingController sharedController]  bindOSCMessagesWithAddress: bindingPath 
-                                                                                          toObject: selfCopy.scrubber 
-                                                                                       withKeyPath: newBinding
-                                                                                           options: nil];
-                }
-                
-                __unsafe_unretained BDocument *selfCopy2= selfCopy;
-                [selfCopy.scrubber addObserverForKeyPath:@"name" task:^(id obj, NSDictionary *change) {
-                    
-                    NSString *bindingPath2 =  [NSString stringWithFormat: @"/%@/%@/%@", selfCopy2.buffer.name, [change valueForKey: NSKeyValueChangeOldKey], newBinding ];
-                    [[MBOSCPropertyBindingController sharedController] unbindOSCAddress: bindingPath2 ];
-                    
-                    bindingPath2 =  [NSString stringWithFormat: @"/%@/%@/%@", selfCopy2.buffer.name, selfCopy2.scrubber.name, newBinding ];
-                    [[MBOSCPropertyBindingController sharedController]  bindOSCMessagesWithAddress: bindingPath2
-                                                                                          toObject: selfCopy2.scrubber 
-                                                                                       withKeyPath: newBinding
-                                                                                           options: nil];
-                    
-                }];
-                
-            }
-            
-            
-        }];
-        
-
-    
-        
     }
     return self;
 }

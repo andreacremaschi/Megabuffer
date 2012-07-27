@@ -24,11 +24,6 @@
     return self;
 }
 
--(void)dealloc
-{
-    _knobOn = nil;
-    _knobOff=nil;
-}
 
 - (void)drawKnob:(NSRect)knobRect {
     

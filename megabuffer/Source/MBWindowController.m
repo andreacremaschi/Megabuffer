@@ -18,6 +18,8 @@
 
 #import "NSObject+BlockObservation.h"
 
+#import "MBBufferController.h"
+
 #import <Syphon/Syphon.h>
 
 @implementation MBWindowController
@@ -28,6 +30,7 @@
 @synthesize availableServersController;
 @synthesize liveInputGLView;
 @synthesize bufferOutputGLView;
+@synthesize bufferController;
 //@synthesize autoScrubTarget;
 
 #pragma mark - Initialization
@@ -157,6 +160,13 @@
     oscFrame.origin.y = windowMainView.bounds.size.height - oscFrame.size.height- margin;
     self.oscButtonAccessoryView.frame=oscFrame;
     [windowMainView addSubview:self.oscButtonAccessoryView];
+    
+    
+    
+
+    self.bufferController = [[MBBufferController alloc] initWithDocument: self.document];
+    
+    
 }
 
 #pragma mark - Accessors and KVO

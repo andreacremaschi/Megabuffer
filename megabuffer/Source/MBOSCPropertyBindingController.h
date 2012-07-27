@@ -19,6 +19,6 @@
                            options: (NSDictionary *)options;
 - (void)unbindOSCAddress:(NSString *)address;
 
-@property (readonly, nonatomic) NSDictionary    *bindings;
+@property (unsafe_unretained, readonly, nonatomic) NSDictionary    *bindings;
 
 @end

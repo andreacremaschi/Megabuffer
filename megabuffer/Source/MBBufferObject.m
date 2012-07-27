@@ -27,7 +27,7 @@
     NSTimeInterval lastPushFrameIndexTimestamp;
     bool waitForFirstFrame;
     bool addMarkerToNextFrame;
-    bool _recording;
+
     bool _bufferSizeChanged;
 }
 @property uint _bufferSize;
@@ -39,7 +39,6 @@
 @synthesize syphonIn;
 
 //@synthesize _recording;
-@synthesize curTime;
 @synthesize curIndexTime;
 
 @synthesize markersArray;
@@ -55,12 +54,11 @@
     self = [super init];
     if (self)
     {
-        self.name = @"buffer";
         markersArray = [NSMutableArray array];
         _bufferSize = 72; //10 secondi a 25 fps
         _frameSize = NSMakeSize(0,0);
         _texture=nil;
-        _recording = true;
+
         frameStack = [[NSMutableStack alloc] init];
         bufferStart = [NSDate timeIntervalSinceReferenceDate];
         lastPushFrameIndexTimestamp = 0;
@@ -87,16 +85,7 @@
 
 #pragma mark - Accessors
 
--(void)set_recording:(_Bool)newVal    
-{
-    if (newVal!=_recording) 
-        waitForFirstFrame= newVal == YES;
-    _recording=newVal;
-}
-- (_Bool)_recording
-{
-    return _recording;
-}
+
 
 + (NSSet *)keyPathsForValuesAffectingSyInApplicationName
 {
@@ -160,16 +149,12 @@
 
 -(NSTimeInterval)maxDelay
 {
-    return (NSTimeInterval)_bufferSize / [self.fps doubleValue];
+    
+    return self.firstFrameInBufferTimeStamp - self.lastFrameInBufferTimeStamp;
+//    return (NSTimeInterval)_bufferSize / [self.fps doubleValue];
 }
 
 #pragma mark - Attributes
-- (NSSet *)attributes
-{
-    return [[super attributes] setByAddingObjectsFromSet:
-            [NSSet setWithObjects: @"bufferSize", @"recording", @"addMarker", @"addMarkerWithLabel", 
-             @"syInServerName", @"syInApplicationName", nil]];
-}
 
 -(void)setBufferSize:(NSNumber *)bufferSize
 {  
@@ -181,11 +166,6 @@
 - (NSNumber *)bufferSize
 {   return [NSNumber numberWithInt: _bufferSize]; }
 
-- (void) setRecording: (NSNumber *)recording
-{   self._recording = recording.boolValue;}
-
-- (NSNumber *) recording
-{   return [NSNumber numberWithBool: _recording];}
 
 -(void)setAddMarker:(id)options
 {   addMarkerToNextFrame=YES;   }
@@ -203,10 +183,10 @@
     return [NSSet setWithObjects: @"bufferSize", @"fps", nil];
 }
 
--(void)setMaxDelay:(NSTimeInterval)maxDelay
+/*-(void)setMaxDelay:(NSTimeInterval)maxDelay
 {
     [self set_bufferSize: maxDelay * [self.fps doubleValue]];
-}
+}*/
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time
 {
@@ -275,14 +255,13 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     lastReceivedFrameTimestamp = [NSDate timeIntervalSinceReferenceDate] - bufferStart;
 }
 
--(void) _timerTick
+//-(void) _timerTick
+- (void) pushNewFrameAtTimeIndex: (NSTimeInterval) indexTimestamp
+                        metadata: (NSDictionary*)metadata
 {
-    if (!self.openGLContext) return;
-    if (!self._recording) return; // non in record mode: ignora il nuovo frame
-    
+    if (!self.openGLContext) return;  
     SyphonClient *syClient = syphonIn.syClient;
     
-
     // controlla se il client syphon è valido
     if (!syClient || !syClient.isValid)
     {
@@ -290,24 +269,16 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
         return;
     }
     
-    
-    if (lastPushFrameTimestamp > lastReceivedFrameTimestamp)
+       
+/*    if (lastPushFrameTimestamp > lastReceivedFrameTimestamp)
     {
         //  non è ancora arrivato un nuovo frame dall'ultimo push fatto.
         //  TODO: replica l'ultimo frame aggiunto
         //NSLog(@"ignoro");
         return;
-    }
+    }*/
     
-    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate] - bufferStart;
-    NSTimeInterval deltaTime;
-    if (!waitForFirstFrame)
-        deltaTime = timestamp - lastPushFrameTimestamp;
-    else
-        deltaTime = 1.0 / [self.fps doubleValue];
-    NSTimeInterval indexTimestamp = lastPushFrameIndexTimestamp + deltaTime;
-    
-    waitForFirstFrame = false;
+//    NSTimeInterval indexTimeStamp ;    // TODO: passarlo come indice temporale
     
     [self lockTexture];
     
@@ -403,36 +374,52 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
 		glFlush();
 		glDisable(target);
 		
+
+        NSDictionary *metadataDict = [metadata isKindOfClass: [NSDictionary class]] ? [metadata copy] : [NSDictionary dictionary];
         
+        if (addMarkerToNextFrame)
+        {
+            // NSDictionary *marker = [NSDictionary dictionaryWithObject: newDict forKey: [NSNumber numberWithDouble: indexTimestamp]];
+            [self willChangeValueForKey:@"markersArray"];
+            NSNumber *markerObject= $double( indexTimestamp );
+            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary: metadataDict];
+            [dict setObject:markerObject forKey:@"marker"];
+            metadataDict = [dict copy];
+            [markersArray addObject: markerObject];
+            addMarkerToNextFrame = false;
+            [self didChangeValueForKey:@"markersArray"];
+        }
+
         
         // è arrivato un nuovo frame? siamo in record mode? bisogna farne una copia e conservarla!         
         //        CIImage *ciImage = [CIImage imageWithCVImageBuffer: pixelBuffer];
         NSDictionary *newDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                  [NSValue valueWithPointer: pixelBuffer], @"image",
                                  [NSNumber numberWithDouble: indexTimestamp], @"timeIndex",
-                                 [NSNumber numberWithDouble: timestamp], @"timeStamp",
+                                 metadataDict, @"metadata",
                                  // todo: aggiungere un riferimento a un marker, da utilizzare quando il frame viene droppato
                                  nil];
-       // NSLog (@"%@", newDict);
+      // NSLog (@"Last frame added with index: %.2f", indexTimestamp);
         
-        if (addMarkerToNextFrame)
-        {
-            
-           // NSDictionary *marker = [NSDictionary dictionaryWithObject: newDict forKey: [NSNumber numberWithDouble: indexTimestamp]];
-            [self willChangeValueForKey:@"markersArray"];
-            [markersArray addObject: [NSNumber numberWithDouble: indexTimestamp]];
-            addMarkerToNextFrame = false;
-            [self didChangeValueForKey:@"markersArray"];
-        }
+
+
+        
         NSDictionary *oldDict = [frameStack push: newDict];
         if (oldDict)
         {
+            //elimina il frame che esce dallo stack
+            NSDictionary *oldMetadata = [oldDict objectForKey:@"metadata"];
+            // elimina il marker associato al frame che esce dallo stack
+            NSNumber *markerToRemove = [oldMetadata objectForKey: @"marker"];
+            if (markerToRemove)
+                [markersArray removeObject: markerToRemove];
+            
             CVPixelBufferRef oldBuffer = [[oldDict valueForKey: @"image"] pointerValue];
             CVOpenGLBufferRelease(oldBuffer);
         }
         
         lastPushFrameIndexTimestamp = indexTimestamp;
-        lastPushFrameTimestamp = timestamp;
+//        lastPushFrameTimestamp = timestamp;
         // Create the duplicate texture
       
         CVOpenGLTextureRef textureOut= [self createNewTextureFromBuffer: pixelBuffer];
@@ -445,8 +432,9 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
 	
     [self unlockTexture];
     
+    [self flushTextureCache];
+    
     self.curIndexTime = lastPushFrameIndexTimestamp;
-    self.curTime = timestamp;
     
     return;
 
@@ -466,7 +454,7 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     return [[[frameStack lastObject] valueForKey:@"timeIndex"] doubleValue];
 }
 
-- (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay
+/*- (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay
 {
     
     NSTimeInterval preferredTimeStamp = delay + [self firstFrameInBufferTimeStamp];    
@@ -474,8 +462,10 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     position = position >= frameStack.count ? frameStack.count-1: position;
     NSDictionary *imageDict1 = [frameStack objectAtIndex:position];
     return imageDict1;
-    
-/*    int floorPosition = floor(delay * [self.fps doubleValue]);
+  */  
+/* 
+ {
+ int floorPosition = floor(delay * [self.fps doubleValue]);
     
     NSDictionary *imageDict1, *imageDict2;
     @synchronized(frameStack)
@@ -487,9 +477,9 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
     NSTimeInterval time2 = [[imageDict2 valueForKey: @"timeIndex"] doubleValue];
     
     return fabs(time2-preferredTimeStamp) < fabs(time1 - preferredTimeStamp) ? imageDict1 : imageDict2;
-  */  
-}
 
+}
+  */  
 - (NSDictionary *)imageDictForTimeIndex:(NSTimeInterval)scrubPosition
 {
     
@@ -563,20 +553,14 @@ didReceiveNewFrameAtTime:(NSTimeInterval)time
 - (NSDictionary *)dictionaryRepresentation
 {
     return [NSDictionary dictionaryWithObjectsAndKeys:
-            self.name ? self.name : @"", @"name",
             self.bufferSize , @"bufferSize",
-            self.recording, @"recording",
-            self.fps, @"fps",
             self.syphonIn.srcDescription, @"syphonSource",
             nil];
 }
 
 - (BOOL) setupWithDictionary: (NSDictionary *)dict
 {
-    self.name = [dict objectForKey:@"name"];
     self.bufferSize = [dict objectForKey:@"bufferSize"] ;
-    self.fps = [dict objectForKey:@"fps"] ;
-    self.recording = [dict objectForKey:@"recording"] ;
     [self setServerDescription: [dict objectForKey:@"syphonSource"]];
     return YES;
 }

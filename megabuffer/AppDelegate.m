@@ -12,10 +12,6 @@
 @implementation AppDelegate
 @synthesize syphonLibraryPanel;
 
--(void)dealloc
-{
-    syphonLibraryPanel = nil;
-}
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification 
 {

@@ -16,32 +16,21 @@
 }
 - (void)timerFire:(NSTimer*)theTimer;
 - (void) stop;
-@property int  _fps;
 
 @end
 
 @implementation MBCanvas
 @synthesize pixelFormat = _pixelFormat;
 @synthesize openGLContext = _openGLContext;
-@synthesize timer;
 @synthesize currentFrameTimeStamp;
-@synthesize fps;
-@synthesize _fps;
-@synthesize name;
 
 - (id)init
 {
     self = [super init];
     if (self)
-    {
-        NSError *error;
-        
-        // Kick off a new Thread
-        [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
+    {       
         
         _texture=0;
-        _fps=MB_FPS;
-        fps=[NSNumber numberWithInt: MB_FPS];
 
     }
     return self;
@@ -49,28 +38,13 @@
 
 -(void)dealloc 
 {
-    [timer invalidate];
+
     CVOpenGLTextureRelease(_texture);
 }
 
-#pragma mark - Accessors
--(void)setFps:(NSNumber *)value
-{
-    [self willChangeValueForKey:@"fps"];
-    [self stop];
-    fps=[NSNumber numberWithDouble: fabs( value.doubleValue)];
 
-    // Kick off a new Thread
-    [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
-
-    [self didChangeValueForKey:@"fps"];    
-}
 
 #pragma mark - Attributes
-- (NSSet *)attributes
-{
-    return [NSSet setWithObjects:@"fps", nil];
-}
 
 #pragma mark - Graphical stuff init
 - (bool)initOpenGLContextWithSharedContext: (NSOpenGLContext*)sharedContext error: (NSError **)error {
@@ -98,66 +72,6 @@
     
 	return true;
 	
-}
-
-
-#pragma mark - Timer creation
-- (void) createTimer{
-    @autoreleasepool {
-        
-                dropNext=false;
-        
-        // Create a time for the thread
-        timer = [NSTimer timerWithTimeInterval:1.0/ self.fps.doubleValue
-                                        target:self 
-                                      selector:@selector(timerFire:)
-                                      userInfo:nil repeats:YES];
-        // Add the timer to the run loop
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-        [[NSRunLoop currentRunLoop] run];
-        
-    }        
-}
-
-#pragma mark - Timer
-
-- (void) _timerTick
-{ //non fare niente: per override
-    return;
-}
-- (void)timerFire:(NSTimer*)theTimer
-{
-
-        
-        if (dropNext) 
-        {
-            // NSLog(@"%@ drop a frame.", self);
-            return;   
-        }
-        @synchronized(timer)
-        {
-
-            if ((!timer.isValid) )
-                return;
-
-            @autoreleasepool {
-                dropNext=YES;
-                [self _timerTick];
-                dropNext=NO;
-                
-                CVOpenGLTextureCacheFlush(_textureCache, 0);
-                                
-            }
-        }
-}
-
-- (void) stop
-{
-    @synchronized (timer)
-    {
-        [timer invalidate];
-        timer=nil;
-    }
 }
 
 
@@ -241,14 +155,15 @@
     CGLUnlockContext(_openGLContext.CGLContextObj);    
 }
 
+-(void)flushTextureCache
+{
+    CVOpenGLTextureCacheFlush(_textureCache, 0);
+}
 
 #pragma mark -Serialization
 - (NSDictionary *)dictionaryRepresentation
 {
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            self.name, @"name",
-            self.fps, @"fps",
-            nil];
+    return [NSDictionary dictionary];
 }
 
 

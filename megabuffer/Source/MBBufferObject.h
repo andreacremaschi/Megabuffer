@@ -25,7 +25,7 @@
 @property NSTimeInterval curTime;
 @property NSTimeInterval curIndexTime;
 
-@property bool _recording;
+
 
 @property (strong, nonatomic) NSMutableStack * frameStack;
 @property (strong, nonatomic) NSMutableArray * markersArray;
@@ -40,7 +40,7 @@
 -(void)setServerDescription:(NSDictionary *)serverDescription;
 
 - (CIImage *)ciImageAtTime: (NSTimeInterval) time;
-- (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay;
+//- (NSDictionary *)imageDictForDelay: (NSTimeInterval)delay;
 - (NSDictionary *)imageDictForTimeIndex: (NSTimeInterval)scrubPosition;
 
 - (NSTimeInterval) firstFrameInBufferTimeStamp;
@@ -51,6 +51,7 @@
 - (NSTimeInterval) markerPrecedingPosition: (NSTimeInterval) indexTimeStamp;
 - (NSTimeInterval) markerFollowingPosition: (NSTimeInterval) indexTimeStamp;
 
-- (void) setRecording: (NSNumber *)recording;
+- (void) pushNewFrameAtTimeIndex: (NSTimeInterval) indexTimestamp
+                        metadata: (NSDictionary*)metadata;
 
 @end

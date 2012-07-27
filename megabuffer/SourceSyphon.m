@@ -7,15 +7,14 @@
 //
 
 #import "SourceSyphon.h"
-#import "NSObject+BlockObservation.h"
-
+#import <Syphon/Syphon.h>
 
 #pragma mark - Private interface
 
 @interface SourceSyphon ()
 
-@property (strong) AMBlockToken *waitingForServerObserver;
-@property (strong) AMBlockToken *validPropertyObserver;
+@property (strong) NSString *waitingForServerObserver;
+@property (strong) NSString *validPropertyObserver;
 - (void) waitForServer;
 - (void) setupSyphonInWithDescription: (NSDictionary *)syphonDescription;
 - (NSDictionary *) checkIfServerIsAvailable;
@@ -109,17 +108,16 @@
 
 - (void) waitForServer
 {
-    waitingForServerObserver= [[SyphonServerDirectory sharedDirectory] addObserverForKeyPath: @"servers" 
-                                                                                        task:^(id obj, NSDictionary *change) 
-                               {
-                                   NSDictionary *concreteServerDescr= [self checkIfServerIsAvailable];
-                                   if (concreteServerDescr)
-                                   {        
-                                       [self setupSyphonInWithDescription: concreteServerDescr];
-                                       [[SyphonServerDirectory sharedDirectory] removeObserverWithBlockToken: waitingForServerObserver];
-                                       
-                                   }
-                               }];
+    waitingForServerObserver= [[SyphonServerDirectory sharedDirectory] addObserverForKeyPath:@"servers" task:^(id sender) {
+        NSDictionary *concreteServerDescr= [self checkIfServerIsAvailable];
+        if (concreteServerDescr)
+        {        
+            [self setupSyphonInWithDescription: concreteServerDescr];
+            [[SyphonServerDirectory sharedDirectory] removeObserversWithIdentifier: waitingForServerObserver];
+            
+        }
+    } ];
+                               
 
 }
 
@@ -167,13 +165,13 @@
     isValid = YES;
     [self didChangeValueForKey:@"isValid"];
 
-    validPropertyObserver= [[SyphonServerDirectory sharedDirectory] addObserverForKeyPath: @"servers" 
-                                                                                     task:^(id obj, NSDictionary *change) 
-                            {
+    validPropertyObserver= [[SyphonServerDirectory sharedDirectory] addObserverForKeyPath:@"servers" 
+                                                                                     task:^(id sender) {
+                                                                                         
                                 NSDictionary *concreteServerDescr= [self checkIfServerIsAvailable];
                                 if (!concreteServerDescr)
                                 {        
-                                    [[SyphonServerDirectory sharedDirectory] removeObserverWithBlockToken:validPropertyObserver];
+                                    [[SyphonServerDirectory sharedDirectory] removeObserversWithIdentifier:validPropertyObserver];
                                     [syClient stop];
                                     syClient = nil;
                                     

@@ -70,10 +70,6 @@
     self = [super init];
     if (self)
     {
-        self.name = @"scrubber";
-
-        // Kick off a new Thread
-        [NSThread detachNewThreadSelector:@selector(createTimer) toTarget:self withObject:nil];
 
         _scrubMode = MBScrubMode_off;
         _selectedMarker=0;
@@ -96,21 +92,13 @@
 */
 
 #pragma mark - KVO
-+(NSSet *)keyPathsForValuesAffectingReverseDelay
-{
-    return [NSSet setWithObject:@"delay"];
-}
-
 +(NSSet *)keyPathsForValuesAffectingDelay
 {
     return [NSSet setWithObjects:@"_scrubberPosition", @"_delay", nil];
 }
 
 #pragma mark - Attributes
-- (NSSet *)attributes
-{
-    return [[super attributes] setByAddingObjectsFromSet:[NSSet setWithObjects: @"delay", @"scrubMode", @"rate", @"gotoNextMarker", @"gotoPrevMarker", @"gotoMarkerWithLabel", @"autoScrubToDelay", @"autoScrubDuration", @"gotoDelay", nil]];
-}
+
 
 - (void) setDelay: (NSNumber *)newVal
 {  
@@ -129,10 +117,7 @@
 - (NSNumber *) delay
 {   return [NSNumber numberWithDouble:self.buffer.curIndexTime - _scrubberPosition]; }
 
-- (NSNumber *) reverseDelay
-{   //NSLog (@"first frame : %.2f\nlastframe : %.2f\ncur position : %.2f\n", buffer.firstFrameInBufferTimeStamp , buffer.lastFrameInBufferTimeStamp , _scrubberPosition );
-    return [NSNumber numberWithDouble: _scrubberPosition-buffer.lastFrameInBufferTimeStamp]; 
-}
+
 + (NSSet *)keyPathsForValuesAffectingPercentualDelay
 {
     return [NSSet setWithObject:@"_scrubberPosition"];
@@ -155,11 +140,6 @@
     [self  set_scrubberPosition: newVal * (firstFr - lastFr) + lastFr];
     // NSLog (@"percD: %.2f", percD);
 }
-
-//{   return [NSNumber numberWithDouble: buffer.maxDelay - _delay]; }
-
-- (void) setReverseDelay: (NSNumber *)revDelay
-{   self.delay = [NSNumber numberWithDouble: buffer.maxDelay - revDelay.doubleValue]; }
 
 - (void) setRate: (NSNumber *)newVal
 {   _rate = [newVal doubleValue]; }
@@ -191,22 +171,6 @@
     _autoScrubTargetDelay = self.buffer.curIndexTime - newVal.doubleValue;
 }
 
-- (void) setGotoNextMarker: (id)options
-{   [self gotoNextMarker]; }
-
-- (void) setGotoPrevMarker: (id)options
-{   [self gotoPreviousMarker]; }
-
-- (void) setGotoMarkerWithLabel: (NSString *)label
-{  //TODO: implementare
-}
-
-- (void) setGotoDelay: (NSNumber *)value
-{
-    [self gotoDelay:value];
-
-}
-
 - (void) setScrubMode: (id)options
 {  //TODO: implementare
 }
@@ -224,7 +188,7 @@
 
 
 
-- (void) autoScrubToDelay: (NSNumber *)delay
+- (void) autoScrubToDelay: (NSNumber *)delay 
 {
 //    if (_autoScrubOperation) return;
   
@@ -242,11 +206,10 @@
     NSTimeInterval startIndex = _scrubberPosition;
     NSTimeInterval endIndex =  buffer.firstFrameInBufferTimeStamp - delay.doubleValue;
     
-    if (self.buffer._recording)
-    {
+/*      // TODO: spostare questa patch nel buffer controller
+ if (self.buffer._recording)
         endIndex += scrubTime;
-    }
-    
+  */  
     
     _autoscrubRate = (endIndex - startIndex) / (endTime - startTime);
     _autoScrubStartIndexPosition = _scrubberPosition;
@@ -300,7 +263,7 @@
     syphonOut = [[SyphonServer alloc] initWithName:	 object
                                            context:		self.openGLContext.CGLContextObj
                                            options:		nil]; 
-    serverName=object;
+    serverName = [object copy];
     
 }
 
@@ -348,16 +311,15 @@
         }
     }
 
-    
-    
     if (!_isInAutoScrub)
     {
-        framesStep = deltaTime * (buffer._recording? _rate : _rate );
+        framesStep = deltaTime *  _rate ;
         newScrubPosition = _scrubberPosition - framesStep;  
     }
     newScrubPosition = newScrubPosition > buffer.firstFrameInBufferTimeStamp ? buffer.firstFrameInBufferTimeStamp : newScrubPosition;
     newScrubPosition = newScrubPosition < buffer.lastFrameInBufferTimeStamp ? buffer.lastFrameInBufferTimeStamp : newScrubPosition;
     [self set_scrubberPosition:newScrubPosition];
+    
     //NSLog(@"New scrubber pos: %.2f",  _scrubberPosition);
     
     // controlla se siamo usciti dall'area del marker
@@ -373,6 +335,8 @@
     
     //NSLog(@"Posizione scrubber: %.4f", _delay);
 //    NSDictionary *imageDict =[self.buffer imageDictForDelay: _delay];
+   // NSLog (@"Scrubber's index position: %.2f", newScrubPosition);
+
     NSDictionary *imageDict =[self.buffer imageDictForTimeIndex: newScrubPosition];
     if (!imageDict) return;
     
@@ -428,6 +392,8 @@
     CGLUnlockContext(cgl_ctx);
     
     CVPixelBufferRelease(pixelBuffer);
+    [self flushTextureCache];
+
 }
 
 
@@ -474,28 +440,24 @@
     }
 }
 
-#pragma mark -Serialization
+#pragma mark - Serialization
 - (NSDictionary *)dictionaryRepresentation
 {
     NSDictionary*dict= [NSDictionary dictionaryWithObjectsAndKeys:
-            self.name ? self.name : @"", @"name",
             self.rate, @"rate",
             self.delay, @"delay",
             self.serverName, @"serverName",
             self.scrubMode, @"scrubMode",
-            self.fps, @"fps",
             nil];
     return dict;
 }
 
 - (BOOL) setupWithDictionary: (NSDictionary *)dict
 {
-    self.name = [dict objectForKey:@"name"];
     self.rate = [dict objectForKey:@"rate"] ;
     self.delay = [dict objectForKey:@"delay"] ;
     self.serverName = [dict objectForKey:@"serverName"] ;
     self.scrubMode = [dict objectForKey:@"scrubMode"] ;
-    self.fps = [dict objectForKey:@"fps"] ;
     return YES;
 }
 

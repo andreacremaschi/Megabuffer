@@ -30,10 +30,6 @@
     
     return self;
 }
--(void)dealloc
-{
-    buttonsDict=nil;
-}
 
 - (void)drawRect:(NSRect)dirtyRect
 {
