@@ -1,0 +1,56 @@
+megabuffer
+--------------
+
+A syphon-based video buffer, with manual and OSC controls. 
+
+OSC messages
+--------------
+    /syInApplicationName	set the Syphon input application name
+    /syInServerName	set the Syphon input server name
+
+    /bufferSize		set the size of the buffer (in frames)
+    /fps	set the sampling rate
+    /addMarker	add a marker (in development)
+    /addMarkerWithLabel	add a marker with a label (in development)
+
+    /scrubber/autoScrubDuration
+    /scrubber/autoScrubToDelay
+    /scrubber/delay
+    /scrubber/gotoDelay
+    /scrubber/gotoMarkerWithLabel
+    /scrubber/gotoNextMarker
+    /scrubber/gotoPrevMarker
+    /scrubber/rate
+    /scrubber/scrubMode
+
+
+
+Installing
+----------
+
+Clone a copy of the repository:
+
+      git://github.com/andreacremaschi/Megabuffer.git
+
+Then, update the framework dependencies using [CocoaPods](https://github.com/CocoaPods/CocoaPods/):
+
+      pod install
+
+
+News, Support and Contributing
+------------------------------
+
+The MapBox iOS SDK has a [support resource][support] where you can open cases and browse other developers' discussions about use of the SDK. 
+
+We have a [basic technical overview][docs] along with the installation instructions. 
+
+MapBox has an IRC channel on `irc.freenode.net` in `#mapbox`. 
+
+The main Route-Me project has a [mailing list][list] for news and to communicate with project members and other users. 
+
+To report bugs and help fix them, please use the [issue tracker][tracker]. 
+
+[support]: http://support.mapbox.com/discussions/mapbox-ios-sdk
+[docs]: http://mapbox.com/mobile/docs/sdk
+[list]: http://groups.google.com/group/route-me-map
+[tracker]: https://github.com/mapbox/mapbox-ios-sdk/issues
