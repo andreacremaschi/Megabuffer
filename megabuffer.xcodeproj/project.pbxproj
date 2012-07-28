@@ -123,17 +123,6 @@
 		CDA583931475BEFB00993A14 /* BDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDocument.m; sourceTree = "<group>"; };
 		CDA583961475BEFB00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BDocument.xib; sourceTree = "<group>"; };
 		CDA583991475BEFC00993A14 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		CDA79FDA1519041800B28A04 /* CKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKAdditions.h; sourceTree = "<group>"; };
-		CDA79FDB1519041800B28A04 /* CKMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKMacros.h; sourceTree = "<group>"; };
-		CDA79FDC1519041800B28A04 /* CKSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKSingleton.h; sourceTree = "<group>"; };
-		CDA79FDD1519041800B28A04 /* ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConciseKit.h; sourceTree = "<group>"; };
-		CDA79FDE1519041800B28A04 /* ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConciseKit.m; sourceTree = "<group>"; };
-		CDA79FDF1519041800B28A04 /* NSArray+ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ConciseKit.h"; sourceTree = "<group>"; };
-		CDA79FE01519041800B28A04 /* NSArray+ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ConciseKit.m"; sourceTree = "<group>"; };
-		CDA79FE11519041800B28A04 /* NSDictionary+ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+ConciseKit.h"; sourceTree = "<group>"; };
-		CDA79FE21519041800B28A04 /* NSDictionary+ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+ConciseKit.m"; sourceTree = "<group>"; };
-		CDA79FE31519041800B28A04 /* NSString+ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ConciseKit.h"; sourceTree = "<group>"; };
-		CDA79FE41519041800B28A04 /* NSString+ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ConciseKit.m"; sourceTree = "<group>"; };
 		CDC58D75149CBD8100555A3F /* MBCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBCanvas.h; path = Source/MBCanvas.h; sourceTree = "<group>"; };
 		CDC58D76149CBD8100555A3F /* MBCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBCanvas.m; path = Source/MBCanvas.m; sourceTree = "<group>"; };
 		CDEAE06E1518944C004C8646 /* MBBufferController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBBufferController.h; sourceTree = "<group>"; };
@@ -300,7 +289,6 @@
 		CDA583711475BEFB00993A14 = {
 			isa = PBXGroup;
 			children = (
-				CDA79FD91519041800B28A04 /* ConciseKit */,
 				CDA583861475BEFB00993A14 /* megabuffer */,
 				CDA5837F1475BEFB00993A14 /* Frameworks */,
 				CDA5837D1475BEFB00993A14 /* Products */,
@@ -359,25 +347,6 @@
 				CDA5838F1475BEFB00993A14 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		CDA79FD91519041800B28A04 /* ConciseKit */ = {
-			isa = PBXGroup;
-			children = (
-				CDA79FDA1519041800B28A04 /* CKAdditions.h */,
-				CDA79FDB1519041800B28A04 /* CKMacros.h */,
-				CDA79FDC1519041800B28A04 /* CKSingleton.h */,
-				CDA79FDD1519041800B28A04 /* ConciseKit.h */,
-				CDA79FDE1519041800B28A04 /* ConciseKit.m */,
-				CDA79FDF1519041800B28A04 /* NSArray+ConciseKit.h */,
-				CDA79FE01519041800B28A04 /* NSArray+ConciseKit.m */,
-				CDA79FE11519041800B28A04 /* NSDictionary+ConciseKit.h */,
-				CDA79FE21519041800B28A04 /* NSDictionary+ConciseKit.m */,
-				CDA79FE31519041800B28A04 /* NSString+ConciseKit.h */,
-				CDA79FE41519041800B28A04 /* NSString+ConciseKit.m */,
-			);
-			name = ConciseKit;
-			path = thirdparty/ConciseKit;
 			sourceTree = "<group>";
 		};
 		CDEAE0691518936F004C8646 /* Buffer specific code */ = {

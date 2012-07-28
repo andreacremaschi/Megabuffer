@@ -1,3 +1,3 @@
 platform :osx
-dependency 'BlocksKit',       	'~> 1.5.0'
+dependency 'BlocksKit'
 dependency 'ConciseKit'
